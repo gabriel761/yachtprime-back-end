@@ -143,9 +143,17 @@ CREATE TABLE barco_charter(
 );
 CREATE TABLE imagem(
      id SERIAL PRIMARY KEY,
-     link VARCHAR(1000),
-     barco_seminovo_id INTEGER REFERENCES barco_seminovo(id) ON DELETE CASCADE,
-     barco_charter_id INTEGER REFERENCES barco_charter(id) ON DELETE CASCADE
+     link VARCHAR(1000)
+);
+CREATE TABLE imagem_barco_seminovo(
+     id SERIAL PRIMARY KEY,
+     barco_seminovo_id INTEGER REFERENCES barco_seminovo(id),
+     imagem_id INTEGER REFERENCES imagem(id)
+);
+CREATE TABLE imagem_barco_charter(
+     id SERIAL PRIMARY KEY,
+     barco_charter_id INTEGER REFERENCES barco_charter(id),
+     imagem_id INTEGER REFERENCES imagem(id)
 );
 CREATE TABLE item_seminovo_barco_seminovo(
      id SERIAL PRIMARY KEY,
@@ -153,6 +161,7 @@ CREATE TABLE item_seminovo_barco_seminovo(
      item_seminovo_id INTEGER REFERENCES item_seminovo(id),
      quantidade INTEGER
 );
+
 CREATE TABLE roteiro_prefixado(
      id SERIAL PRIMARY KEY,
      nome VARCHAR(100),
