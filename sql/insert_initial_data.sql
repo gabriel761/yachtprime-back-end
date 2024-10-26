@@ -305,9 +305,22 @@ VALUES
     ('dias de semana'),
     ('todos os dias'),
     ('sob consulta');
-    -- tipo combustivel
+
+-- tipo combustivel
 INSERT INTO tipo_combustivel(opcao)
 VALUES
 ('gasolina'),
 ('disel');
 
+--tipo de propulsao
+INSERT INTO
+    propulsao (opcao)
+VALUES
+    ('Zeus'),
+    ('IPS'),
+    ('Rabeta'),
+    ('Pé de galinha eixo direto'),
+    ('Pé de galinha V drive'),
+    ('Mondrive'),
+    ('Motor de popa'),
+    ('Turbina a jato');

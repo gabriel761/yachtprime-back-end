@@ -7,7 +7,7 @@
     "start": "index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "database": "psql -h localhost -U postgres -d yacht-prime -p 5433 "
+    "database": "set PGCLIENTENCODING=utf8 && psql -h localhost -U postgres -d yacht-prime -p 5433 "
   },
   "author": "gabriel palacios",
   "license": "ISC",
