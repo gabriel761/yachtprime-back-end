@@ -1,74 +1,71 @@
 -- modelo
 INSERT INTO modelo_cadastrado (marca, modelo)
 VALUES
-('Alfa', 'Alfa 300'),
-('Altamar', 'Altamar'),
-('Altamar', 'Altamar 50'),
-('Altamar', 'Altamar 50 - Fifty'),
-('Altamar', 'Altamar 50 - Fly'),
-('Alternativa', 'Alternativa 21'),
-('Alternativa', 'Alternativa 630'),
-('Alternativa', 'Marlin 22'),
-('Alumnatec', 'Aluminatec 80'),
-('Angra', 'Angra 30'),
-('Angra', 'Angra 32 Full');
+    ('Alfa', 'Alfa 300'),
+    ('Altamar', 'Altamar'),
+    ('Altamar', 'Altamar 50'),
+    ('Altamar', 'Altamar 50 - Fifty'),
+    ('Altamar', 'Altamar 50 - Fly'),
+    ('Alternativa', 'Alternativa 21'),
+    ('Alternativa', 'Alternativa 630'),
+    ('Alternativa', 'Marlin 22'),
+    ('Alumnatec', 'Aluminatec 80'),
+    ('Angra', 'Angra 30'),
+    ('Angra', 'Angra 32 Full');
 
 -- motor
 INSERT INTO motor_cadastrado (marca, modelo)
 VALUES
-('Caterpillar', 'Caterpillar  - - 1653HP - Diesel'),
-('Caterpillar', 'Caterpillar 3106 - 350HP - Diesel'),
-('Caterpillar', 'Caterpillar 3116 - 350HP - Diesel'),
-('Caterpillar', 'Caterpillar 3126 - 420HP - Diesel'),
-('Caterpillar', 'Caterpillar 3208 - 350HP - Diesel'),
-('Caterpillar', 'Caterpillar 3408 - 585HP - Diesel'),
-('Caterpillar', 'Caterpillar 3408 - 800HP - Diesel'),
-('Caterpillar', 'Caterpillar 3412 - 1200HP - Diesel'),
-('Caterpillar', 'Caterpillar 420 - 420HP - Diesel'),
-('Caterpillar', 'Caterpillar 435 - 435HP - Diesel'),
-('Caterpillar', 'Caterpillar 700 - 700HP - Diesel'),
-('Caterpillar', 'Caterpillar 750 - 750HP - Diesel'),
-('Caterpillar', 'Caterpillar C32 - 1675HP - Diesel'),
-('Caterpillar', 'Caterpillar C32 ACERT V12 - 1825HP - Diesel'),
-('Caterpillar', 'Caterpillar C9 - 575HP - Diesel'),
-('Caterpillar', 'Caterpillar 1015 - 1015HP - Diesel'),
-('Caterpillar', 'Caterpillar 1150 - 1150HP - Diesel'),
-('Caterpillar', 'Caterpillar DI 1015 - 1015HP - Diesel'),
-('Cummins', 'Cummins 150 - 150HP - Diesel'),
-('Cummins', 'Cummins 480 - 480HP - Diesel'),
-('Cummins', 'Cummins 5,9L - 425HP - Diesel'),
-('Cummins', 'Cummins 500 - 500HP - Diesel'),
-('Cummins', 'Cummins 600 - 600HP - Diesel'),
-('Cummins', 'Cummins 6CT - 220HP - Diesel'),
-('Cummins', 'cummins Axus 350 - 350HP - Diesel'),
-('Cummins', 'Cummins CMD ZEUS 380 - 364HP - Diesel'),
-('Cummins', 'Cummins - 400HP - Diesel'),
-('Cummins', 'Cummins 350 - 350HP - Diesel'),
-('Cummins', 'Cummins QSB 8,3 600 CV - 600HP - Diesel'),
-('Cummins', 'Cummins QSD 2.0L - 170HP - Diesel'),
-('Cummins', 'Cummins NTA 855 - 500HP - Diesel'),
-('Cummins', 'Cummins NTA 855 M3 - 420HP - Diesel'),
-('Cummins', 'Cummins QSB - 435HP - Diesel'),
-('Cummins', 'Cummins QSB 5.9 - 355HP - Diesel'),
-('Cummins', 'Cummins QSD 4.2L - 270HP - Diesel'),
-('Detroit', 'Detroit 8VF92 - 735HP - Diesel'),
-('Evinrude', 'Evinrude 175 Ficht - 175HP - Gasolina'),
-('Evinrude', 'Evinrude 220 - 220HP - Gasolina'),
-('Evinrude', 'Evinrude E-tec - 115HP - Gasolina'),
-('Evinrude', 'Evinrude E-Tec - 150HP - Gasolina'),
-('Evinrude', 'Evinrude E-Tec - 225HP - Gasolina'),
-('Evinrude', 'Evinrude E-Tec - 250HP - Gasolina'),
-('Evinrude', 'Evinrude EFI - 150HP - Gasolina'),
-('Evinrude', 'Evinrude Ficht Ram - 225HP - Gasolina'),
-('Evinrude', 'Evinrude Fight Ram - 250HP - Gasolina'),
-('Evinrude', 'Evinrude Optimax - 200HP - Gasolina'),
-('Evinrude', 'Evinrude Vindicator - 200HP - Gasolina');
-
+    ('Caterpillar', 'Caterpillar - - 1653HP - Diesel'),
+    ('Caterpillar','Caterpillar 3106 - 350HP - Diesel'),
+    ('Caterpillar','Caterpillar 3116 - 350HP - Diesel'),
+    ('Caterpillar','Caterpillar 3126 - 420HP - Diesel'),
+    ('Caterpillar','Caterpillar 3208 - 350HP - Diesel'),
+    ('Caterpillar','Caterpillar 3408 - 585HP - Diesel'),
+    ('Caterpillar','Caterpillar 3408 - 800HP - Diesel'),
+    ('Caterpillar','Caterpillar 3412 - 1200HP - Diesel'),
+    ('Caterpillar','Caterpillar 420 - 420HP - Diesel'),
+    ('Caterpillar','Caterpillar 435 - 435HP - Diesel'),
+    ('Caterpillar','Caterpillar 700 - 700HP - Diesel'),
+    ('Caterpillar','Caterpillar 750 - 750HP - Diesel'),
+    ('Caterpillar','Caterpillar C32 - 1675HP - Diesel'),
+    ('Caterpillar','Caterpillar C32 ACERT V12 - 1825HP - Diesel'),
+    ('Caterpillar', 'Caterpillar C9 - 575HP - Diesel'),
+    ('Caterpillar','Caterpillar 1015 - 1015HP - Diesel'),
+    ('Caterpillar','Caterpillar 1150 - 1150HP - Diesel'),
+    ('Caterpillar','Caterpillar DI 1015 - 1015HP - Diesel'),
+    ('Cummins', 'Cummins 150 - 150HP - Diesel'),
+    ('Cummins', 'Cummins 480 - 480HP - Diesel'),
+    ('Cummins', 'Cummins 5,9L - 425HP - Diesel'),
+    ('Cummins', 'Cummins 500 - 500HP - Diesel'),
+    ('Cummins', 'Cummins 600 - 600HP - Diesel'),
+    ('Cummins', 'Cummins 6CT - 220HP - Diesel'),
+    ('Cummins', 'Cummins Axus 350 - 350HP - Diesel'),
+    ('Cummins','Cummins CMD ZEUS 380 - 364HP - Diesel'),
+    ('Cummins', 'Cummins - 400HP - Diesel'),
+    ('Cummins', 'Cummins 350 - 350HP - Diesel'),
+    ('Cummins','Cummins QSB 8,3 600 CV - 600HP - Diesel'),
+    ('Cummins', 'Cummins QSD 2.0L - 170HP - Diesel'),
+    ('Cummins', 'Cummins NTA 855 - 500HP - Diesel'),
+    ('Cummins', 'Cummins NTA 855 M3 - 420HP - Diesel'),
+    ('Cummins', 'Cummins QSB - 435HP - Diesel'),
+    ('Cummins', 'Cummins QSB 5.9 - 355HP - Diesel'),
+    ('Cummins', 'Cummins QSD 4.2L - 270HP - Diesel'),
+    ('Detroit', 'Detroit 8VF92 - 735HP - Diesel'),
+    ('Evinrude','Evinrude 175 Ficht - 175HP - Gasolina'),
+    ('Evinrude', 'Evinrude 220 - 220HP - Gasolina'),
+    ('Evinrude', 'Evinrude E-tec - 115HP - Gasolina'),
+    ('Evinrude', 'Evinrude E-Tec - 150HP - Gasolina'),
+    ('Evinrude', 'Evinrude E-Tec - 225HP - Gasolina'),
+    ('Evinrude', 'Evinrude E-Tec - 250HP - Gasolina'),
+    ('Evinrude', 'Evinrude EFI - 150HP - Gasolina'),
+    ('Evinrude','Evinrude Ficht Ram - 225HP - Gasolina'),
+    ('Evinrude','Evinrude Fight Ram - 250HP - Gasolina'),
+    ('Evinrude','Evinrude Optimax - 200HP - Gasolina'),
+    ('Evinrude','Evinrude Vindicator - 200HP - Gasolina');
 
 -- itens
--- Inserção dos itens na tabela item_seminovo
-INSERT INTO
-    item_seminovo (item)
+INSERT INTO item_seminovo (item)
 VALUES
     ('Adega para vinhos'),
     ('Alfa Laval'),
@@ -77,7 +74,7 @@ VALUES
     ('Âncora de popa'),
     ('Ancoragem via GPS (skyhook)'),
     ('Antena de internet'),
-    ('Antena de Tv (normal)'),
+    ('Antena de TV (normal)'),
     ('Antena SKY'),
     ('Ar condicionado (máquinas)'),
     ('Ar condicionado de cais'),
@@ -86,7 +83,7 @@ VALUES
     ('Balsa de sobrevivência'),
     ('Baterias de serviço'),
     ('Bimini'),
-    ('Boia circular'),
+    ('Bóia circular'),
     ('Boiler'),
     ('Bomba(s) Água Doce'),
     ('Bomba(s) de porão'),
@@ -231,8 +228,9 @@ VALUES
     ('Turco na popa'),
     ('TV'),
     ('Ventilador'),
-    ('WC Eletrico'),
+    ('WC Elétrico'),
     ('WC Manual');
+    
 INSERT INTO item_charter (item, item_lazer)
 VALUES
 ('Cabines ou Cabina', false),
@@ -254,6 +252,10 @@ VALUES
 ('Tapete flutuante', true),
 ('Caiaque', true);
 
+INSERT INTO roteiro_livre(opcao)
+VALUES
+('Não disponível'),
+('Sob consulta');
 -- moedas
 INSERT INTO moeda(nome, simbolo, codigo_bancario)
 VALUES
@@ -284,7 +286,7 @@ VALUES
 
 -- condições
 -- Inserção das condições na tabela condicoes
-INSERT INTO condicoes (opcao)
+INSERT INTO condicao (opcao)
 VALUES
 ('Os passeios são privativos, não vendemos ingressos.'),
 ('O tempo é medido desde a hora marcada, mesmo que o cliente atrase no embarque.'),
