@@ -27,7 +27,7 @@ INSERT INTO
 INSERT INTO 
     barco_seminovo (modelo_id, nome, ano, tamanho, motor_id, potencia_total, combustivel, propulsao, cabine, procedencia, destaque, preco_id)
 VALUES
-    (3,'Sea view',2016,50,1,2800,1,3,1,'Brasil','Guardado no seco por 212 horas',1);
+    (3,'Sea View',2016,50,1,2800,1,3,1,'Brasil','Guardado no seco por 212 horas',1);
 -- imagem barco seminovo
 INSERT INTO
     imagem_barco_seminovo (imagem_id, barco_seminovo_id)

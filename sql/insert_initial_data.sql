@@ -259,30 +259,30 @@ VALUES
 -- moedas
 INSERT INTO moeda(nome, simbolo, codigo_bancario)
 VALUES
-('real', 'R$', 'BRL'),
-('dólar', '$', 'USD');
+('Real', 'R$', 'BRL'),
+('Dólar', '$', 'USD');
 
 -- pet friendly
 INSERT INTO pet_friendly(opcao)
 VALUES
-('não'),
-('pequeno porte'),
-('grande e pequeno porte');
+('Não'),
+('Pequeno porte'),
+('Grande e pequeno porte');
 
 -- tipo passeio
 INSERT INTO tipo_passeio(opcao)
 VALUES
-('day use');
+('Day use');
 
 INSERT INTO tipo_passeio(opcao)
 VALUES
-('day use e pernoite');
+('Day use e pernoite');
 
 -- tripulação skipper
 INSERT INTO tripulacao_skipper(opcao)
 VALUES
-('tripulação inclusa'),
-('skipper incluso');
+('Tripulação inclusa'),
+('Skipper incluso');
 
 -- condições
 -- Inserção das condições na tabela condicoes
@@ -303,16 +303,16 @@ VALUES
 -- opções dias
 INSERT INTO opcao_dias(opcao)
 VALUES
-('sábado, domingo e feriados'),
-    ('dias de semana'),
-    ('todos os dias'),
-    ('sob consulta');
+('Sábado, domingo e feriados'),
+    ('Dias de semana'),
+    ('Todos os dias'),
+    ('Sob consulta');
 
 -- tipo combustivel
 INSERT INTO tipo_combustivel(opcao)
 VALUES
-('gasolina'),
-('disel');
+('Gasolina'),
+('Dísel');
 
 --tipo de propulsao
 INSERT INTO

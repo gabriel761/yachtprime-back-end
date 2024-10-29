@@ -3,21 +3,25 @@
   "version": "1.0.0",
   "description": "main back-end of the project yacht-prime",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "index.js",
-    "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx tsx watch index.js",
+    "test": "vitest",
     "database": "psql  -h localhost -U postgres -d yacht-prime -p 5433 "
   },
   "author": "gabriel palacios",
   "license": "ISC",
   "dependencies": {
+    "@types/node": "^22.8.1",
     "axios": "^1.7.7",
     "back-end-yacth-prime": "file:",
     "cors": "^2.8.5",
     "express": "^4.21.1",
-    "jest": "^29.7.0",
     "nodemon": "^3.1.7",
-    "pg-promise": "^11.10.1"
+    "pg-promise": "^11.10.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.4"
   }
 }
