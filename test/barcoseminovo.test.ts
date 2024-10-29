@@ -1,6 +1,6 @@
 import {expect, test} from "vitest";
-import barcoSeminovo from "./mocks/barco_seminovo";
+import barcoSeminovo from "./mocks/barco_seminovo.ts";
 
 test("Should get full seminovo object with data from database", () => {
-    expect(barcoSeminovo).toBe(barcoSeminovo)
+    expect(barcoSeminovo).toEqual(barcoSeminovo)
 })
