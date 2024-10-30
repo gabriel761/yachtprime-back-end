@@ -2,7 +2,6 @@ import db from "../infra/database.ts";
 
 class BarcoSeminovoRepository {
     async getBarcoSeminovo(id:number) {
-        console.log(id)
         const result = await db.oneOrNone(`
 SELECT
     bs.id AS barco_id,
@@ -46,7 +45,12 @@ WHERE
 `, [id]);
         return result
     }
+    async saveBarcoSeminovo() {
+
+    }
 }
+
+
 
 
 export default BarcoSeminovoRepository

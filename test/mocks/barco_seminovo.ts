@@ -14,7 +14,7 @@ const cabines = {
 }
 const preco = {
     moeda: "$",
-    valor: "5000000.00"
+    valor: 5000000.00
 }
 const imagens = [
     {id:1, link:"https://mariattinavalbroker.com/wp-content/uploads/slider/cache/8caa1856fcad21de1ddd3bba95dfcb7d/4-1.jpg"},

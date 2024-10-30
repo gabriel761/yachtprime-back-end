@@ -11,7 +11,7 @@ class DTOBarcoSeminovo {
         public cabines: { passageiros: number; tripulacao: number },
         public procedencia: string,
         public destaque: string | null,
-        public preco: { moeda: string; valor: string },
+        public preco: { moeda: string; valor: number },
         public imagens: {id:number, link:string}[],
         public equipadoCom: { item: string; quantidade: number }[],
         public videoPromocional: string | null
