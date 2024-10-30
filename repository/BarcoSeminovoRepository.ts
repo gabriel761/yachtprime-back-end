@@ -1,8 +1,9 @@
 import db from "../infra/database.ts";
 
 class BarcoSeminovoRepository {
-    async getBarcoSeminovo() {
-        const result = await db.query(`
+    async getBarcoSeminovo(id:number) {
+        console.log(id)
+        const result = await db.oneOrNone(`
 SELECT
     bs.id AS barco_id,
     bs.nome AS nome_barco,
@@ -12,9 +13,12 @@ SELECT
     mc.modelo AS modelo_modelo,
     m.quantidade AS quantidade_motor,
     m.potencia AS potencia_motor,
+    bs.potencia_total AS potencia_total,
     m.horas AS horas_motor,
     m.ano AS ano_motor,
     m.observacoes AS observacoes_motor,
+    mc_motor.marca AS marca_motor,
+    mc_motor.modelo AS modelo_motor,
     tc.opcao AS tipo_combustivel,
     p.opcao AS tipo_propulsao,
     c.passageiro AS capacidade_passageiro,
@@ -29,14 +33,17 @@ FROM
     barco_seminovo bs
     JOIN modelo_cadastrado mc ON bs.modelo_id = mc.id
     JOIN motor m ON bs.motor_id = m.id
+    JOIN motor_cadastrado mc_motor ON m.motor_id = mc_motor.id
     JOIN tipo_combustivel tc ON bs.combustivel = tc.id
     JOIN propulsao p ON bs.propulsao = p.id
     JOIN cabine c ON bs.cabine = c.id
     JOIN preco pr ON bs.preco_id = pr.id
     JOIN moeda mo ON pr.moeda_id = mo.id
 WHERE
-    bs.id = 1;
-`);
+    bs.id = $1;
+;
+
+`, [id]);
         return result
     }
 }
