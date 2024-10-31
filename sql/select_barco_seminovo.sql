@@ -5,12 +5,12 @@ SELECT
     bs.tamanho AS tamanho_barco,
     mc.marca AS marca_modelo,
     mc.modelo AS modelo_modelo,
-    m.quantidade AS quantidade_motor,
-    m.potencia AS potencia_motor,
+    m.quantidade AS quantidade_motorizacao,
+    m.potencia AS potencia_motorizacao,
     bs.potencia_total AS potencia_total,
-    m.horas AS horas_motor,
-    m.ano AS ano_motor,
-    m.observacoes AS observacoes_motor,
+    m.horas AS horas_motorizacao,
+    m.ano AS ano_motorizacao,
+    m.observacoes AS observacoes_motorizacao,
     mc_motor.marca AS marca_motor,
     mc_motor.modelo AS modelo_motor,
     tc.opcao AS tipo_combustivel,
@@ -25,8 +25,8 @@ SELECT
     bs.video AS video_barco
 FROM
     barco_seminovo bs
-    JOIN modelo_cadastrado mc ON bs.modelo_id = mc.id
-    JOIN motor m ON bs.motor_id = m.id
+    JOIN modelo_barco mc ON bs.modelo_id = mc.id
+    JOIN motorizacao m ON bs.motorizacao_id = m.id
     JOIN motor_cadastrado mc_motor ON m.motor_id = mc_motor.id
     JOIN tipo_combustivel tc ON bs.combustivel = tc.id
     JOIN propulsao p ON bs.propulsao = p.id

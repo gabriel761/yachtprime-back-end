@@ -1,4 +1,6 @@
 import { PrecoDto } from "../dto/PrecoDto.ts";
+import { MoedaRepository } from "../repository/MoedaRepository.ts";
+import { PrecoRepository } from "../repository/PrecoRepository.ts";
 import { Preco } from "../types/Preco.ts";
 
 export class PrecoModel {
@@ -12,5 +14,9 @@ export class PrecoModel {
     }
     buildPrecoDtoFromClient() {
         
+    }
+    async savePreco(preco:Preco, precoRepo:PrecoRepository, moedaRepo: MoedaRepository){
+        const idMoeda = await moedaRepo.getIdMoedaBySimbolo(preco.moeda)
+        precoRepo.insertPreco(preco.valor, idMoeda.id)
     }
 }

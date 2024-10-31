@@ -7,8 +7,13 @@ import { PrecoDto } from "../dto/PrecoDto.ts";
 import { PrecoModel } from "../models/PrecoModel.ts";
 import { CabineModel } from "../models/CabinesModel.ts";
 import { ImagemModel } from "../models/ImagemModel.ts";
-import { MotorModel } from "../models/MotorModel.ts";
+import { MotorizacaoModel } from "../models/MotorizacaoModel.ts";
 import { ItemSeminovoModel } from "../models/ItemSeminovoModel.ts";
+import { PrecoRepository } from "../repository/PrecoRepository.ts";
+import { MoedaRepository } from "../repository/MoedaRepository.ts";
+import { MotorizacaoRepository } from "../repository/MotorizacaoRepository.ts";
+import { ModeloMotorRepository } from "../repository/ModeloMotorRepository.ts";
+import { CabineRepository } from "../repository/CabineRepository.ts";
 
 
 class BarcoSeminovoService{
@@ -19,7 +24,7 @@ class BarcoSeminovoService{
         const barcoSeminovoModel = new BarcoSeminovoModel()
         const imagemModel = new ImagemModel()
         const itemSeminovoModel = new ItemSeminovoModel()
-        const motorModel = new MotorModel()
+        const motorModel = new MotorizacaoModel()
         const cabineModel = new CabineModel()
         const precoModel = new PrecoModel()
         const barcoSeminovoDados = await barcoSeminovoRepository.getBarcoSeminovo(id)
@@ -34,21 +39,22 @@ class BarcoSeminovoService{
         return barcoSeminovoResult
     }
 
-    async postBarcoSeminovo(body: BarcoSeminovoType){
+    async postBarcoSeminovo(barcoSeminovoClient: BarcoSeminovoType){
         const barcoSeminovoModel = new BarcoSeminovoModel()
-        const precoModel = new PrecoModel();
-        const cabineModel = new CabineModel();
-        const imagemModel = new ImagemModel();
-        const motorModel = new MotorModel();
-        const itemSeminovoModel = new ItemSeminovoModel();
-        const precoDto = precoModel.buildPrecoDtoFromClient()
-        const cabineDto = cabineModel.buildCabineDtoFromClient()
-        const imagemDto = imagemModel.buildImagemDtoFromClient()
-        const MotorDto = motorModel.buildMotorDtoFromClient()
-        const itemSeminovoDto = itemSeminovoModel.buildItemSeminovoDtoFromClient()
-        const barcoSeminovoDTO = barcoSeminovoModel.buildBarcoSeminovoDTOFromClient(body)
-        const barcoSeminovoRepository = new BarcoSeminovoRepository()
-        barcoSeminovoRepository.saveBarcoSeminovo(body)
+        const precoModel = new PrecoModel()
+        const motorModel = new MotorizacaoModel()
+        const precoRepository = new PrecoRepository()
+        const moedaRepository = new MoedaRepository()
+        const motorRepository = new MotorizacaoRepository()
+        const modeloMotorRepository = new ModeloMotorRepository()
+        const cabineRepository = new CabineRepository()
+        const idPreco = precoModel.savePreco(barcoSeminovoClient.preco, precoRepository, moedaRepository)
+        const idMotor = motorModel.saveMotor(barcoSeminovoClient.motorizacao,modeloMotorRepository, motorRepository)
+        const idCabine = cabineRepository.insertCabine(barcoSeminovoClient.cabines)
+        
+        // const barcoSeminovoDTO = barcoSeminovoModel.buildBarcoSeminovoDTOFromClient(barcoSeminovoClient)
+        // const barcoSeminovoRepository = new BarcoSeminovoRepository()
+        //barcoSeminovoRepository.insertBarcoSeminovo(barcoSeminovoClient)
     }
 }
 export default BarcoSeminovoService

@@ -20,9 +20,12 @@ test.only("Should get full barcoSeminovo object with data from database", async 
     const response = await request("http://localhost:5000/barco/seminovo/1", "get")
     expect(response.data).toEqual(barcoSeminovo)
 })
+test("Should get a response status of 404", async () => {
+    const response = await fetch("http://localhost:5000/barco/seminovo/1")
+    expect(response.status).toBe(404)
+})
 
 test("Should post barcoSeminovo into database", async () => {
-    console.log(barcoSeminovo)
     await request("http://localhost:5000/barco/seminovo", "post", barcoSeminovo)
     const response = await request("http://localhost:5000/barco/seminovo/1", "get")
     expect(response.data).toEqual(barcoSeminovo)

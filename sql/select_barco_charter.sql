@@ -1,4 +1,4 @@
-SELECT
+WHERESELECT
     bc.id AS barco_charter_id,
     bc.nome AS nome_barco_charter,
     bc.ano AS ano_barco_charter,
@@ -29,7 +29,7 @@ SELECT
     tc2.mensagem AS taxa_churrasco_mensagem 
 FROM
     barco_charter bc
-    JOIN modelo_cadastrado mc ON bc.modelo_id = mc.id
+    JOIN modelo_barco mc ON bc.modelo_id = mc.id
     JOIN preco pr ON bc.preco = pr.id
     JOIN moeda mo ON pr.moeda_id = mo.id
     JOIN tipo_passeio tp ON bc.tipo_passeio = tp.id

@@ -20,12 +20,12 @@ VALUES
     (5,1);
 --motor
 INSERT INTO 
-    motor(quantidade, potencia, horas, ano, observacoes, motor_id)
+    motorizacao(quantidade, potencia, horas, ano, observacoes, motor_id)
     VALUES
     (2,1400,150,2016,null,36);
 -- seminovo
 INSERT INTO 
-    barco_seminovo (modelo_id, nome, ano, tamanho, motor_id, potencia_total, combustivel, propulsao, cabine, procedencia, destaque, preco_id)
+    barco_seminovo (modelo_id, nome, ano, tamanho, motorizacao_id, potencia_total, combustivel, propulsao, cabine, procedencia, destaque, preco_id)
 VALUES
     (3,'Sea View',2016,50,1,2800,1,3,1,'Brasil','Guardado no seco por 212 horas',1);
 -- imagem barco seminovo

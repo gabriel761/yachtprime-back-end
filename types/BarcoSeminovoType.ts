@@ -1,7 +1,7 @@
-import { Cabine } from "./Cabines.ts";
+import { Cabine } from "./Cabine.ts";
 import { Imagem } from "./Imagem.ts";
 import { ItemSeminovo } from "./ItemSeminovo.ts";
-import { Motor } from "./Motor.ts";
+import { Motor } from "./Motorizacao.ts";
 import { Preco } from "./Preco.ts";
 
 export type BarcoSeminovoType = {

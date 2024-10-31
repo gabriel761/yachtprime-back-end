@@ -1,15 +1,15 @@
 import BarcoSeminovoDto from "../dto/BarcoSeminovoDto.ts";
 import { BarcoSeminovoType } from "../types/BarcoSeminovoType.ts";
-import { Cabine } from "../types/Cabines.ts";
+import { Cabine } from "../types/Cabine.ts";
 import { Imagem } from "../types/Imagem.ts";
 import { ItemSeminovo } from "../types/ItemSeminovo.ts";
-import { Motor } from "../types/Motor.ts";
+import { Motorizacao } from "../types/Motorizacao.ts";
 import { Preco } from "../types/Preco.ts";
 
 
 
 class BarcoSeminovoModel {
-    buildBarcoSeminovoDTOFromDatabase(barcoSeminovoDados:Record<string,any>, imagens: Imagem[], itens:ItemSeminovo[], motor:Motor, cabine: Cabine, preco:Preco ){
+    buildBarcoSeminovoDTOFromDatabase(barcoSeminovoDados:Record<string,any>, imagens: Imagem[], itens:ItemSeminovo[], motor:Motorizacao, cabine: Cabine, preco:Preco ){
         const barcoSeminovoDTO = new BarcoSeminovoDto(barcoSeminovoDados.modelo_modelo, barcoSeminovoDados.nome_barco, barcoSeminovoDados.ano_barco, barcoSeminovoDados.tamanho_barco, motor, barcoSeminovoDados.potencia_total, barcoSeminovoDados.tipo_combustivel, barcoSeminovoDados.tipo_propulsao, cabine, barcoSeminovoDados.procedencia, preco, imagens, itens, null, barcoSeminovoDados.id_barco, barcoSeminovoDados.destaque)
         return barcoSeminovoDTO
     }

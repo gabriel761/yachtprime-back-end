@@ -1,5 +1,5 @@
 -- modelo
-INSERT INTO modelo_cadastrado (marca, modelo)
+INSERT INTO modelo_barco (marca, modelo)
 VALUES
     ('Alfa', 'Alfa 300'),
     ('Altamar', 'Altamar'),

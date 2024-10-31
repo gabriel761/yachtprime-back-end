@@ -1,17 +1,18 @@
-import express, {Request, Response} from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { BarcoSeminovoController } from '../controller/BarcoSeminovoController.ts';
+import errorHandler from '../infra/middlewares/errorHandler.ts';
 
 const router = express.Router();
 
 
-router.get('/seminovo/:id', async (req:Request, res:Response) => {
-    const barcoSeminovoController = new BarcoSeminovoController()
-    barcoSeminovoController.getBarcoSeminovoById(req,res)
+router.get('/seminovo/:id', async (req: Request, res: Response, next: NextFunction) => {
+        const barcoSeminovoController = new BarcoSeminovoController()
+    await barcoSeminovoController.getBarcoSeminovoById(req, res, next)
 })
 
-router.post('/seminovo', async (req: Request, res: Response) => {
-    const barcoSeminovoController = new BarcoSeminovoController()
-    barcoSeminovoController.postBarcoSeminovo(req, res)
+router.post('/seminovo', async (req: Request, res: Response, next: NextFunction ) => {
+        const barcoSeminovoController = new BarcoSeminovoController()
+        await barcoSeminovoController.postBarcoSeminovo(req, res, next)
 })
 
 export default router

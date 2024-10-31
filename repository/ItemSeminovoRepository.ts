@@ -14,7 +14,7 @@ WHERE
     isb.barco_seminovo_id = $1;
 ;
 
-            `, [id])
+            `, [id]);
         return result
     }
 }

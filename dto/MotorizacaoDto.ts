@@ -1,4 +1,4 @@
-export class MotorDto {
+export class MotorizacaoDto {
     constructor(
        public modelo: string,
        public quantidade: number,

@@ -1,7 +1,7 @@
-import { Cabine } from "../types/Cabines.ts";
+import { Cabine } from "../types/Cabine.ts";
 import { Imagem } from "../types/Imagem.ts";
 import { ItemSeminovo } from "../types/ItemSeminovo.ts";
-import { Motor } from "../types/Motor.ts";
+import { Motor } from "../types/Motorizacao.ts";
 import { Preco } from "../types/Preco.ts";
 
 class BarcoSeminovoDto {

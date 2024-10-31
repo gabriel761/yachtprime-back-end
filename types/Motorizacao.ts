@@ -1,4 +1,4 @@
-export type Motor = {
+export type Motorizacao = {
     modelo: string;
     quantidade: number;
     potencia: number;

@@ -6,7 +6,7 @@ CREATE TABLE motor_cadastrado(
      modelo VARCHAR(200) NOT NULL
 );
 
-CREATE TABLE motor(
+CREATE TABLE motorizacao(
      id SERIAL PRIMARY KEY NOT NULL,
      quantidade INTEGER NOT NULL,
      potencia INTEGER NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE item_charter(
      item_lazer BOOLEAN DEFAULT true NOT NULL
 );
 
-CREATE TABLE modelo_cadastrado (
+CREATE TABLE modelo_barco (
      id SERIAL PRIMARY KEY NOT NULL,
      marca VARCHAR(100) NOT NULL,
      modelo VARCHAR(200) NOT NULL
@@ -64,11 +64,11 @@ CREATE TABLE propulsao(
 
 CREATE TABLE barco_seminovo(
      id SERIAL PRIMARY KEY NOT NULL,
-     modelo_id INTEGER REFERENCES modelo_cadastrado(id) NOT NULL,
+     modelo_id INTEGER REFERENCES modelo_barco(id) NOT NULL,
      nome VARCHAR (150) NOT NULL,
      ano INTEGER NOT NULL,
      tamanho INTEGER NOT NULL,
-     motor_id INTEGER REFERENCES motor(id) NOT NULL,
+     motorizacao_id INTEGER REFERENCES motorizacao(id) NOT NULL,
      potencia_total INTEGER NOT NULL,
      combustivel INTEGER REFERENCES tipo_combustivel(id) NOT NULL,
      propulsao INTEGER REFERENCES propulsao(id) NOT NULL,
@@ -142,7 +142,7 @@ CREATE TABLE roteiro_livre(
 
 CREATE TABLE barco_charter(
      id SERIAL PRIMARY KEY NOT NULL,
-     modelo_id INTEGER REFERENCES modelo_cadastrado(id) NOT NULL,
+     modelo_id INTEGER REFERENCES modelo_barco(id) NOT NULL,
      nome VARCHAR(100) NOT NULL,
      ano INTEGER NOT NULL,
      tamanho INTEGER NOT NULL,
