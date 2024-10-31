@@ -4,8 +4,8 @@ import config from './config.js';
 
 
 const app = express()
-const router = express.Router()
-
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use('/barco', seminovoroute);
 

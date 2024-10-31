@@ -1,4 +1,6 @@
+import DTOBarcoSeminovo from "../dto/BarcoSeminovoDto.ts";
 import db from "../infra/database.ts";
+import { BarcoSeminovoType } from "../types/BarcoSeminovoType.ts";
 
 class BarcoSeminovoRepository {
     async getBarcoSeminovo(id:number) {
@@ -45,8 +47,9 @@ WHERE
 `, [id]);
         return result
     }
-    async saveBarcoSeminovo() {
 
+    async saveBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoType) {
+        await db.query("INSERT INTO barco_seminovo (modelo_id, nome, ano, tamanho, motor_id, potencia_total, combustivel, propulsao, cabine, procedencia, destaque, preco_id, video) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)", [barcoSeminovoDTO.modelo, ])
     }
 }
 

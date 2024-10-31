@@ -1,4 +1,4 @@
-import DtoBarcoSeminovo from '../../dto/DtoSeminovo.js'
+import DtoBarcoSeminovo from '../../dto/BarcoSeminovoDto.ts'
 
 const motor = {
     modelo: "Detroit 8VF92 - 735HP - Diesel",
@@ -35,6 +35,6 @@ const equipadoCom = [
     { item: "Balsa de sobrevivência", quantidade: 3 },
     { item: "Baterias de serviço", quantidade: 2 },
 ]
-const barcoSeminovo = new DtoBarcoSeminovo("Altamar 50", "Sea View", 2016, 50, motor, 2800, "Gasolina", "Rabeta", cabines, "Brasil", "Guardado no seco por 212 horas", preco, imagens, equipadoCom, null);
+const barcoSeminovo = new DtoBarcoSeminovo("Altamar 50", "Sea View", 2016, 50, motor, 2800, "Gasolina", "Rabeta", cabines, "Brasil", preco, imagens, equipadoCom, null, undefined, "Guardado no seco por 212 horas");
 
 export default barcoSeminovo

@@ -16,7 +16,8 @@ export class BarcoSeminovoController{
 
     async postBarcoSeminovo(req: Request, res: Response) {
         const body = req.body
-        const barcoSeminovoService = new BarcoSeminovoService()
-        barcoSeminovoService.postBarcoSeminovo(body)
+        // const barcoSeminovoService = new BarcoSeminovoService()
+        // barcoSeminovoService.postBarcoSeminovo(body)
+        res.json(body);
     }
 }
