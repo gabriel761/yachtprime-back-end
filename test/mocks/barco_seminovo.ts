@@ -1,4 +1,4 @@
-import DtoBarcoSeminovo from '../../dto/BarcoSeminovoDto.ts'
+import {BarcoSeminovoClientDto} from '../../dto/BarcoSeminovoClientDto.ts'
 
 const motor = {
     modelo: "Detroit 8VF92 - 735HP - Diesel",
@@ -25,16 +25,16 @@ const imagens = [
 ]
 
 const equipadoCom = [
-    { item: "Alto-falante(s) marinizado", quantidade: 1},
-    { item: "Ancoragem via GPS (skyhook)", quantidade: 2 },
-    { item: "Antena de internet", quantidade: 4 },
-    { item: "Antena de TV (normal)", quantidade: 5 },
-    { item: "Antena SKY", quantidade: 1 },
-    { item: "Ar condicionado (máquinas)", quantidade: 2 },
-    { item: "Ar condicionado no cockpit (saída)", quantidade: 2 },
-    { item: "Balsa de sobrevivência", quantidade: 3 },
-    { item: "Baterias de serviço", quantidade: 2 },
+    { id:3, item: "Alto-falante(s) marinizado", quantidade: 1},
+    { id:6, item: "Ancoragem via GPS (skyhook)", quantidade: 2 },
+    { id:7, item: "Antena de internet", quantidade: 4 },
+    { id:8, item: "Antena de TV (normal)", quantidade: 5 },
+    { id:9, item: "Antena SKY", quantidade: 1 },
+    { id:10, item: "Ar condicionado (máquinas)", quantidade: 2 },
+    { id:12, item: "Ar condicionado no cockpit (saída)", quantidade: 2 },
+    { id:14, item: "Balsa de sobrevivência", quantidade: 3 },
+    { id:15, item: "Baterias de serviço", quantidade: 2 },
 ]
-const barcoSeminovo = new DtoBarcoSeminovo("Altamar 50", "Sea View", 2016, 50, motor, 2800, "Gasolina", "Rabeta", cabines, "Brasil", preco, imagens, equipadoCom, null, undefined, "Guardado no seco por 212 horas");
+const barcoSeminovo = new BarcoSeminovoClientDto("Altamar 50", "Sea View", 2016, 50, motor, 2800, "Gasolina", "Rabeta", cabines, "Brasil", preco, imagens, equipadoCom, null, undefined, "Guardado no seco por 212 horas");
 
 export default barcoSeminovo

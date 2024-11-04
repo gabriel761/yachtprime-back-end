@@ -1,16 +1,19 @@
 import { Cabine } from "../types/Cabine.ts";
+import { Combustivel } from "../types/Combustivel.ts";
 import { Imagem } from "../types/Imagem.ts";
 import { ItemSeminovo } from "../types/ItemSeminovo.ts";
-import { Motor } from "../types/Motorizacao.ts";
+import { Modelo } from "../types/Modelo.ts";
+import { Motorizacao } from "../types/Motorizacao.ts";
 import { Preco } from "../types/Preco.ts";
+import { Propulsao } from "../types/Propulsao.ts";
 
-class BarcoSeminovoDto {
+export class BarcoSeminovoClientDto {
     public id?: number
     public modelo: string;
     public nome: string;
     public ano: number;
     public tamanho: number;
-    public motorizacao: Motor;
+    public motorizacao: Motorizacao;
     public potenciaTotal: number;
     public combustivel: string;
     public propulsao: string;
@@ -27,7 +30,7 @@ class BarcoSeminovoDto {
         nome: string,
         ano: number,
         tamanho: number,
-        motorizacao: Motor,
+        motorizacao: Motorizacao,
         potenciaTotal: number,
         combustivel: string,
         propulsao: string,
@@ -59,5 +62,4 @@ class BarcoSeminovoDto {
     }
 }
 
-export default BarcoSeminovoDto;
 

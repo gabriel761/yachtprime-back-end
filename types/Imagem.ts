@@ -1,4 +1,4 @@
 export type Imagem = {
-    id: number;
+    id?: number;
     link: string;
 } 

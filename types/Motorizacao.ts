@@ -4,5 +4,5 @@ export type Motorizacao = {
     potencia: number;
     horas: number;
     ano: number;
-    observacoes?: string;
+    observacoes?: string | null;
 }

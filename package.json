@@ -8,7 +8,7 @@
     "start": "index.js",
     "dev": "npx tsx watch --env-file .env index.js ",
     "test": "vitest",
-    "dev-database": "psql  -h localhost -U postgres -d yacht-prime -p 5433 "
+    "database": "psql  -h localhost -U postgres -d yacht-prime -p 5433 "
   },
   "author": "gabriel palacios",
   "license": "ISC",

@@ -19,7 +19,7 @@ export class BarcoSeminovoController {
             const body = req.body
             const barcoSeminovoService = new BarcoSeminovoService()
             await barcoSeminovoService.postBarcoSeminovo(body)
-            res.json(body);
+            res.status(200).end();
         } catch (error) {
             next(error)
         }

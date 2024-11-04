@@ -14,8 +14,10 @@ export class MotorizacaoModel {
     buildMotorDtoFromClient() {
 
     }
-    async saveMotor(motor:Motorizacao, modeloMotorRepository:ModeloMotorRepository, motorRepository:MotorizacaoRepository ){
+
+    async saveMotorizacao(motor:Motorizacao, modeloMotorRepository:ModeloMotorRepository, motorRepository:MotorizacaoRepository ){
        const idModeloMotor = await modeloMotorRepository.getIdModeloMotorByModelo(motor.modelo)
-       motorRepository.insertMotor(motor, idModeloMotor)
+       const idMotorizacaoSaved = await motorRepository.insertMotor(motor, idModeloMotor.id)
+       return idMotorizacaoSaved.id
     }
 }

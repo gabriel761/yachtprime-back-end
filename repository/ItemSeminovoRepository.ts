@@ -1,4 +1,5 @@
 import db from "../infra/database.ts"
+import { ItemSeminovo } from "../types/ItemSeminovo.ts";
 export class ItemSeminovoRepository {
     async getItensSeminovoByIdSeminovo(id: number) {
         const result = await db.query(`
@@ -16,5 +17,9 @@ WHERE
 
             `, [id]);
         return result
+    }
+
+    async associateItemWithSeminovo(idBarcoSeminovo:number, item:ItemSeminovo) {
+        await db.query("INSERT INTO item_seminovo_barco_seminovo(barco_seminovo_id, item_seminovo_id, quantidade)VALUES($1,$2,$3)",[idBarcoSeminovo, item.id, item.quantidade])
     }
 }

@@ -1,7 +1,7 @@
-import DTOBarcoSeminovo from "../dto/BarcoSeminovoDto.ts";
 import { CustomError } from "../infra/CustoError.ts";
 import db from "../infra/database.ts";
-import { BarcoSeminovoType } from "../types/BarcoSeminovoType.ts";
+import { BarcoSeminovoClient } from "../types/BarcoSeminovoClient.ts";
+
 
 class BarcoSeminovoRepository {
     async getBarcoSeminovo(id: number) {
@@ -52,8 +52,9 @@ WHERE
         return result
     }
 
-    async insertBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoType) {
-        await db.query("INSERT INTO barco_seminovo (modelo_id, nome, ano, tamanho, motor_id, potencia_total, combustivel, propulsao, cabine, procedencia, destaque, preco_id, video) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)", [barcoSeminovoDTO.modelo,])
+    async insertBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoClient, idMotorizacao: number, idCabine: number, idPreco: number, idCombustivel: number, idModelo: number, idPropulsao: number) {
+        const idBarco = await db.one("INSERT INTO barco_seminovo (modelo_id, nome, ano, tamanho, motorizacao_id, potencia_total, combustivel, propulsao, cabine, procedencia, destaque, preco_id, video) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, $13) RETURNING id", [idModelo,barcoSeminovoDTO.nome, barcoSeminovoDTO.ano, barcoSeminovoDTO.tamanho, idMotorizacao, barcoSeminovoDTO.potenciaTotal, idCombustivel, idPropulsao, idCabine, barcoSeminovoDTO.procedencia, barcoSeminovoDTO.destaque, idPreco, barcoSeminovoDTO.videoPromocional])
+        return idBarco.id
     }
 }
 
