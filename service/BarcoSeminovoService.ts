@@ -1,9 +1,7 @@
 import BarcoSeminovoRepository from "../repository/BarcoSeminovoRepository.ts";
 import { ImagemRepository } from "../repository/ImagemRepository.ts";
 import { ItemSeminovoRepository } from "../repository/ItemSeminovoRepository.ts";
-import BarcoSeminovoModel from "../models/BarcoSeminovoModel.ts";
-import { BarcoSeminovoPersistence } from "../types/BarcoSeminovoPersistence.ts";
-import { PrecoDto } from "../dto/PrecoDto.ts";
+import {BarcoSeminovoModel} from "../models/BarcoSeminovoModel.ts";
 import { PrecoModel } from "../models/PrecoModel.ts";
 import { CabineModel } from "../models/CabineModel.ts";
 import { ImagemModel } from "../models/ImagemModel.ts";
@@ -19,52 +17,56 @@ import { ModeloModel } from "../models/ModeloModel.ts";
 import { PropulsaoModel } from "../models/PropulsaoModel.ts";
 import { CombustivelRepository } from "../repository/CombustivelRepository.ts";
 import { PropulsaoRepository } from "../repository/PropulsaoRepository.ts";
-import { BarcoSeminovoClient } from "../types/BarcoSeminovoClient.ts";
+import { BarcoSeminovoInput } from "../types/BarcoSeminovo.ts";
 import { ModeloRepository } from "../repository/ModeloRepository.ts";
+import { ModeloOutputVO } from "../value_object/output/ModeloOutputVO.ts";
+import { MotorizacaoOutputVO } from "../value_object/output/MotorizacaoOutputVO.ts";
+import { CombustivelOutputVO } from "../value_object/output/CombustivelOutputVO.ts";
+import { PropulsaoOutputVO } from "../value_object/output/PropulsaoOutputVO.ts";
+import { CabinesOutputVO } from "../value_object/output/CabinesOutputVO.ts";
+import { PrecoOutputVO } from "../value_object/output/PrecoOutputVO.ts";
+import { BarcoSeminovoOutputVO } from "../value_object/output/BarcoSeminovoOutputVO.ts";
+import { ModeloInputVO } from "../value_object/input/ModeloInputVO.ts";
+import { MotorizacaoInputVO } from "../value_object/input/MotorizacaoInputVO.ts";
+import { CombustivelInputVO } from "../value_object/input/CombustivelInputVO.ts";
+import { PropulsaoInputVO } from "../value_object/input/PropulsaoInputVO.ts";
+import { CabinesInputVO } from "../value_object/input/CabinesInputVO.ts";
+import { PrecoInputVO } from "../value_object/input/PrecoInputVO.ts";
+import { BarcoSeminovoInputVO } from "../value_object/input/BarcoSeminovoInputVO.ts";
+import { ImagemInputVO } from "../value_object/input/ImagemInputVO.ts";
+import { ItemSeminovoInputVO } from "../value_object/input/ItemSeminovoInputVO.ts";
 
 
 class BarcoSeminovoService{
     async getBarcoSeminovoById(id:number) {
-        const barcoSeminovoRepository = new BarcoSeminovoRepository()
         const barcoSeminovoModel = new BarcoSeminovoModel()
         const imagemModel = new ImagemModel()
         const itemSeminovoModel = new ItemSeminovoModel()
-        const motorModel = new MotorizacaoModel()
-        const cabineModel = new CabineModel()
-        const precoModel = new PrecoModel()
-        const barcoSeminovoDados = await barcoSeminovoRepository.getBarcoSeminovo(id)
         const imagemSeminovoDtoCollection = await imagemModel.getImagesByIdSeminovo(id, new ImagemRepository)
         const itemSeminovoDtoCollection = await itemSeminovoModel.getItensByIdSeminovo(id, new ItemSeminovoRepository)
-        const motorDto = motorModel.buildMotorDtoFromDatabase(barcoSeminovoDados)
-        const cabineDto = cabineModel.buildCabineDtoFromDatabase(barcoSeminovoDados)
-        const precoDto = precoModel.buildPrecoDtoFromDatabase(barcoSeminovoDados)
-        const barcoSeminovoResult = barcoSeminovoModel.buildBarcoSeminovoDTOFromDatabaseToClient(barcoSeminovoDados, imagemSeminovoDtoCollection, itemSeminovoDtoCollection, motorDto, cabineDto, precoDto)
+        const barcoSeminovoDatabase = await barcoSeminovoModel.getBarcoSeminovo(id, new BarcoSeminovoRepository)
+        const barcoSeminovoResult = barcoSeminovoModel.buildBarcoSeminovoOutputObject(barcoSeminovoDatabase, new BarcoSeminovoOutputVO(), imagemSeminovoDtoCollection, itemSeminovoDtoCollection, new ModeloOutputVO(), new MotorizacaoOutputVO(), new CombustivelOutputVO(), new PropulsaoOutputVO(), new CabinesOutputVO(), new PrecoOutputVO())
         return barcoSeminovoResult
     }
 
-    async postBarcoSeminovo(barcoSeminovoClient: BarcoSeminovoClient){
+    async postBarcoSeminovo(barcoSeminovoClient: BarcoSeminovoInput){
         const barcoSeminovoModel = new BarcoSeminovoModel()
         const precoModel = new PrecoModel()
         const motorModel = new MotorizacaoModel()
         const cabineModel = new CabineModel()
-        const combustivelModel = new CombustivelModel()
-        const modeloModel = new ModeloModel()
-        const propulsaoModel = new PropulsaoModel()
         const imagemModel = new ImagemModel()
+        
         const itensSeminovoModel = new ItemSeminovoModel()
+        const validatedImages = imagemModel.validateImages(barcoSeminovoClient.imagens, new ImagemInputVO())
+        const validatedItems = itensSeminovoModel.validateItensSeminovo(barcoSeminovoClient.equipadoCom, new ItemSeminovoInputVO())
+        const barcoSeminovoValidated = barcoSeminovoModel.buildBarcoSeminovoInputObject(barcoSeminovoClient, new BarcoSeminovoInputVO, validatedImages, validatedItems,  new ModeloInputVO(), new MotorizacaoInputVO(), new CombustivelInputVO(), new PropulsaoInputVO(), new CabinesInputVO(), new PrecoInputVO())
 
-        const barcoSeminovoRepository = new BarcoSeminovoRepository()
-    
-        const idPreco = await precoModel.savePreco(barcoSeminovoClient.preco, new PrecoRepository(), new MoedaRepository())
-        const idMotorizacao = await motorModel.saveMotorizacao(barcoSeminovoClient.motorizacao, new ModeloMotorRepository(), new MotorizacaoRepository())
-        const idCabine = await cabineModel.saveCabine(barcoSeminovoClient.cabines, new CabineRepository())
-        const idCombustivel = await combustivelModel.getIdCombustivelByName(barcoSeminovoClient.combustivel, new CombustivelRepository())
-        const idModelo = await modeloModel.getIdModeloByName(barcoSeminovoClient.modelo, new ModeloRepository())
-        const idPropulsao = await propulsaoModel.getIdPropulsaoByName(barcoSeminovoClient.propulsao, new PropulsaoRepository())        
-        const idBarco = await barcoSeminovoRepository.insertBarcoSeminovo(barcoSeminovoClient,idMotorizacao, idCabine, idPreco, idCombustivel, idModelo, idPropulsao)
-        await imagemModel.insertImagensForSeminovo(barcoSeminovoClient.imagens, idBarco, new ImagemRepository())
-        await itensSeminovoModel.associateItemWithSeminovo(idBarco, barcoSeminovoClient.equipadoCom, new ItemSeminovoRepository())
-
+        const idPreco = await precoModel.savePreco(barcoSeminovoValidated.preco, new PrecoRepository(), new MoedaRepository())
+        const idMotorizacao = await motorModel.saveMotorizacao(barcoSeminovoValidated.motorizacao, new ModeloMotorRepository(), new MotorizacaoRepository())
+        const idCabine = await cabineModel.saveCabine(barcoSeminovoValidated.cabines, new CabineRepository())
+        const idBarco = await barcoSeminovoModel.saveBarcoSeminovo(barcoSeminovoValidated, idMotorizacao, idCabine, idPreco, new BarcoSeminovoRepository())
+        await imagemModel.insertImagensForSeminovo(barcoSeminovoValidated.imagens, idBarco, new ImagemRepository())
+        await itensSeminovoModel.associateItemWithSeminovo(idBarco, barcoSeminovoValidated.equipadoCom, new ItemSeminovoRepository())
     }
 }
 export default BarcoSeminovoService

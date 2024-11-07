@@ -1,16 +1,24 @@
-import { PrecoDto } from "../dto/PrecoDto.ts";
+
 import { MoedaRepository } from "../repository/MoedaRepository.ts";
 import { PrecoRepository } from "../repository/PrecoRepository.ts";
 import { Preco } from "../types/Preco.ts";
+import { PrecoInputVO } from "../value_object/input/PrecoInputVO.ts";
 
+
+type PrecoDatabase = {
+    preco: string
+    moeda_simbolo: string
+}
 export class PrecoModel {
     constructor() {
 
     }
-    buildPrecoDtoFromDatabase(input: Record<string, any>) {
+    buildPrecoDtoFromDatabase(input: PrecoDatabase):Preco {
         const valorFloat =  parseFloat(input.preco)
-        const precoDto = new PrecoDto(input.moeda_simbolo,valorFloat)
-        return precoDto
+        const  precoInputVO = new PrecoInputVO()
+        precoInputVO.setValor(valorFloat)
+        precoInputVO.setMoeda(input.moeda_simbolo)
+        return precoInputVO.extractData()
     }
     buildPrecoDtoFromClient() {
         

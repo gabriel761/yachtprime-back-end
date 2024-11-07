@@ -1,16 +1,17 @@
 import { CustomError } from "../infra/CustoError.ts";
 import db from "../infra/database.ts";
-import { BarcoSeminovoClient } from "../types/BarcoSeminovoClient.ts";
+import { BarcoSeminovoDatabase, BarcoSeminovoInput } from "../types/BarcoSeminovo.ts";
 
 
 class BarcoSeminovoRepository {
-    async getBarcoSeminovo(id: number) {
+    async getBarcoSeminovo(id: number):Promise<BarcoSeminovoDatabase> {
         const result = await db.oneOrNone(`
 SELECT
     bs.id AS barco_id,
     bs.nome AS nome_barco,
     bs.ano AS ano_barco,
     bs.tamanho AS tamanho_barco,
+	mc.id AS id_modelo,
     mc.marca AS marca_modelo,
     mc.modelo AS modelo_modelo,
     m.quantidade AS quantidade_motorizacao,
@@ -21,7 +22,9 @@ SELECT
     m.observacoes AS observacoes_motorizacao,
     mc_motor.marca AS marca_motor,
     mc_motor.modelo AS modelo_motor,
+	tc.id AS id_combustivel,
     tc.opcao AS tipo_combustivel,
+	p.id AS id_propulsao,
     p.opcao AS tipo_propulsao,
     c.passageiro AS capacidade_passageiro,
     c.tripulacao AS capacidade_tripulacao,
@@ -52,8 +55,8 @@ WHERE
         return result
     }
 
-    async insertBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoClient, idMotorizacao: number, idCabine: number, idPreco: number, idCombustivel: number, idModelo: number, idPropulsao: number) {
-        const idBarco = await db.one("INSERT INTO barco_seminovo (modelo_id, nome, ano, tamanho, motorizacao_id, potencia_total, combustivel, propulsao, cabine, procedencia, destaque, preco_id, video) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, $13) RETURNING id", [idModelo,barcoSeminovoDTO.nome, barcoSeminovoDTO.ano, barcoSeminovoDTO.tamanho, idMotorizacao, barcoSeminovoDTO.potenciaTotal, idCombustivel, idPropulsao, idCabine, barcoSeminovoDTO.procedencia, barcoSeminovoDTO.destaque, idPreco, barcoSeminovoDTO.videoPromocional])
+    async insertBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoInput, idMotorizacao: number, idCabine: number, idPreco: number) {
+        const idBarco = await db.one("INSERT INTO barco_seminovo (modelo_id, nome, ano, tamanho, motorizacao_id, potencia_total, combustivel, propulsao, cabine, procedencia, destaque, preco_id, video) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, $13) RETURNING id", [barcoSeminovoDTO.modelo.id,barcoSeminovoDTO.nome, barcoSeminovoDTO.ano, barcoSeminovoDTO.tamanho, idMotorizacao, barcoSeminovoDTO.potenciaTotal, barcoSeminovoDTO.combustivel.id, barcoSeminovoDTO.propulsao.id, idCabine, barcoSeminovoDTO.procedencia, barcoSeminovoDTO.destaque, idPreco, barcoSeminovoDTO.videoPromocional])
         return idBarco.id
     }
 }

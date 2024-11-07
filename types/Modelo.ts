@@ -1,5 +1,5 @@
 export type Modelo = {
     id: number,
-    marca: string,
+    marca?: string,
     modelo: string
 }

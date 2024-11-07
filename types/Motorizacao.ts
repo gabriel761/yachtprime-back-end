@@ -1,4 +1,5 @@
 export type Motorizacao = {
+    id?:number;
     modelo: string;
     quantidade: number;
     potencia: number;

@@ -1,6 +1,8 @@
-import { ImagemDto } from "../dto/ImagemDto.ts"
+
 import { ImagemRepository } from "../repository/ImagemRepository.ts"
 import { Imagem } from "../types/Imagem.ts"
+import { ImagemInputVO } from "../value_object/input/ImagemInputVO.ts"
+import { ImagemOutputVO } from "../value_object/output/ImagemOutputVO.ts"
 
 interface imagemDatabase {
     imagem_id: number,
@@ -14,18 +16,27 @@ export class ImagemModel {
     async getImagesByIdSeminovo(idSeminovo:number, imagemRepository: ImagemRepository){
         const imagens = await imagemRepository.getImagensByIdSeminovo(idSeminovo)
         const imagensDto = imagens.map((img:imagemDatabase) => {
-            return new ImagemDto(img.imagem_id,img.link_imagem)
+            const imagemOutputValueObject = new ImagemOutputVO()
+            imagemOutputValueObject.setId(img.imagem_id)
+            imagemOutputValueObject.setLink(img.link_imagem)
+            return imagemOutputValueObject.extractData()
         })
         return imagensDto
     }
-    buildImagemDtoFromClient(){
-        
-    }
+   
     async insertImagensForSeminovo(imagens: Imagem[], idSeminovo: number, imagemRepository: ImagemRepository,){
         for (let i = 0; i < imagens.length; i++) {
             const imagem = imagens[i];
             const idImagem = await imagemRepository.insertImagem(imagem.link)
             imagemRepository.associateImagemWhithSeminovo(idSeminovo, idImagem)     
         }
+    }
+
+    validateImages(imagens: Imagem[], imagemVO: ImagemInputVO):Imagem[]{
+        const validatedImages = imagens.map((imagem)=> {
+            imagemVO.setLink(imagem.link)
+            return imagemVO.extractData()
+        })
+        return validatedImages
     }
 }

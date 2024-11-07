@@ -1,4 +1,4 @@
 export type Combustivel = {
     opcao:string,
-    id?:number
+    id:number
 }

@@ -1,4 +1,4 @@
 export type Propulsao = {
     opcao:string,
-    id?:number
+    id:number
 }
