@@ -20,12 +20,12 @@ export class PrecoModel {
         precoInputVO.setMoeda(input.moeda_simbolo)
         return precoInputVO.extractData()
     }
-    buildPrecoDtoFromClient() {
-        
-    }
     async savePreco(preco:Preco, precoRepo:PrecoRepository, moedaRepo: MoedaRepository){
         const idMoeda = await moedaRepo.getIdMoedaBySimbolo(preco.moeda)
         const idPrecoSaved = await precoRepo.insertPreco(preco.valor, idMoeda.id)
         return idPrecoSaved.id
+    }
+    async deletePrecoByidPreco(idPreco: number, precoRepository: PrecoRepository){
+        await precoRepository.deletePrecoById(idPreco)
     }
 }

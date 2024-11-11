@@ -33,6 +33,10 @@ export class ItemSeminovoModel {
         }
     }
 
+    async deleteAllAssotiationsItemSeminovo(idBarcoSeminovo:number, itemSeminovoRepository: ItemSeminovoRepository){
+        await itemSeminovoRepository.deleteAllAssociationItemSeminovo(idBarcoSeminovo)
+    }
+
     validateItensSeminovo(itens: ItemSeminovo[], itemSeminovoVO: ItemSeminovoInputVO): ItemSeminovo [] {
         const validatedItems = itens.map((item) => {
             itemSeminovoVO.setId(item.id)

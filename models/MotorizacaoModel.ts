@@ -14,4 +14,7 @@ export class MotorizacaoModel {
        const idMotorizacaoSaved = await motorRepository.insertMotor(motor, idModeloMotor.id)
        return idMotorizacaoSaved.id
     }
+    async deleteMotorizacaoByIdMotorizacao(idMotorizacao: number, motorRepository: MotorizacaoRepository){
+        await motorRepository.deleteMotorizacaoById(idMotorizacao)
+    }
 }

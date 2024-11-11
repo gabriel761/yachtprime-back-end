@@ -20,16 +20,19 @@ SELECT
     m.horas AS horas_motorizacao,
     m.ano AS ano_motorizacao,
     m.observacoes AS observacoes_motorizacao,
+	m.id AS motorizacao_id,
     mc_motor.marca AS marca_motor,
     mc_motor.modelo AS modelo_motor,
 	tc.id AS id_combustivel,
     tc.opcao AS tipo_combustivel,
 	p.id AS id_propulsao,
     p.opcao AS tipo_propulsao,
+	c.id AS capacidade_id,
     c.passageiro AS capacidade_passageiro,
     c.tripulacao AS capacidade_tripulacao,
     bs.procedencia,
     bs.destaque,
+	pr.id AS preco_id,
     pr.valor AS preco,
     mo.nome AS moeda_nome,
     mo.simbolo AS moeda_simbolo,
@@ -58,6 +61,10 @@ WHERE
     async insertBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoInput, idMotorizacao: number, idCabine: number, idPreco: number) {
         const idBarco = await db.one("INSERT INTO barco_seminovo (modelo_id, nome, ano, tamanho, motorizacao_id, potencia_total, combustivel, propulsao, cabine, procedencia, destaque, preco_id, video) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, $13) RETURNING id", [barcoSeminovoDTO.modelo.id,barcoSeminovoDTO.nome, barcoSeminovoDTO.ano, barcoSeminovoDTO.tamanho, idMotorizacao, barcoSeminovoDTO.potenciaTotal, barcoSeminovoDTO.combustivel.id, barcoSeminovoDTO.propulsao.id, idCabine, barcoSeminovoDTO.procedencia, barcoSeminovoDTO.destaque, idPreco, barcoSeminovoDTO.videoPromocional])
         return idBarco.id
+    }
+
+    async deleteBarcoSeminovo(idBarcoSeminovo: number){
+        await db.query("DELETE FROM barco_seminovo WHERE id = $1", [idBarcoSeminovo])
     }
 }
 

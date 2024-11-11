@@ -20,10 +20,10 @@ beforeAll(async ()=> {
     const testDatabase = new TestDatabase()
     await testDatabase.resetDbToInitialState()
 })
-afterAll(async () => {
-    const testDatabase = new TestDatabase()
-    await testDatabase.resetDbToInitialState()
-})
+// afterAll(async () => {
+//     const testDatabase = new TestDatabase()
+//     await testDatabase.resetDbToInitialState()
+// })
 
 
 test.skip("Should get full barcoSeminovo object with data from database", async () => {
@@ -39,4 +39,10 @@ test("Should post barcoSeminovo into database", async () => {
     delay(1000)
     const response = await request("http://localhost:5000/barco/seminovo/1", "get")
     expect(response.data).toEqual(barcoSeminovoOutput)
+})
+test("Should delete barcoSeminovo successfully", async () => {
+    await request("http://localhost:5000/barco/seminovo", "delete", {id:1})
+    delay(1000)
+    const response = await fetch("http://localhost:5000/barco/seminovo/1")
+    expect(response.status).toBe(404)
 })

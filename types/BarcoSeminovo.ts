@@ -54,6 +54,7 @@ export type BarcoSeminovoDatabase ={
     marca_modelo: string;
     modelo_modelo: string;
     quantidade_motorizacao: number;
+    motorizacao_id: number;
     potencia_motorizacao: number;
     potencia_total: number;
     horas_motorizacao: number;
@@ -65,10 +66,12 @@ export type BarcoSeminovoDatabase ={
     tipo_combustivel: string;
     id_propulsao:number;
     tipo_propulsao: string;
+    capacidade_id:number;
     capacidade_passageiro: number;
     capacidade_tripulacao: number;
     procedencia: string;
     destaque: string;
+    preco_id:number;
     preco: string;
     moeda_simbolo: string;
     video?: string | null;

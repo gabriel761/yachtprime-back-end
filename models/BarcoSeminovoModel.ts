@@ -30,6 +30,11 @@ export class BarcoSeminovoModel {
         const barcoSeminovoId = await barcoSeminovoRepository.insertBarcoSeminovo(barcoSeminovoDTO, idMotorizacao, idCabine, idPreco)
         return barcoSeminovoId
     }
+
+    async deleteBarcoSeminovo(idBarcoSeminovo:number, barcoSeminovoRepository: BarcoSeminovoRepository){
+      await barcoSeminovoRepository.deleteBarcoSeminovo(idBarcoSeminovo)
+    }
+
     buildBarcoSeminovoOutputObject(barcoSeminovoDB:BarcoSeminovoDatabase, barcoseminovoOutputVO: BarcoSeminovoOutputVO, imagens: Imagem[], itens: ItemSeminovo[], modeloVO: ModeloOutputVO, motorizacaoVO: MotorizacaoOutputVO, combustivelVO: CombustivelOutputVO, propulsaoVO: PropulsaoOutputVO, cabinesVO: CabinesOutputVO, precoVO: PrecoOutputVO):BarcoSeminovoOutput{
 
         modeloVO.setModelo(barcoSeminovoDB.modelo_modelo)

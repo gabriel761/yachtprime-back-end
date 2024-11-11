@@ -15,4 +15,10 @@ router.post('/seminovo', async (req: Request, res: Response, next: NextFunction 
         await barcoSeminovoController.postBarcoSeminovo(req, res, next)
 })
 
+router.delete('/seminovo', async (req: Request, res: Response, next: NextFunction) => {
+        const barcoSeminovoController = new BarcoSeminovoController()
+        await barcoSeminovoController.deleteBarcoSeminovo(req, res, next)
+})
+
+
 export default router

@@ -12,4 +12,7 @@ export class CabineModel {
         const {id} = await cabineRepository.insertCabine(input)
         return id
     }
+    async deleteCabineByIdCabine(idCabine:number, cabineRepository:CabineRepository){
+       await cabineRepository.deleteCabineById(idCabine)
+    }
 }

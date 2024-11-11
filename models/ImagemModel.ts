@@ -32,6 +32,14 @@ export class ImagemModel {
         }
     }
 
+    async deleteAllImagesFromSeminovo(idSeminovo: number, imagemRepository: ImagemRepository){
+        const imagensSeminovo = await imagemRepository.getImagensByIdSeminovo(idSeminovo)
+        imagensSeminovo.map(async (imagem:imagemDatabase) => {
+            await imagemRepository.deleteAssociationImagemSeminovo(imagem.imagem_id)
+            await imagemRepository.deleteImagem(imagem.imagem_id)
+        })
+    }
+
     validateImages(imagens: Imagem[], imagemVO: ImagemInputVO):Imagem[]{
         const validatedImages = imagens.map((imagem)=> {
             imagemVO.setLink(imagem.link)

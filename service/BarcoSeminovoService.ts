@@ -55,7 +55,7 @@ class BarcoSeminovoService{
         const motorModel = new MotorizacaoModel()
         const cabineModel = new CabineModel()
         const imagemModel = new ImagemModel()
-        
+
         const itensSeminovoModel = new ItemSeminovoModel()
         const validatedImages = imagemModel.validateImages(barcoSeminovoClient.imagens, new ImagemInputVO())
         const validatedItems = itensSeminovoModel.validateItensSeminovo(barcoSeminovoClient.equipadoCom, new ItemSeminovoInputVO())
@@ -67,6 +67,23 @@ class BarcoSeminovoService{
         const idBarco = await barcoSeminovoModel.saveBarcoSeminovo(barcoSeminovoValidated, idMotorizacao, idCabine, idPreco, new BarcoSeminovoRepository())
         await imagemModel.insertImagensForSeminovo(barcoSeminovoValidated.imagens, idBarco, new ImagemRepository())
         await itensSeminovoModel.associateItemWithSeminovo(idBarco, barcoSeminovoValidated.equipadoCom, new ItemSeminovoRepository())
+    }
+
+    async deleteBarcoSeminovo(idBarcoSeminovo:number){
+        const cabineModel = new CabineModel()
+        const precoModel = new PrecoModel()
+        const motorizacaoModel = new MotorizacaoModel()
+        const imagemModel = new ImagemModel()
+        const itemSeminovoModel = new ItemSeminovoModel()
+        const barcoSeminovoModel = new BarcoSeminovoModel()
+        const barcoSeminovoData = await barcoSeminovoModel.getBarcoSeminovo(idBarcoSeminovo,new BarcoSeminovoRepository)
+        await imagemModel.deleteAllImagesFromSeminovo(idBarcoSeminovo, new ImagemRepository())
+        await itemSeminovoModel.deleteAllAssotiationsItemSeminovo(idBarcoSeminovo, new ItemSeminovoRepository())
+        await barcoSeminovoModel.deleteBarcoSeminovo(idBarcoSeminovo, new BarcoSeminovoRepository())
+        await cabineModel.deleteCabineByIdCabine(barcoSeminovoData.capacidade_id, new CabineRepository())
+        await precoModel.deletePrecoByidPreco(barcoSeminovoData.preco_id, new PrecoRepository())
+        await motorizacaoModel.deleteMotorizacaoByIdMotorizacao(barcoSeminovoData.motorizacao_id, new MotorizacaoRepository())
+        
     }
 }
 export default BarcoSeminovoService
