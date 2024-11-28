@@ -17,7 +17,7 @@ export class PrecoInputVO {
         this.moeda = moeda
     }
     setValor(valor: number) {
-        if (!valor || valor < 0 || typeof valor != "number") throw new CustomError("Valor do preço inválido", 403)
+        if (!valor || valor < 0 || typeof valor != "number") throw new CustomError("Valor do preço inválido", 400)
         this.valor = valor
     }
     setId(id:number){

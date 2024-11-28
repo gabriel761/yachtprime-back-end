@@ -13,4 +13,9 @@ export class PropulsaoModel {
         }
         return id
     }
+
+    async listPropulsao(propulsaoRepository: PropulsaoRepository) {
+        const result = await propulsaoRepository.listPropulsao()
+        return result
+    }
 }

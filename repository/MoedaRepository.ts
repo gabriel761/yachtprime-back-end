@@ -1,5 +1,6 @@
 import { CustomError } from "../infra/CustoError.ts";
 import db from "../infra/database.ts";
+import { Moeda, MoedaDatabase } from "../types/Moeda.ts";
 
 export class MoedaRepository {
     async getIdMoedaBySimbolo(moedaSimbolo:string){
@@ -8,5 +9,14 @@ export class MoedaRepository {
             throw new CustomError("Moeda não encontrada", 404)
         }
         return result
+    }
+
+    async listMoeda(): Promise<MoedaDatabase[]> {
+        try {
+            const result = await db.query("SELECT * FROM moeda")
+            return result
+        } catch (error: any) {
+            throw new CustomError(`Repository level error: Moeda repository: ${error.message}`, 500)
+        }
     }
 }

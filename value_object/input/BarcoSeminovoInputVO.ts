@@ -22,7 +22,7 @@ export class BarcoSeminovoInputVO {
     private propulsao!: Propulsao;
     private cabines!: Cabine;
     private procedencia!: string;
-    private destaque!: string;
+    private destaque!: string | null;
     private preco!: Preco;
     private imagens!: Imagem[];
     private equipadoCom!: ItemSeminovo[];
@@ -31,71 +31,75 @@ export class BarcoSeminovoInputVO {
     constructor(
     ) { }
     setId(id: number) {
-        if (!id || id < 0 || typeof id != "number") throw new CustomError("Id barco seminovo é inválido", 403)
+        if (!id || id < 0 || typeof id != "number") throw new CustomError("Id barco seminovo é inválido", 400)
         this.id = id
     }
     setModelo(modelo: Modelo) {
-        if (!modelo) throw new CustomError("Modelo em barco seminovo é inválido", 403)
+        if (!modelo) throw new CustomError("Modelo em barco seminovo é inválido", 400)
         this.modelo = modelo
     }
     setNome(nome: string) {
-        if (!nome || typeof nome != "string") throw new CustomError("Nome de barco seminovo é inválido", 403)
+        if (!nome || typeof nome != "string") throw new CustomError("Nome de barco seminovo é inválido", 400)
         characterLimit(nome,"nome", 100, "barco seminovo")
         this.nome = nome
     }
     setAno(ano: number) {
         const date = new Date()
-        if (!ano || typeof ano != "number" || ano < 1950 || ano > date.getFullYear()) throw new CustomError("Ano barco seminovo é inválido", 403)
+        if (!ano || typeof ano != "number" || ano < 1950 || ano > date.getFullYear()) throw new CustomError("Ano barco seminovo é inválido", 400)
         this.ano = ano
     }
     setTamanho(tamanho: number) {
-        if (!tamanho || tamanho < 0 || typeof tamanho != "number") throw new CustomError("Tamanho barco seminovo é inválido", 403)
+        if (!tamanho || tamanho < 0 || typeof tamanho != "number") throw new CustomError("Tamanho barco seminovo é inválido", 400)
         this.tamanho = tamanho
     }
     setMotorizacao(motorizacao: Motorizacao) {
-        if (!motorizacao) throw new CustomError("Motorização em barco seminovo é inválido", 403)
+        if (!motorizacao) throw new CustomError("Motorização em barco seminovo é inválido", 400)
         this.motorizacao = motorizacao
     }
     setPotenciaTotal(potenciaTotal: number) {
-        if (!potenciaTotal || potenciaTotal < 0 || typeof potenciaTotal != "number") throw new CustomError("Potência total barco seminovo é inválido", 403)
+        if (!potenciaTotal || potenciaTotal < 0 || typeof potenciaTotal != "number") throw new CustomError("Potência total barco seminovo é inválido", 400)
         this.potenciaTotal = potenciaTotal
     }
     setCombustivel(combustivel: Combustivel) {
-        if (!combustivel) throw new CustomError("Combustível em barco seminovo é inválido", 403)
+        if (!combustivel) throw new CustomError("Combustível em barco seminovo é inválido", 400)
         this.combustivel = combustivel
     }
     setPropulsao(propulsao: Propulsao) {
-        if (!propulsao) throw new CustomError("Propulsão em barco seminovo é inválido", 403)
+        if (!propulsao) throw new CustomError("Propulsão em barco seminovo é inválido", 400)
         this.propulsao = propulsao
     }
     setCabine(cabine: Cabine) {
-        if (!cabine) throw new CustomError("Cabine em barco seminovo é inválido", 403)
+        if (!cabine) throw new CustomError("Cabine em barco seminovo é inválido", 400)
         this.cabines = cabine
     }
     setProcedencia(procedencia: string) {
-        if (!procedencia || typeof procedencia != "string") throw new CustomError("Procedência de barco seminovo é inválido", 403)
+        if (!procedencia || typeof procedencia != "string") throw new CustomError("Procedência de barco seminovo é inválido", 400)
         characterLimit(procedencia,"procedência", 50, "barco seminovo")
         this.procedencia = procedencia
     }
     setDestaque(destaque?: string | null) {
-        if (!destaque || typeof destaque != "string") throw new CustomError("Destaque de barco seminovo é inválido", 403)
-        characterLimit(destaque,"destaque", 100, "barco seminovo")
-        this.destaque = destaque
+        if (!!destaque && typeof destaque != "string") throw new CustomError("Destaque de barco seminovo é inválido", 400)
+        if(!!destaque){
+            characterLimit(destaque, "destaque", 100, "barco seminovo")
+            this.destaque = destaque
+        }else{
+            this.destaque = null
+        }
     }
     setPreco(preco: Preco) {
-        if (!preco) throw new CustomError("Preço em barco seminovo é inválido", 403)
+        if (!preco) throw new CustomError("Preço em barco seminovo é inválido", 400)
         this.preco = preco
     }
     setImagens(imagens: Imagem[]) {
-        if (!imagens) throw new CustomError("Imagens em barco seminovo é inválido ou está vazio", 403)
+        if (!imagens) throw new CustomError("Imagens em barco seminovo é inválido ou está vazio", 400)
         this.imagens = imagens
     }
     setItens(itens: ItemSeminovo[]) {
-        if (!itens) throw new CustomError("Itens em barco seminovo é inválido ou está vazio", 403)
+        if (!itens) throw new CustomError("Itens em barco seminovo é inválido ou está vazio", 400)
         this.equipadoCom = itens
     }
     setVideoPromocional(video?: string | null) {
-        if (!!video && typeof video != "string") throw new CustomError("Video promocional de barco seminovo é inválido", 403)
+        if (!!video && typeof video != "string") throw new CustomError("Video promocional de barco seminovo é inválido", 400)
         this.videoPromocional = video
     }
     extractData():BarcoSeminovoInput{

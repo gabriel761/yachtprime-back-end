@@ -20,6 +20,9 @@ WHERE
         return result
     }
 
+    async listItemSeminovo(){
+       return db.query("SELECT * FROM item_seminovo")
+    }
     async associateItemWithSeminovo(idBarcoSeminovo: number, item: ItemSeminovo) {
 
         await db.query("INSERT INTO item_seminovo_barco_seminovo(barco_seminovo_id, item_seminovo_id, quantidade)VALUES($1,$2,$3)", [idBarcoSeminovo, item.id, item.quantidade])

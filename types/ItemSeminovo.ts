@@ -3,3 +3,8 @@ export type ItemSeminovo = {
     item: string;
     quantidade: number;
 }
+
+export type ItemSeminovoCadastrado = {
+    id?: number;
+    item: string;
+}

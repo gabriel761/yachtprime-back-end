@@ -1,14 +1,21 @@
 import express from 'express';
-import seminovoroute from './route/seminovoRotes.ts'
+import seminovoRoute from './route/seminovoRotes.ts'
+import seminovoResourcesRoute from './route/seminovoResorcesRoutes.ts'
+import resourcesRoute from './route/resorcesRoutes.ts'
 import config from './config.js';
 import errorHandler from './infra/middlewares/errorHandler.ts';
+import cors from "cors"
 
 
 const app = express()
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors({ origin: 'http://localhost:3000' }));
 
-app.use('/barco', seminovoroute);
+app.use('/barco', seminovoRoute);
+app.use('/resources', resourcesRoute);
+app.use('/resources/seminovo', seminovoResourcesRoute);
+
 
 app.use(errorHandler);
 

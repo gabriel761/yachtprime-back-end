@@ -13,4 +13,9 @@ export class ModeloModel {
         }
         return id
     }
+
+    async listModelo(modeloRepository: ModeloRepository) {
+        const result = await modeloRepository.listModelo()
+        return result
+    }
 }

@@ -8,7 +8,7 @@ function errorHandler(
     next: NextFunction
 ) {
     if (err instanceof CustomError) {
-        console.log(err)
+        console.error(err)
         res.status(err.statusCode).json({ message: err.message });
     } else {
         console.error("Erro inesperado:", err);

@@ -1,4 +1,5 @@
 
+import {admin} from "../infra/firebase/firebase-config.ts"
 import { ImagemRepository } from "../repository/ImagemRepository.ts"
 import { Imagem } from "../types/Imagem.ts"
 import { ImagemInputVO } from "../value_object/input/ImagemInputVO.ts"
@@ -46,5 +47,9 @@ export class ImagemModel {
             return imagemVO.extractData()
         })
         return validatedImages
+    }
+
+    deleteImagesFromFirebase(){
+        admin
     }
 }

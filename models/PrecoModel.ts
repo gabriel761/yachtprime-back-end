@@ -1,6 +1,7 @@
 
 import { MoedaRepository } from "../repository/MoedaRepository.ts";
 import { PrecoRepository } from "../repository/PrecoRepository.ts";
+import { Moeda } from "../types/Moeda.ts";
 import { Preco } from "../types/Preco.ts";
 import { PrecoInputVO } from "../value_object/input/PrecoInputVO.ts";
 
@@ -27,5 +28,12 @@ export class PrecoModel {
     }
     async deletePrecoByidPreco(idPreco: number, precoRepository: PrecoRepository){
         await precoRepository.deletePrecoById(idPreco)
+    }
+    async listMoeda(moedaRepository: MoedaRepository):Promise<Moeda[]>{
+       const moedaListDatabase =  await moedaRepository.listMoeda()
+       const moedaList = moedaListDatabase.map((moeda):Moeda=> {
+        return {id: moeda.id, nome: moeda.nome, simbolo: moeda.simbolo, codigoBancario: moeda.codigo_bancario}
+       })
+       return moedaList
     }
 }

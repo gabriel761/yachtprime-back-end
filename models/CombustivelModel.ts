@@ -12,4 +12,8 @@ export class CombustivelModel{
         }
         return response.id
     }
+    async listCombustivel(combustivelRepository: CombustivelRepository){
+        const result = await combustivelRepository.listCombustivel()
+        return result
+    }
 }

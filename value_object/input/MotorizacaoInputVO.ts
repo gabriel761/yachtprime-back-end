@@ -21,19 +21,19 @@ export class MotorizacaoInputVO {
         this.modelo = modelo
     }
     setQuantidade(quantidade: number) {
-        if (!quantidade || quantidade < 0 || typeof quantidade != "number") throw new CustomError("Quantidade de motores é inválida", 403)
+        if (!quantidade || quantidade < 0 || typeof quantidade != "number") throw new CustomError("Quantidade de motores é inválida", 400)
         this.quantidade = quantidade
     }
     setPotencia(potencia: number) {
-        if (!potencia || potencia < 0 || typeof potencia != "number") throw new CustomError("Potência de motor é inválida", 403)
+        if (!potencia || potencia < 0 || typeof potencia != "number") throw new CustomError("Potência de motor é inválida", 400)
         this.potencia = potencia
     }
     setHoras(horas: number) {
-        if (!horas || horas < 0 || typeof horas != "number") throw new CustomError("Horas de motor é inválida", 403)
+        if (!horas || horas < 0 || typeof horas != "number") throw new CustomError("Horas de motor é inválida", 400)
         this.horas = horas
     }
     setAno(ano: number) {
-        if (!ano || ano < 0 || typeof ano != "number") throw new CustomError("Ano de motor é inválido", 403)
+        if (!ano || ano < 0 || typeof ano != "number") throw new CustomError("Ano de motor é inválido", 400)
         this.ano = ano
     }
     setObservacoes(observacoes?: string | null) {

@@ -26,6 +26,10 @@ export class ItemSeminovoModel {
        return itensDtoCollection
     }
 
+    async listItemSeminovo (itemSeminovoRepository: ItemSeminovoRepository){
+      return  itemSeminovoRepository.listItemSeminovo()
+    }
+
     async associateItemWithSeminovo(idBarcoSeminovo:number, itens:ItemSeminovo[], itemSeminovoRepository:ItemSeminovoRepository){
         for (let i = 0; i < itens.length; i++) {
             const item = itens[i];

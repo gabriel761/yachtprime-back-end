@@ -1,14 +1,16 @@
 import { NextFunction, Request, Response } from 'express';
 import BarcoSeminovoService from '../service/BarcoSeminovoService.ts';
 import { validateId } from '../util/validationUtil.ts';
+import { CustomError } from '../infra/CustoError.ts';
+
+const barcoSeminovoService = new BarcoSeminovoService()
 
 export class BarcoSeminovoController {
 
     async getBarcoSeminovoById(req: Request, res: Response, next: NextFunction) {
         try {
             const id = parseInt(req.params.id)
-            const barcoSeminovo = new BarcoSeminovoService()
-            const barcoSeminovoResult = await barcoSeminovo.getBarcoSeminovoById(id)
+            const barcoSeminovoResult = await barcoSeminovoService.getBarcoSeminovoById(id)
             res.json(barcoSeminovoResult)
         } catch (error) {
             next(error)
@@ -18,7 +20,7 @@ export class BarcoSeminovoController {
     async postBarcoSeminovo(req: Request, res: Response, next: NextFunction) {
         try {
             const body = req.body
-            const barcoSeminovoService = new BarcoSeminovoService()
+            if(!body) throw new CustomError("Empty body post", 400)
             await barcoSeminovoService.postBarcoSeminovo(body)
             res.status(200).end();
         } catch (error) {
@@ -29,8 +31,8 @@ export class BarcoSeminovoController {
     async deleteBarcoSeminovo(req: Request, res: Response, next: NextFunction) {
         try {
             const body = req.body
+            if (!body) throw new CustomError("Empty body delete", 400)
             validateId(body.id, "Barco Seminovo")
-            const barcoSeminovoService = new BarcoSeminovoService()
             await barcoSeminovoService.deleteBarcoSeminovo(body.id)
             res.status(200).end();
         } catch (error) {
