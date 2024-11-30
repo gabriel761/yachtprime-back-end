@@ -5,6 +5,7 @@ import { characterLimit, validateId, validateString } from "../../util/validatio
 export class ImagemOutputVO {
     private id?: number
     private link!: string
+    private fileName!: string
     constructor(
 
     ) {
@@ -13,13 +14,17 @@ export class ImagemOutputVO {
     setLink(link: string) {
         this.link = link
     }
+    setFileName(fileName: string){
+        this.fileName = fileName
+    }
     setId(id: number) {
         this.id = id
     }
     extractData(): Imagem {
         return {
             id: this.id,
-            link: this.link
+            link: this.link,
+            fileName: this.fileName
         }
     }
 }

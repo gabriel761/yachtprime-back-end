@@ -1,7 +1,7 @@
 import { BarcoSeminovoOutput } from '../../types/BarcoSeminovo.ts'
 
 const motor = {
-   // id: 1,
+    // id: 1,
     modelo: "Detroit 8VF92 - 735HP - Diesel",
     quantidade: 2,
     potencia: 1400,
@@ -32,11 +32,31 @@ const preco = {
     valor: 5000000.00
 }
 const imagens = [
-    { id: 1, link: "https://mariattinavalbroker.com/wp-content/uploads/slider/cache/8caa1856fcad21de1ddd3bba95dfcb7d/4-1.jpg" },
-    { id: 2, link: "https://www.leobroker.com.br/Seminovo/20231205164521-1520x855.jpg?format=webp&width=1520&height=855" },
-    { id: 3, link: "https://www.leobroker.com.br/Seminovo/20231025152927-20230712_110144.jpg?format=webp&width=530&height=298" },
-    { id: 4, link: "https://mariattinavalbroker.com/wp-content/uploads/slider/cache/3c93ae14c6c04f09cb9148b6dbc868d5/7-1.jpg" },
-    { id: 5, link: "https://orionyachts.com.br/wp-content/uploads/2020/04/8660cc1b-1205-49de-8804-a91b42e568e6-1024x768.jpg" }
+    {
+        id: 1,
+        link: "https://mariattinavalbroker.com/wp-content/uploads/slider/cache/8caa1856fcad21de1ddd3bba95dfcb7d/4-1.jpg",
+        fileName: "file1"
+    },
+    {
+        id: 2,
+        link: "https://www.leobroker.com.br/Seminovo/20231205164521-1520x855.jpg?format=webp&width=1520&height=855",
+        fileName: "file-2"
+    },
+    {
+        id: 3,
+        link: "https://www.leobroker.com.br/Seminovo/20231025152927-20230712_110144.jpg?format=webp&width=530&height=298",
+        fileName: "file-3"
+    },
+    {
+        id: 4,
+        link: "https://mariattinavalbroker.com/wp-content/uploads/slider/cache/3c93ae14c6c04f09cb9148b6dbc868d5/7-1.jpg",
+        fileName: "file-4"
+    },
+    {
+        id: 5,
+        link: "https://orionyachts.com.br/wp-content/uploads/2020/04/8660cc1b-1205-49de-8804-a91b42e568e6-1024x768.jpg",
+        fileName: "file-5"
+    }
 ]
 
 const equipadoCom = [

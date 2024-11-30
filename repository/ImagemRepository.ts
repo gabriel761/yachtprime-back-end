@@ -5,7 +5,8 @@ export class ImagemRepository {
         const result = await db.query(`
 SELECT 
     i.id AS imagem_id,
-    i.link AS link_imagem
+    i.link AS link_imagem,
+    i.file_name AS imagem_file_name
 FROM 
     imagem_barco_seminovo ibs
 JOIN 
@@ -16,9 +17,14 @@ WHERE
             `, [id])
         return result
     }
-    async insertImagem(link: string): Promise<number> {
-        const idImagem = await db.one(` INSERT INTO imagem(link) VALUES($1) RETURNING id`, [link])
-        return idImagem.id
+    async insertImagem(link: string, fileName: string | null | undefined): Promise<number> {
+        try {
+            const idImagem = await db.one(` INSERT INTO imagem(link, file_name) VALUES($1, $2) RETURNING id`, [link, fileName])
+            return idImagem.id
+        } catch (error: any) {
+            throw new CustomError(`Repository level error: ImagemRepository: ${error.message}`, 500)
+        }
+        
     }
     async associateImagemWhithSeminovo(idSeminovo: number, idImagem: number) {
         await db.query("INSERT INTO imagem_barco_seminovo(barco_seminovo_id, imagem_id) VAlUES($1,$2)", [idSeminovo, idImagem])

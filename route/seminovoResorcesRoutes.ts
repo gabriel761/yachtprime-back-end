@@ -22,5 +22,9 @@ router.get('/item-seminovo', async (req: Request, res: Response, next: NextFunct
     await barcoSeminovoResourcesController.listItemSeminovo(req, res, next)
 })
 
+router.post('/delete-images-from-firebase', async (req: Request, res: Response, next: NextFunction) => {
+   await barcoSeminovoResourcesController.deleteImagesFromFirebase(req, res, next)
+})
+
 
 export default router

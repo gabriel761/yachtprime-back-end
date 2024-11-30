@@ -5,25 +5,34 @@ import { characterLimit, validateId, validateString } from "../../util/validatio
 export class ImagemInputVO {
     private id?: number
     private link!: string
+    private fileName!: string
     constructor(
-        
+
     ) {
 
     }
-    setLink(link:string){
+    setLink(link: string) {
         validateString(link, "link", "imagem")
-        characterLimit(link,"link", 500, "imagem")
+        characterLimit(link, "link", 500, "imagem")
         this.link = link
     }
-    setId(id:number){
+
+    setFileName(fileName: string) {
+        validateString(fileName, "fileName", "imagem")
+        characterLimit(fileName, "fileName", 100, "imagem")
+        this.fileName = fileName
+    }
+
+    setId(id: number) {
         validateId(id, "imagem")
         this.id = id
     }
 
-    extractData():Imagem{
-        return{
-            id:this.id,
-            link: this.link
+    extractData(): Imagem {
+        return {
+            id: this.id,
+            link: this.link,
+            fileName: this.fileName
         }
     }
 }

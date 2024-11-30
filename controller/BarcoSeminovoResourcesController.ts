@@ -50,5 +50,14 @@ export class BarcoSeminovoResourcesController {
         }
     }
 
+    async deleteImagesFromFirebase(req: Request, res: Response, next: NextFunction) {
+        try {
+         await barcoSeminovoResourcesService.deleteImagesFromFirebase(req.body)
+            res.send("deleted successfully!")
+        } catch (error) {
+            next(error)
+        }
+    }
+
     
 }

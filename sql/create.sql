@@ -172,6 +172,7 @@ CREATE TABLE embarque_alternativo(
 
 CREATE TABLE imagem(
      id SERIAL PRIMARY KEY NOT NULL,
+     file_name VARCHAR(500), 
      link VARCHAR(1000) NOT NULL
 );
 CREATE TABLE imagem_barco_seminovo(

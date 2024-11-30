@@ -1,13 +1,16 @@
 
-import {admin} from "../infra/firebase/firebase-config.ts"
+
+import { CustomError } from "../infra/CustoError.ts"
 import { ImagemRepository } from "../repository/ImagemRepository.ts"
 import { Imagem } from "../types/Imagem.ts"
 import { ImagemInputVO } from "../value_object/input/ImagemInputVO.ts"
 import { ImagemOutputVO } from "../value_object/output/ImagemOutputVO.ts"
+import { FirebaseModel } from "./external/firebaseModel.ts"
 
 interface imagemDatabase {
     imagem_id: number,
     link_imagem: string
+    imagem_file_name: string
 }
 
 export class ImagemModel {
@@ -20,6 +23,7 @@ export class ImagemModel {
             const imagemOutputValueObject = new ImagemOutputVO()
             imagemOutputValueObject.setId(img.imagem_id)
             imagemOutputValueObject.setLink(img.link_imagem)
+            imagemOutputValueObject.setFileName(img.imagem_file_name)
             return imagemOutputValueObject.extractData()
         })
         return imagensDto
@@ -28,7 +32,7 @@ export class ImagemModel {
     async insertImagensForSeminovo(imagens: Imagem[], idSeminovo: number, imagemRepository: ImagemRepository,){
         for (let i = 0; i < imagens.length; i++) {
             const imagem = imagens[i];
-            const idImagem = await imagemRepository.insertImagem(imagem.link)
+            const idImagem = await imagemRepository.insertImagem(imagem.link, imagem.fileName)
             imagemRepository.associateImagemWhithSeminovo(idSeminovo, idImagem)     
         }
     }
@@ -42,14 +46,23 @@ export class ImagemModel {
     }
 
     validateImages(imagens: Imagem[], imagemVO: ImagemInputVO):Imagem[]{
-        const validatedImages = imagens.map((imagem)=> {
-            imagemVO.setLink(imagem.link)
-            return imagemVO.extractData()
-        })
-        return validatedImages
+        try {
+            const validatedImages = imagens.map((imagem) => {
+                imagemVO.setLink(imagem.link)
+                imagemVO.setFileName(imagem.fileName)
+                return imagemVO.extractData()
+            })
+            return validatedImages 
+        } catch (error: any) {
+            throw new CustomError("Model level error: Imagem: "+error.message, 500)
+        }
+        
     }
 
-    deleteImagesFromFirebase(){
-        admin
+    async deleteImagesFromFirebase(images:Imagem[], firebaseModel: FirebaseModel){
+        images.forEach(async (item:Imagem) => {
+             await firebaseModel.deleteImage("seminovo", item.fileName)
+        })
+        
     }
 }

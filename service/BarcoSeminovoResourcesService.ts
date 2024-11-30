@@ -1,4 +1,7 @@
+import { CustomError } from "../infra/CustoError.ts"
 import { CombustivelModel } from "../models/CombustivelModel.ts"
+import { FirebaseModel } from "../models/external/firebaseModel.ts"
+import { ImagemModel } from "../models/ImagemModel.ts"
 import { ItemSeminovoModel } from "../models/ItemSeminovoModel.ts"
 import { ModeloModel } from "../models/ModeloModel.ts"
 import { MotorModel } from "../models/MotorModel.ts"
@@ -16,6 +19,7 @@ const modeloModel = new ModeloModel()
 const motorModel = new MotorModel()
 const propulsaoModel = new PropulsaoModel()
 const itemSeminovoModel = new ItemSeminovoModel()
+const imagemModel = new ImagemModel()
 
 export class BarcoSeminovoResourcesService {
     async listCombustivel() {
@@ -38,5 +42,12 @@ export class BarcoSeminovoResourcesService {
         const result = await itemSeminovoModel.listItemSeminovo(new ItemSeminovoRepository)
         return result
     }
-   
+   async deleteImagesFromFirebase(images:[]){
+        try {
+            imagemModel.deleteImagesFromFirebase(images, new FirebaseModel)
+        } catch (error: any) {
+            throw new CustomError(error.message, 500)
+        }
+        
+   }
 }
