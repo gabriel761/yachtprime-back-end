@@ -9,7 +9,7 @@ import { tipoPropulsao } from "./mocks/tipoPropulsaoList.ts";
 import { modelos } from "./mocks/modelos.ts";
 import motores from "./mocks/motores.ts";
 import moedas from "./mocks/moedas.ts";
-import { FirebaseModel } from "../models/external/firebaseModel.ts";
+import { FirebaseModel } from "../models/external/FirebaseModel.ts";
 import BarcoSeminovoService from "../service/BarcoSeminovoService.ts";
 import { CustomError } from "../infra/CustoError.ts";
 import { BarcoSeminovoController } from "../controller/BarcoSeminovoController.ts";

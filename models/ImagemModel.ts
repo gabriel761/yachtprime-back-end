@@ -5,7 +5,7 @@ import { ImagemRepository } from "../repository/ImagemRepository.ts"
 import { Imagem } from "../types/Imagem.ts"
 import { ImagemInputVO } from "../value_object/input/ImagemInputVO.ts"
 import { ImagemOutputVO } from "../value_object/output/ImagemOutputVO.ts"
-import { FirebaseModel } from "./external/firebaseModel.ts"
+import { FirebaseModel } from "./external/FirebaseModel.ts"
 
 interface imagemDatabase {
     imagem_id: number,

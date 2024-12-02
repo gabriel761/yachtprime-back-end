@@ -35,7 +35,7 @@ import { PrecoInputVO } from "../value_object/input/PrecoInputVO.ts";
 import { BarcoSeminovoInputVO } from "../value_object/input/BarcoSeminovoInputVO.ts";
 import { ImagemInputVO } from "../value_object/input/ImagemInputVO.ts";
 import { ItemSeminovoInputVO } from "../value_object/input/ItemSeminovoInputVO.ts";
-import { FirebaseModel } from "../models/external/firebaseModel.ts";
+import { FirebaseModel } from "../models/external/FirebaseModel.ts";
 import { CustomError } from "../infra/CustoError.ts";
 
 
@@ -82,12 +82,14 @@ class BarcoSeminovoService {
 
     async deleteBarcoSeminovo(idBarcoSeminovo: number) {
         const barcoSeminovoData = await barcoSeminovoModel.getBarcoSeminovo(idBarcoSeminovo, new BarcoSeminovoRepository)
+        const imagensFromSeminovo = await imagemModel.getImagesByIdSeminovo(idBarcoSeminovo, new ImagemRepository())
         await imagemModel.deleteAllImagesFromSeminovo(idBarcoSeminovo, new ImagemRepository())
         await itemSeminovoModel.deleteAllAssotiationsItemSeminovo(idBarcoSeminovo, new ItemSeminovoRepository())
         await barcoSeminovoModel.deleteBarcoSeminovo(idBarcoSeminovo, new BarcoSeminovoRepository())
         await cabineModel.deleteCabineByIdCabine(barcoSeminovoData.capacidade_id, new CabineRepository())
         await precoModel.deletePrecoByidPreco(barcoSeminovoData.preco_id, new PrecoRepository())
         await motorizacaoModel.deleteMotorizacaoByIdMotorizacao(barcoSeminovoData.motorizacao_id, new MotorizacaoRepository())
+        await imagemModel.deleteAllImagesFromSeminovo(imagensFromSeminovo, new ImagemRepository())
     }
 }
 export default BarcoSeminovoService
