@@ -1,6 +1,6 @@
 import { CustomError } from "../../infra/CustoError.ts"
 import { Preco } from "../../types/Preco.ts"
-import { characterLimit, validateId, validateString } from "../../util/validationUtil.ts"
+import { characterLimit, validateFloatPositiveNumber, validateIntegerPositiveNumber, validateString } from "../../util/validationUtil.ts"
 
 export class PrecoInputVO {
     private id?: number
@@ -17,11 +17,11 @@ export class PrecoInputVO {
         this.moeda = moeda
     }
     setValor(valor: number) {
-        if (!valor || valor < 0 || typeof valor != "number") throw new CustomError("Valor do preço inválido", 400)
+        validateFloatPositiveNumber(valor, "valor", "Preço")
         this.valor = valor
     }
     setId(id:number){
-        validateId(id,"preço")
+        validateIntegerPositiveNumber(id,"id","Preço")
         this.id = id
     }
     extractData():Preco{

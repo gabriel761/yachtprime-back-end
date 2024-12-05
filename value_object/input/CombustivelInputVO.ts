@@ -1,6 +1,6 @@
 import { CustomError } from "../../infra/CustoError.ts"
 import { Combustivel } from "../../types/Combustivel.ts"
-import { characterLimit, validateId } from "../../util/validationUtil.ts"
+import { characterLimit, validateIntegerPositiveNumber, validateString } from "../../util/validationUtil.ts"
 
 export class CombustivelInputVO {
     private opcao!: string
@@ -10,11 +10,12 @@ export class CombustivelInputVO {
     ) { }
 
     setOpcao(opcao:string){
-        characterLimit(opcao,"Opção", 50, "combustível")
+        validateString(opcao, "opção", "Combustível")
+        characterLimit(opcao,"opção", 50, "Combustível")
         this.opcao = opcao
     }
     setId(id: number) {
-        validateId(id,"combustível")
+        validateIntegerPositiveNumber(id,"id","Combustível")
         this.id = id
     }
     extractData(): Combustivel {

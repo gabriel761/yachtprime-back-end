@@ -1,6 +1,6 @@
 import { CustomError } from "../../infra/CustoError.ts"
 import { Motorizacao } from "../../types/Motorizacao.ts"
-import { characterLimit, validateString } from "../../util/validationUtil.ts"
+import { characterLimit, validateIntegerPositiveNumber, validateString, validateYear } from "../../util/validationUtil.ts"
 
 export class MotorizacaoInputVO {
     private id?: number
@@ -15,25 +15,29 @@ export class MotorizacaoInputVO {
     ) {
 
     }
+    setId(id?: number) {
+        if (!!id) validateIntegerPositiveNumber(id, "id", "Motorização")
+        this.id = id
+    }
     setModelo(modelo: string) {
         validateString(modelo, "modelo", "motorização")
         characterLimit(modelo, "modelo", 100, "motorização")
         this.modelo = modelo
     }
     setQuantidade(quantidade: number) {
-        if (!quantidade || quantidade < 0 || typeof quantidade != "number") throw new CustomError("Quantidade de motores é inválida", 400)
+        validateIntegerPositiveNumber(quantidade, "Quantidate", "Motorização")
         this.quantidade = quantidade
     }
     setPotencia(potencia: number) {
-        if (!potencia || potencia < 0 || typeof potencia != "number") throw new CustomError("Potência de motor é inválida", 400)
+        validateIntegerPositiveNumber(potencia, "Potência", "Motorização")
         this.potencia = potencia
     }
     setHoras(horas: number) {
-        if (!horas || horas < 0 || typeof horas != "number") throw new CustomError("Horas de motor é inválida", 400)
+        validateIntegerPositiveNumber(horas, "Horas", "Motorização")
         this.horas = horas
     }
     setAno(ano: number) {
-        if (!ano || ano < 0 || typeof ano != "number") throw new CustomError("Ano de motor é inválido", 400)
+        validateYear(ano, "Motorização")
         this.ano = ano
     }
     setObservacoes(observacoes?: string | null) {

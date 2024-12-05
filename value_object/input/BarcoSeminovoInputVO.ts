@@ -8,7 +8,7 @@ import { Modelo } from "../../types/Modelo.ts";
 import { Motorizacao } from "../../types/Motorizacao.ts";
 import { Preco } from "../../types/Preco.ts";
 import { Propulsao } from "../../types/Propulsao.ts";
-import { characterLimit, validateId, validateString } from "../../util/validationUtil.ts";
+import { characterLimit, validateIntegerPositiveNumber, validateString, validateYear } from "../../util/validationUtil.ts";
 
 export class BarcoSeminovoInputVO {
     private id?: number
@@ -31,7 +31,7 @@ export class BarcoSeminovoInputVO {
     constructor(
     ) { }
     setId(id: number) {
-        if (!id || id < 0 || typeof id != "number") throw new CustomError("Id barco seminovo é inválido", 400)
+        validateIntegerPositiveNumber(id,"id", "BarcoSeminovo")
         this.id = id
     }
     setModelo(modelo: Modelo) {
@@ -39,13 +39,12 @@ export class BarcoSeminovoInputVO {
         this.modelo = modelo
     }
     setNome(nome: string) {
-        if (!nome || typeof nome != "string") throw new CustomError("Nome de barco seminovo é inválido", 400)
+        validateString(nome, "nome", "BarcoSeminovo")
         characterLimit(nome,"nome", 100, "barco seminovo")
         this.nome = nome
     }
     setAno(ano: number) {
-        const date = new Date()
-        if (!ano || typeof ano != "number" || ano < 1950 || ano > date.getFullYear()) throw new CustomError("Ano barco seminovo é inválido", 400)
+        validateYear(ano, "BarcoSeminovo")
         this.ano = ano
     }
     setTamanho(tamanho: number) {

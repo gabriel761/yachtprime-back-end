@@ -39,10 +39,11 @@ export class ImagemModel {
 
     async deleteAllImagesFromSeminovo(idSeminovo: number, imagemRepository: ImagemRepository){
         const imagensSeminovo = await imagemRepository.getImagensByIdSeminovo(idSeminovo)
-        imagensSeminovo.map(async (imagem:imagemDatabase) => {
+        const imagensSeminovoPromises = imagensSeminovo.map(async (imagem:imagemDatabase) => {
             await imagemRepository.deleteAssociationImagemSeminovo(imagem.imagem_id)
             await imagemRepository.deleteImagem(imagem.imagem_id)
         })
+        await Promise.all(imagensSeminovoPromises);
     }
 
     validateImages(imagens: Imagem[], imagemVO: ImagemInputVO):Imagem[]{
@@ -59,10 +60,16 @@ export class ImagemModel {
         
     }
 
-    async deleteImagesFromFirebase(images:Imagem[], firebaseModel: FirebaseModel){
-        images.forEach(async (item:Imagem) => {
-             await firebaseModel.deleteImage("seminovo", item.fileName)
+    async deleteImagesFromFirebase(images: Imagem[], firebaseModel: FirebaseModel) {
+        const deletePromises = images.map(async (item) => {
+            try {
+                await firebaseModel.deleteImage("seminovo", item.fileName)
+            } catch (error) {
+                throw error
+            }
         })
-        
+
+        await Promise.all(deletePromises); 
     }
+
 }

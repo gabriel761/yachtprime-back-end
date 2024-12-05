@@ -1,5 +1,5 @@
 import { Modelo } from "../../types/Modelo.ts"
-import { characterLimit, validateId, validateString } from "../../util/validationUtil.ts"
+import { characterLimit, validateIntegerPositiveNumber, validateString } from "../../util/validationUtil.ts"
 
 export class ModeloInputVO{
     private modelo!: string
@@ -22,7 +22,7 @@ export class ModeloInputVO{
         this.marca = marca
     }
     setId(id:number){
-        validateId(id, "Modelo barco")
+        validateIntegerPositiveNumber(id,"id", "Modelo barco")
         this.id = id
     }
     extractData(): Modelo {

@@ -4,12 +4,16 @@ import { Propulsao } from "../types/Propulsao.ts";
 
 export class PropulsaoRepository {
     async getIdPropulsaoByName(opcao: string) {
-        try {
+       
             const result = await db.oneOrNone("SELECT id FROM propulsao WHERE opcao = $1", [opcao])
+                .catch((error) => {
+                    throw new CustomError(`Repository level error: Propulsao repository: ${error.message}`, 500)
+                })
+            if(!result){
+                throw new CustomError("Propulsão não encontrada "+opcao, 404)
+            }
             return result
-        } catch (error: any) {
-            throw new CustomError(`Repository level error: Propulsao repository: ${error.message}`, 500)
-        }
+       
     }
 
     async listPropulsao(): Promise<Propulsao[]> {
@@ -17,7 +21,7 @@ export class PropulsaoRepository {
             const result = await db.query("SELECT * FROM propulsao")
             return result
         } catch (error: any) {
-            throw new CustomError(`Repository level error: Propulsao repository: ${error.message}`, 500)
+            throw new CustomError(`Repository level error: Propulsao listPropulsao: ${error.message}`, 500)
         }
     }
 }

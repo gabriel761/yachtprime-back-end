@@ -77,3 +77,13 @@ export type BarcoSeminovoDatabase ={
     video?: string | null;
 
 }
+
+export type BarcoSeminovoDashboardList = {
+    id:number,
+    modelo: string,
+    imagem: string,
+    nome: string,
+    tamanho: number,
+    ano: number,
+    preco: {moeda: string, valor: number}
+}

@@ -12,6 +12,3 @@ Caso tenha problemas para inserir dados, utilize os comandos abaixo para configu
 ```sql
 SET client_encoding TO 'UTF8';
 ```
-```sql
-SET SERVER_ENCODING TO 'UTF8';
-```

@@ -11,6 +11,14 @@ export const validateString = (string:string, stringName:string, className:strin
     if (!string || typeof string != "string") throw new CustomError(`${stringName} de ${className} inválido`, 400)
 }
 
-export const validateId = (id:number, className:string)=> {
-    if (!id || id < 0 || typeof id != "number") throw new CustomError(`id de ${className} inválido`, 400)
+export const validateIntegerPositiveNumber = (id:number, numberName: string, className:string)=> {
+    if (!(id > 0 && Number.isInteger(id))) throw new CustomError(`${numberName} de ${className} inválido`, 400)
+}
+export const validateFloatPositiveNumber = (id: number, numberName: string, className: string) => {
+    if (!(id > 0 )) throw new CustomError(`${numberName} de ${className} inválido`, 400)
+}
+
+export const validateYear = (ano: number, className:string)=> {
+    const date = new Date()
+    if (!ano || typeof ano != "number" || ano < 1950 || ano > date.getFullYear()) throw new CustomError(`Ano ${className} é inválido`, 400)
 }

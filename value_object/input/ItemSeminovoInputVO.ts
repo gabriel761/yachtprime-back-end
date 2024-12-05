@@ -1,6 +1,6 @@
 import { CustomError } from "../../infra/CustoError.ts"
 import { ItemSeminovo } from "../../types/ItemSeminovo.ts"
-import { characterLimit, validateId, validateString } from "../../util/validationUtil.ts"
+import { characterLimit, validateIntegerPositiveNumber, validateString } from "../../util/validationUtil.ts"
 
 export class ItemSeminovoInputVO {
    private item!: string
@@ -17,11 +17,11 @@ export class ItemSeminovoInputVO {
         this.item = item
     }
     setQuantidade(quantidade: number){
-        if(!quantidade || quantidade < 0 || typeof quantidade != "number") throw new CustomError("Quantidade de itens de barco seminovo inválida",403)
+        validateIntegerPositiveNumber(quantidade, "quantidade", "ItemSeminovo")
         this.quantidade = quantidade
     }
     setId(id?:number){
-        if (!!id) validateId(id, "item de barco seminovo")
+        if (!!id) validateIntegerPositiveNumber(id, "id", "Item de barco seminovo")
         this.id = id
     }
     extractData():ItemSeminovo{

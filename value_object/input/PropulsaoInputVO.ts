@@ -1,5 +1,5 @@
 import { Propulsao } from "../../types/Propulsao.ts"
-import { validateId, validateString } from "../../util/validationUtil.ts"
+import { validateIntegerPositiveNumber, validateString } from "../../util/validationUtil.ts"
 
 export class PropulsaoInputVO{
     private opcao!: string
@@ -12,7 +12,7 @@ export class PropulsaoInputVO{
         this.opcao = opcao
     }
     setId(id:number){
-        validateId(id,"propulsão")
+        validateIntegerPositiveNumber(id, "id", "Propulsão")
         this.id = id
     }
     extractData(): Propulsao {

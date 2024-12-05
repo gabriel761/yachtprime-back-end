@@ -4,7 +4,7 @@ import { BarcoSeminovoDatabase, BarcoSeminovoInput } from "../types/BarcoSeminov
 
 
 class BarcoSeminovoRepository {
-    async getBarcoSeminovo(id: number):Promise<BarcoSeminovoDatabase> {
+    async getBarcoSeminovo(id: number): Promise<BarcoSeminovoDatabase> {
         const result = await db.oneOrNone(`
 SELECT
     bs.id AS barco_id,
@@ -48,23 +48,56 @@ FROM
     JOIN preco pr ON bs.preco_id = pr.id
     JOIN moeda mo ON pr.moeda_id = mo.id
 WHERE
-    bs.id = 1;
+    bs.id = $1;
 
 
-`, [id]);
+`, [id])
+            .catch((error) => {
+                throw new CustomError(`Repository level error: BarcoSeminovoRepository:getBarcoSeminovo: ${error.message}`, 500)
+            });
         if (!result) {
-            throw new CustomError("barco não existe", 404)
+            throw new CustomError("barco não existe: id=" + id, 404);
         }
+        return result
+    }
+    async listBarcoSeminovo() {
+        const result = await db.query(`SELECT 
+            bs.id AS id,
+            mb.modelo AS modelo,
+            bs.nome AS nome,
+            bs.tamanho AS tamanho,
+            im.link AS imagem,
+            bs.ano AS ano,
+            mo.simbolo AS moeda,
+            pr.valor AS valor
+        FROM 
+            barco_seminovo bs
+            LEFT JOIN modelo_barco mb ON bs.modelo_id = mb.id
+            LEFT JOIN preco pr ON bs.preco_id = pr.id
+            LEFT JOIN moeda mo ON pr.moeda_id = mo.id
+            LEFT JOIN imagem_barco_seminovo ibs ON bs.id = ibs.barco_seminovo_id
+            LEFT JOIN imagem im ON ibs.imagem_id = im.id
+        WHERE 
+             ibs.id = (SELECT MIN(ibs2.id) 
+              FROM imagem_barco_seminovo ibs2 
+              WHERE ibs2.barco_seminovo_id = bs.id);
+`)
         return result
     }
 
     async insertBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoInput, idMotorizacao: number, idCabine: number, idPreco: number) {
-        const idBarco = await db.one("INSERT INTO barco_seminovo (modelo_id, nome, ano, tamanho, motorizacao_id, potencia_total, combustivel, propulsao, cabine, procedencia, destaque, preco_id, video) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, $13) RETURNING id", [barcoSeminovoDTO.modelo.id,barcoSeminovoDTO.nome, barcoSeminovoDTO.ano, barcoSeminovoDTO.tamanho, idMotorizacao, barcoSeminovoDTO.potenciaTotal, barcoSeminovoDTO.combustivel.id, barcoSeminovoDTO.propulsao.id, idCabine, barcoSeminovoDTO.procedencia, barcoSeminovoDTO.destaque, idPreco, barcoSeminovoDTO.videoPromocional])
+        const idBarco = await db.one("INSERT INTO barco_seminovo (modelo_id, nome, ano, tamanho, motorizacao_id, potencia_total, combustivel, propulsao, cabine, procedencia, destaque, preco_id, video) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, $13) RETURNING id", [barcoSeminovoDTO.modelo.id, barcoSeminovoDTO.nome, barcoSeminovoDTO.ano, barcoSeminovoDTO.tamanho, idMotorizacao, barcoSeminovoDTO.potenciaTotal, barcoSeminovoDTO.combustivel.id, barcoSeminovoDTO.propulsao.id, idCabine, barcoSeminovoDTO.procedencia, barcoSeminovoDTO.destaque, idPreco, barcoSeminovoDTO.videoPromocional])
+            .catch((error) => {
+                throw new CustomError(`Repository level error: BarcoSeminovoRepository:insertBarcoSeminovo: ${error.message}`, 500)
+            });
         return idBarco.id
     }
 
-    async deleteBarcoSeminovo(idBarcoSeminovo: number){
+    async deleteBarcoSeminovo(idBarcoSeminovo: number) {
         await db.query("DELETE FROM barco_seminovo WHERE id = $1", [idBarcoSeminovo])
+            .catch((error) => {
+                throw new CustomError(`Repository level error: BarcoSeminovoRepository:deleteBarcoSeminovo: ${error.message}`, 500)
+            })
     }
 }
 

@@ -5,8 +5,11 @@ import { Moeda, MoedaDatabase } from "../types/Moeda.ts";
 export class MoedaRepository {
     async getIdMoedaBySimbolo(moedaSimbolo:string){
         const result = await db.oneOrNone("SELECT id FROM moeda WHERE simbolo = $1",[moedaSimbolo])
+        .catch((error) => {
+            throw new CustomError(`Repository level error: Moeda getIdMoedaBySimbolo: ${error.message}`, 500)
+        })
         if(!result){
-            throw new CustomError("Moeda não encontrada", 404)
+            throw new CustomError("Moeda não encontrada "+moedaSimbolo, 404)
         }
         return result
     }
@@ -16,7 +19,7 @@ export class MoedaRepository {
             const result = await db.query("SELECT * FROM moeda")
             return result
         } catch (error: any) {
-            throw new CustomError(`Repository level error: Moeda repository: ${error.message}`, 500)
+            throw new CustomError(`Repository level error: Moeda listMoeda: ${error.message}`, 500)
         }
     }
 }

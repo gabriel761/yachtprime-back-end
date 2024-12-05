@@ -1,6 +1,6 @@
 import { CustomError } from "../../infra/CustoError.ts"
 import { Imagem } from "../../types/Imagem.ts"
-import { characterLimit, validateId, validateString } from "../../util/validationUtil.ts"
+import { characterLimit, validateIntegerPositiveNumber, validateString } from "../../util/validationUtil.ts"
 
 export class ImagemInputVO {
     private id?: number
@@ -24,7 +24,7 @@ export class ImagemInputVO {
     }
 
     setId(id: number) {
-        validateId(id, "imagem")
+        validateIntegerPositiveNumber(id, "id", "Imagem")
         this.id = id
     }
 

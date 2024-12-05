@@ -1,6 +1,6 @@
 import { CustomError } from "../../infra/CustoError.ts"
 import { Cabine } from "../../types/Cabine.ts"
-import { characterLimit, validateId } from "../../util/validationUtil.ts"
+import { characterLimit, validateIntegerPositiveNumber, validateYear } from "../../util/validationUtil.ts"
 
 export class CabinesInputVO {
     private id?:number
@@ -12,15 +12,15 @@ export class CabinesInputVO {
 
     }
     setPassageiros(passageiros:number){
-        if (!passageiros || passageiros < 0 || typeof passageiros != "number" ) throw new CustomError("Número de cabines de passageiros inválido", 403)
+        validateIntegerPositiveNumber(passageiros, "passageiros", "Cabines")
         this.passageiros = passageiros
     }
     setTripulacao(tripulacao:number){
-        if (!tripulacao || tripulacao < 0 || typeof tripulacao != "number") throw new CustomError("Número de cabines de tripulacao de cabines inválido", 403)
+        validateIntegerPositiveNumber(tripulacao, "tripulação", "Cabines")
         this.tripulacao = tripulacao
     }
     setId(id:number){
-        validateId(id, "cabines")
+        validateIntegerPositiveNumber(id, "id", "Cabines")
         this.id = id
     }
     extractData(): Cabine {

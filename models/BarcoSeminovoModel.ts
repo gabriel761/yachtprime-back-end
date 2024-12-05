@@ -26,6 +26,11 @@ export class BarcoSeminovoModel {
         return barcoSeminovoDB 
     }
 
+    async listBarcoSeminovo(barcoSeminovoRepository: BarcoSeminovoRepository){
+       const result = await barcoSeminovoRepository.listBarcoSeminovo()
+       return result
+    }
+
     async saveBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoInput, idMotorizacao: number, idCabine: number, idPreco: number, barcoSeminovoRepository: BarcoSeminovoRepository){
         const barcoSeminovoId = await barcoSeminovoRepository.insertBarcoSeminovo(barcoSeminovoDTO, idMotorizacao, idCabine, idPreco)
         return barcoSeminovoId

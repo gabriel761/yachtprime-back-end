@@ -14,6 +14,48 @@ import BarcoSeminovoService from "../service/BarcoSeminovoService.ts";
 import { CustomError } from "../infra/CustoError.ts";
 import { BarcoSeminovoController } from "../controller/BarcoSeminovoController.ts";
 import { BarcoSeminovoInput } from "../types/BarcoSeminovo.ts";
+import BarcoSeminovoRepository from "../repository/BarcoSeminovoRepository.ts";
+import { CabineRepository } from "../repository/CabineRepository.ts";
+import { ImagemRepository } from "../repository/ImagemRepository.ts";
+import { MotorizacaoRepository } from "../repository/MotorizacaoRepository.ts";
+import { ImagemModel } from "../models/ImagemModel.ts";
+import { PrecoRepository } from "../repository/PrecoRepository.ts";
+import { ItemSeminovoRepository } from "../repository/ItemSeminovoRepository.ts";
+
+const barcoSeminovoRepository = new BarcoSeminovoRepository()
+const cabineRepository = new CabineRepository()
+const imagemRepository = new ImagemRepository()
+const precoRepository = new PrecoRepository()
+const motorizacaoRepository = new MotorizacaoRepository()
+const itemSeminovoRepository = new ItemSeminovoRepository()
+
+const deleteImageMock = vi.fn();
+const firebaseModelMock = new FirebaseModel();
+firebaseModelMock.deleteImage = deleteImageMock;
+
+// mockRequest.ts
+export const mockRequest = (body = {}, params = {}, query = {}) => {
+    return {
+        body: body,
+        params: params,
+        query: query,
+        headers: {},
+        method: 'POST',
+        url: '/barco/seminovo',
+    } as unknown as Request;
+};
+
+// mockResponse.ts
+export const mockResponse = () => {
+    const res = {
+        status: vi.fn().mockReturnThis(),
+        json: vi.fn().mockReturnThis(),
+        end: vi.fn().mockReturnThis(),
+        // Adicione outros métodos conforme necessário
+    } as unknown as Response;
+    return res;
+};
+
 
 
 
@@ -54,9 +96,7 @@ describe("Barco seminovo and resources tests", () => {
         expect(response.data).toEqual(barcoSeminovoOutput)
     })
     test("Should delete images from firebase when fails", async () => {
-        const deleteImageMock = vi.fn();
-        const firebaseModelMock = new FirebaseModel();
-        firebaseModelMock.deleteImage = deleteImageMock;
+        
         const barcoSeminovoServiceMock = {
             postBarcoSeminovo: vi.fn().mockRejectedValue(new Error('Failed to post barco seminovo')),
             rollbackPost: vi.fn().mockImplementation((barcoSeminovoInput: BarcoSeminovoInput) => {
@@ -69,7 +109,6 @@ describe("Barco seminovo and resources tests", () => {
         const res = mockResponse();
         const next = vi.fn();
         const barcoSeminovoController = new BarcoSeminovoController(barcoSeminovoServiceMock as any);
-
         await barcoSeminovoController.postBarcoSeminovo(req, res, next);
 
         expect(next).toHaveBeenCalledWith(expect.any(Error));
@@ -80,10 +119,17 @@ describe("Barco seminovo and resources tests", () => {
         
     })
     test("Should delete barcoSeminovo successfully", async () => {
-        await request("http://localhost:5000/barco/seminovo", "delete", { id: 1 })
-        delay(1000)
-        const response = await fetch("http://localhost:5000/barco/seminovo/1")
-        expect(response.status).toBe(404)
+        const barcoSeminovoService = new BarcoSeminovoService()
+        await barcoSeminovoService.deleteBarcoSeminovo(1, firebaseModelMock)
+        
+        
+        await expect(barcoSeminovoRepository.getBarcoSeminovo(1)).rejects.toThrow("barco não existe: id=1");
+        await expect(motorizacaoRepository.getMotorizacaoById(1)).rejects.toThrow("Não há motorizacao com o id 1")
+        await expect(precoRepository.getPrecoById(1)).rejects.toThrow("Não há preco com o id 1")
+        await expect(imagemRepository.getImagensByIdSeminovo(1)).rejects.toThrow("Não há imagens associadas a este seminovo")
+        await expect(cabineRepository.getCabineById(1)).rejects.toThrow("Cabine não encontrada idCabine=1")
+        await expect(itemSeminovoRepository.getItensSeminovoByIdSeminovo(1)).rejects.toThrow("Não foram encontrados itens associados a este seminovo idSeminovo=1")
+
     })
     test("Should get tipo combustível list", async () => {
         const response = await request("http://localhost:5000/resources/seminovo/combustivel", "get")
@@ -122,25 +168,4 @@ describe("Barco seminovo and resources tests", () => {
 })
 
 
-// mockRequest.ts
-export const mockRequest = (body = {}, params = {}, query = {}) => {
-    return {
-        body: body,
-        params: params,
-        query: query,
-        headers: {},
-        method: 'POST',
-        url: '/barco/seminovo',
-    } as unknown as Request;
-};
 
-// mockResponse.ts
-export const mockResponse = () => {
-    const res = {
-        status: vi.fn().mockReturnThis(),
-        json: vi.fn().mockReturnThis(),
-        end: vi.fn().mockReturnThis(),
-        // Adicione outros métodos conforme necessário
-    } as unknown as Response;
-    return res;
-};

@@ -3,12 +3,15 @@ import db from "../infra/database.ts";
 import { Motor } from "../types/Motor.ts";
 
 export class ModeloMotorRepository {
-    async getIdModeloMotorByModelo(modelo: string){
-       const result = await db.oneOrNone("SELECT id FROM motor_cadastrado WHERE modelo = $1",[modelo])
-       if(!result){
-        throw new CustomError("Modelo não encontrado", 404)
-       }
-       return result
+    async getIdModeloMotorByModelo(modelo: string) {
+        const result = await db.oneOrNone("SELECT id FROM motor_cadastrado WHERE modelo = $1", [modelo])
+            .catch((error) => {
+                throw new CustomError(`Repository level error: Modelo Motor getIdModeloMotorByModelo: ${error.message}`, 500)
+            })
+        if (!result) {
+            throw new CustomError("Modelo não encontrado", 404)
+        }
+        return result
     }
 
     async listModeloMotor(): Promise<Motor[]> {
