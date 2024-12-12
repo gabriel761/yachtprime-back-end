@@ -21,7 +21,6 @@ export class ImagemModel {
         const imagens = await imagemRepository.getImagensByIdSeminovo(idSeminovo)
         const imagensDto = imagens.map((img:imagemDatabase) => {
             const imagemOutputValueObject = new ImagemOutputVO()
-            imagemOutputValueObject.setId(img.imagem_id)
             imagemOutputValueObject.setLink(img.link_imagem)
             imagemOutputValueObject.setFileName(img.imagem_file_name)
             return imagemOutputValueObject.extractData()

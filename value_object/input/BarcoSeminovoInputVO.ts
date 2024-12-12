@@ -1,5 +1,5 @@
 import { CustomError } from "../../infra/CustoError.ts";
-import { BarcoSeminovoInput } from "../../types/BarcoSeminovo.ts";
+import { BarcoSeminovoInput, BarcoSeminovoInputWithId } from "../../types/BarcoSeminovo.ts";
 import { Cabine } from "../../types/Cabine.ts";
 import { Combustivel } from "../../types/Combustivel.ts";
 import { Imagem } from "../../types/Imagem.ts";
@@ -11,7 +11,7 @@ import { Propulsao } from "../../types/Propulsao.ts";
 import { characterLimit, validateIntegerPositiveNumber, validateString, validateYear } from "../../util/validationUtil.ts";
 
 export class BarcoSeminovoInputVO {
-    private id?: number
+    private id!: number
     private modelo!: Modelo;
     private nome!: string;
     private ano!: number;
@@ -102,6 +102,25 @@ export class BarcoSeminovoInputVO {
         this.videoPromocional = video
     }
     extractData():BarcoSeminovoInput{
+        return {
+            modelo: this.modelo,
+            nome: this.nome,
+            ano: this.ano,
+            tamanho: this.tamanho,
+            motorizacao: this.motorizacao,
+            potenciaTotal: this.potenciaTotal,
+            combustivel: this.combustivel,
+            propulsao: this.propulsao,
+            cabines: this.cabines,
+            procedencia: this.procedencia,
+            destaque: this.destaque,
+            preco: this.preco,
+            imagens: this.imagens,
+            equipadoCom: this.equipadoCom,
+            videoPromocional: this.videoPromocional
+        };
+    }
+    extractDataWithId(): BarcoSeminovoInputWithId {
         return {
             id: this.id,
             modelo: this.modelo,

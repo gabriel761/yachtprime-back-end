@@ -27,7 +27,25 @@ export type BarcoSeminovoOutput = {
 };
 
 export type BarcoSeminovoInput = {
-    id?:number;
+    modelo: Modelo;
+    nome: string;
+    ano: number;
+    tamanho: number;
+    motorizacao: Motorizacao;
+    potenciaTotal: number;
+    combustivel: Combustivel;
+    propulsao: Propulsao;
+    cabines: Cabine;
+    procedencia: string;
+    destaque?: string | null;
+    preco: Preco;
+    imagens: Imagem[];
+    equipadoCom: ItemSeminovo[];
+    videoPromocional?: string | null;
+};
+
+export type BarcoSeminovoInputWithId = {
+    id: number;
     modelo: Modelo;
     nome: string;
     ano: number;

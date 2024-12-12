@@ -22,6 +22,12 @@ export class CabineRepository {
         return cabine
 
     }
+    async updateCabine(cabine: Cabine, idCabine: number) {
+        await db.query("UPDATE cabine SET passageiro = $1 , tripulacao = $2  WHERE id = $3", [cabine.passageiros, cabine.tripulacao, idCabine])
+            .catch((error) => {
+                throw new CustomError(`Repository lever Error: CabineRepository: updateCabine: ${error.message}`, 500)
+            });
+    }
     async deleteCabineById(idCabine: number) {
         try {
             await db.query("DELETE FROM cabine WHERE id = $1", [idCabine])

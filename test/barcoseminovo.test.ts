@@ -95,6 +95,17 @@ describe("Barco seminovo and resources tests", () => {
         const response = await request("http://localhost:5000/barco/seminovo/1", "get")
         expect(response.data).toEqual(barcoSeminovoOutput)
     })
+    test("Should update barcoSeminovo ", async () => {
+        const barcoSeminovoUpdate = { ...barcoSeminovoOutput }
+        barcoSeminovoUpdate.nome = "Updated test"
+        barcoSeminovoUpdate.preco.valor = 2000
+        barcoSeminovoUpdate.cabines.passageiros = 1
+        barcoSeminovoUpdate.motorizacao.ano = 2024
+        await request("http://localhost:5000/barco/seminovo", "PATCH", barcoSeminovoUpdate)
+        delay(1000)
+        const response = await request("http://localhost:5000/barco/seminovo/1", "get")
+        expect(response.data).toEqual(barcoSeminovoUpdate)
+    })
     test("Should delete images from firebase when fails", async () => {
         
         const barcoSeminovoServiceMock = {
@@ -165,6 +176,7 @@ describe("Barco seminovo and resources tests", () => {
             ])
         );
     })
+    
 })
 
 

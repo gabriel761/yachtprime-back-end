@@ -12,7 +12,7 @@ import { MoedaRepository } from "../repository/MoedaRepository.ts";
 import { MotorizacaoRepository } from "../repository/MotorizacaoRepository.ts";
 import { ModeloMotorRepository } from "../repository/ModeloMotorRepository.ts";
 import { CabineRepository } from "../repository/CabineRepository.ts";
-import { BarcoSeminovoInput } from "../types/BarcoSeminovo.ts";
+import { BarcoSeminovoInput, BarcoSeminovoInputWithId } from "../types/BarcoSeminovo.ts";
 import { ModeloOutputVO } from "../value_object/output/ModeloOutputVO.ts";
 import { MotorizacaoOutputVO } from "../value_object/output/MotorizacaoOutputVO.ts";
 import { CombustivelOutputVO } from "../value_object/output/CombustivelOutputVO.ts";
@@ -38,6 +38,7 @@ const motorizacaoModel = new MotorizacaoModel()
 const imagemModel = new ImagemModel()
 const itemSeminovoModel = new ItemSeminovoModel()
 const barcoSeminovoModel = new BarcoSeminovoModel()
+const itensSeminovoModel = new ItemSeminovoModel()
 
 
 
@@ -57,8 +58,7 @@ class BarcoSeminovoService {
     }
 
     async postBarcoSeminovo(barcoSeminovoClient: BarcoSeminovoInput) {
-    
-            const itensSeminovoModel = new ItemSeminovoModel()
+
             const validatedImages = imagemModel.validateImages(barcoSeminovoClient.imagens, new ImagemInputVO())
             const validatedItems = itensSeminovoModel.validateItensSeminovo(barcoSeminovoClient.equipadoCom, new ItemSeminovoInputVO())
             const barcoSeminovoValidated = barcoSeminovoModel.buildBarcoSeminovoInputObject(barcoSeminovoClient, new BarcoSeminovoInputVO, validatedImages, validatedItems, new ModeloInputVO(), new MotorizacaoInputVO(), new CombustivelInputVO(), new PropulsaoInputVO(), new CabinesInputVO(), new PrecoInputVO())
@@ -70,6 +70,23 @@ class BarcoSeminovoService {
             await imagemModel.insertImagensForSeminovo(barcoSeminovoValidated.imagens, idBarco, new ImagemRepository())
             await itensSeminovoModel.associateItemWithSeminovo(idBarco, barcoSeminovoValidated.equipadoCom, new ItemSeminovoRepository())
     
+    }
+    async updateBarcoSeminovo(barcoSeminovoClient: BarcoSeminovoInputWithId) {
+
+        const validatedImages = imagemModel.validateImages(barcoSeminovoClient.imagens, new ImagemInputVO())
+        const validatedItems = itensSeminovoModel.validateItensSeminovo(barcoSeminovoClient.equipadoCom, new ItemSeminovoInputVO())
+        const barcoSeminovoValidated = barcoSeminovoModel.buildBarcoSeminovoInputObjectWithId(barcoSeminovoClient, new BarcoSeminovoInputVO, validatedImages, validatedItems, new ModeloInputVO(), new MotorizacaoInputVO(), new CombustivelInputVO(), new PropulsaoInputVO(), new CabinesInputVO(), new PrecoInputVO(), barcoSeminovoClient.id)
+
+        const {idPreco, idMotorizacao, idCabine} = await barcoSeminovoModel.getIdsByIdSeminovo(barcoSeminovoValidated.id, new BarcoSeminovoRepository())
+        await precoModel.updatePreco(barcoSeminovoValidated.preco, idPreco, new PrecoRepository(), new MoedaRepository())
+        await motorizacaoModel.updateMotorizacao(barcoSeminovoValidated.motorizacao, idMotorizacao, new MotorizacaoRepository())
+        await cabineModel.updateCabine(barcoSeminovoValidated.cabines, idCabine, new CabineRepository())
+        await barcoSeminovoModel.updateBarcoSeminovo(barcoSeminovoValidated, new BarcoSeminovoRepository())
+        await imagemModel.deleteAllImagesFromSeminovo(barcoSeminovoValidated.id, new ImagemRepository())
+        await itemSeminovoModel.deleteAllAssotiationsItemSeminovo(barcoSeminovoValidated.id, new ItemSeminovoRepository())
+        await imagemModel.insertImagensForSeminovo(barcoSeminovoValidated.imagens, barcoSeminovoValidated.id, new ImagemRepository())
+        await itensSeminovoModel.associateItemWithSeminovo(barcoSeminovoValidated.id, barcoSeminovoValidated.equipadoCom, new ItemSeminovoRepository())
+
     }
 
     async rollbackPost(barcoSeminovoClient: BarcoSeminovoInput) {

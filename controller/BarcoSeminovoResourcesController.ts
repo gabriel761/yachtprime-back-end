@@ -50,6 +50,16 @@ export class BarcoSeminovoResourcesController {
         }
     }
 
+    async listImagensByIdSeminovo(req: Request, res: Response, next: NextFunction) {
+        try {
+            const idSeminovo = parseInt(req.params.id) 
+            const itemSeminovoResult = await barcoSeminovoResourcesService.listImagensByIdSeminovo(idSeminovo)
+            res.json(itemSeminovoResult)
+        } catch (error) {
+            next(error)
+        }
+    }
+
     async deleteImagesFromFirebase(req: Request, res: Response, next: NextFunction) {
         try {
          await barcoSeminovoResourcesService.deleteImagesFromFirebase(req.body)

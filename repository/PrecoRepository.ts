@@ -6,6 +6,10 @@ export class PrecoRepository {
         const result = await db.one("INSERT INTO preco(valor, moeda_id) VALUES($1,$2) RETURNING id", [valor, IdMoeda]);
         return result
     }
+    async updatePreco(valor: number, IdMoeda: number, idPreco: number) {
+        const result = await db.query("UPDATE preco SET valor = $1, moeda_id = $2 WHERE id = $3", [valor, IdMoeda, idPreco]);
+        return result
+    }
     async getPrecoById(idPreco: number) {
        
           const preco =  await db.oneOrNone("SELECT * FROM preco WHERE id = $1;", [idPreco]).catch((error) => {
@@ -14,8 +18,7 @@ export class PrecoRepository {
             if(!preco){
                 throw new CustomError("Não há preco com o id " + idPreco, 404)
             }
-            return preco
-        
+            return preco    
     }
     async deletePrecoById(idPreco: number) {
         try {

@@ -15,4 +15,7 @@ export class CabineModel {
     async deleteCabineByIdCabine(idCabine:number, cabineRepository:CabineRepository){
        await cabineRepository.deleteCabineById(idCabine)
     }
+    async updateCabine(cabine: Cabine,idCabine: number, cabineRepository: CabineRepository) {
+        await cabineRepository.updateCabine(cabine, idCabine)
+    }
 }

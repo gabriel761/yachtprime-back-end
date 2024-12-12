@@ -3,16 +3,16 @@ import db from "../infra/database.ts"
 export class ImagemRepository {
     async getImagensByIdSeminovo(id: number) {
         const result = await db.query(`
-SELECT 
-    i.id AS imagem_id,
-    i.link AS link_imagem,
-    i.file_name AS imagem_file_name
-FROM 
-    imagem_barco_seminovo ibs
-JOIN 
-    imagem i ON ibs.imagem_id = i.id
-WHERE 
-    ibs.barco_seminovo_id = $1;
+                SELECT 
+                    i.id AS imagem_id,
+                    i.link AS link_imagem,
+                    i.file_name AS imagem_file_name
+                FROM 
+                    imagem_barco_seminovo ibs
+                JOIN 
+                    imagem i ON ibs.imagem_id = i.id
+                WHERE 
+                    ibs.barco_seminovo_id = $1;
 
             `, [id])
             .catch((error) => {
@@ -24,19 +24,14 @@ WHERE
         return result
     }
     async getImagemById(idImagem: number,) {
-
-
         const imagem = await db.oneOrNone("SELECT * FROM imagem_barco_seminovo WHERE barco_seminovo_id = $1", [idImagem])
             .catch((error) => {
                 throw new CustomError(`Repository level error: ImagemRepository:getImagensFromAssociationImagemSeminovoByIdSeminovo: ${error.message}`, 500)
             })
-
         if (!imagem) {
             throw new CustomError("Não há imagem com o id " + idImagem, 404)
         }
         return imagem
-
-
     }
     async insertImagem(link: string, fileName: string | null | undefined): Promise<number> {
         try {
@@ -45,7 +40,6 @@ WHERE
         } catch (error: any) {
             throw new CustomError(`Repository level error: ImagemRepository:insertImagem: ${error.message}`, 500)
         }
-
     }
     async associateImagemWhithSeminovo(idSeminovo: number, idImagem: number) {
         try {

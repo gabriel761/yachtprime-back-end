@@ -26,6 +26,10 @@ export class PrecoModel {
         const idPrecoSaved = await precoRepo.insertPreco(preco.valor, idMoeda.id)
         return idPrecoSaved.id
     }
+    async updatePreco(preco: Preco, idPreco: number, precoRepo: PrecoRepository, moedaRepo: MoedaRepository) {
+        const idMoeda = await moedaRepo.getIdMoedaBySimbolo(preco.moeda)
+        await precoRepo.updatePreco(preco.valor, idMoeda.id, idPreco)
+    }
     async deletePrecoByidPreco(idPreco: number, precoRepository: PrecoRepository){
         await precoRepository.deletePrecoById(idPreco)
     }

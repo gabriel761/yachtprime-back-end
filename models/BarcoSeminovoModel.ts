@@ -1,6 +1,6 @@
 
 import BarcoSeminovoRepository from "../repository/BarcoSeminovoRepository.ts";
-import { BarcoSeminovoDatabase, BarcoSeminovoInput } from "../types/BarcoSeminovo.ts";
+import { BarcoSeminovoDatabase, BarcoSeminovoInput, BarcoSeminovoInputWithId } from "../types/BarcoSeminovo.ts";
 import { BarcoSeminovoOutput } from "../types/BarcoSeminovo.ts";
 import { Imagem } from "../types/Imagem.ts";
 import { ItemSeminovo } from "../types/ItemSeminovo.ts";
@@ -18,6 +18,7 @@ import { ModeloInputVO } from "../value_object/input/ModeloInputVO.ts";
 import { MotorizacaoInputVO } from "../value_object/input/MotorizacaoInputVO.ts";
 import { PrecoInputVO } from "../value_object/input/PrecoInputVO.ts";
 import { PropulsaoInputVO } from "../value_object/input/PropulsaoInputVO.ts";
+import { CustomError } from "../infra/CustoError.ts";
 
 export class BarcoSeminovoModel {
    
@@ -30,10 +31,25 @@ export class BarcoSeminovoModel {
        const result = await barcoSeminovoRepository.listBarcoSeminovo()
        return result
     }
-
+    async getIdsByIdSeminovo (idSeminovo: number | undefined, barcoSeminovoRepository: BarcoSeminovoRepository){
+        if(!idSeminovo){
+            throw new CustomError("Erro: idSeminovo não encontrado na requisição ", 400);
+        }
+        const result = await barcoSeminovoRepository.getIdsByIdSeminovo(idSeminovo)
+        const structuredResult = {
+            idMotorizacao: result.id_motorizacao,
+            idPreco: result.id_preco,
+            idCabine: result.id_cabine
+        }
+        return structuredResult
+    }
     async saveBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoInput, idMotorizacao: number, idCabine: number, idPreco: number, barcoSeminovoRepository: BarcoSeminovoRepository){
         const barcoSeminovoId = await barcoSeminovoRepository.insertBarcoSeminovo(barcoSeminovoDTO, idMotorizacao, idCabine, idPreco)
         return barcoSeminovoId
+    }
+
+    async updateBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoInputWithId, barcoSeminovoRepository: BarcoSeminovoRepository) {
+     await barcoSeminovoRepository.updateBarcoSeminovo(barcoSeminovoDTO,)
     }
 
     async deleteBarcoSeminovo(idBarcoSeminovo:number, barcoSeminovoRepository: BarcoSeminovoRepository){
@@ -114,6 +130,44 @@ export class BarcoSeminovoModel {
         barcoseminovoInputVO.setVideoPromocional(barcoSeminovoInput.videoPromocional);
 
         return barcoseminovoInputVO.extractData()
+    }
+    buildBarcoSeminovoInputObjectWithId(barcoSeminovoInput: BarcoSeminovoInput, barcoseminovoInputVO: BarcoSeminovoInputVO, imagens: Imagem[], itens: ItemSeminovo[], modeloVO: ModeloInputVO, motorizacaoVO: MotorizacaoInputVO, combustivelVO: CombustivelInputVO, propulsaoVO: PropulsaoInputVO, cabinesVO: CabinesInputVO, precoVO: PrecoInputVO, idSeminovo: number): BarcoSeminovoInputWithId {
+
+        modeloVO.setId(barcoSeminovoInput.modelo.id)
+        modeloVO.setModelo(barcoSeminovoInput.modelo.modelo)
+        modeloVO.setMarca(barcoSeminovoInput.modelo.marca)
+        motorizacaoVO.setModelo(barcoSeminovoInput.motorizacao.modelo)
+        motorizacaoVO.setQuantidade(barcoSeminovoInput.motorizacao.quantidade)
+        motorizacaoVO.setPotencia(barcoSeminovoInput.motorizacao.potencia)
+        motorizacaoVO.setHoras(barcoSeminovoInput.motorizacao.horas)
+        motorizacaoVO.setAno(barcoSeminovoInput.motorizacao.ano)
+        motorizacaoVO.setObservacoes(barcoSeminovoInput.motorizacao.observacoes)
+        combustivelVO.setId(barcoSeminovoInput.combustivel.id)
+        combustivelVO.setOpcao(barcoSeminovoInput.combustivel.opcao)
+        propulsaoVO.setId(barcoSeminovoInput.propulsao.id)
+        propulsaoVO.setOpcao(barcoSeminovoInput.propulsao.opcao)
+        cabinesVO.setPassageiros(barcoSeminovoInput.cabines.passageiros)
+        cabinesVO.setTripulacao(barcoSeminovoInput.cabines.tripulacao)
+        precoVO.setMoeda(barcoSeminovoInput.preco.moeda)
+        precoVO.setValor(barcoSeminovoInput.preco.valor)
+        barcoseminovoInputVO.setId(idSeminovo)
+        barcoseminovoInputVO.setModelo(modeloVO.extractData());
+        barcoseminovoInputVO.setNome(barcoSeminovoInput.nome);
+        barcoseminovoInputVO.setAno(barcoSeminovoInput.ano);
+        barcoseminovoInputVO.setTamanho(barcoSeminovoInput.tamanho);
+        barcoseminovoInputVO.setMotorizacao(motorizacaoVO.extractData());
+        barcoseminovoInputVO.setPotenciaTotal(barcoSeminovoInput.potenciaTotal);
+        barcoseminovoInputVO.setCombustivel(combustivelVO.extractData());
+        barcoseminovoInputVO.setPropulsao(propulsaoVO.extractData());
+        barcoseminovoInputVO.setCabine(cabinesVO.extractData());
+        barcoseminovoInputVO.setProcedencia(barcoSeminovoInput.procedencia);
+        barcoseminovoInputVO.setDestaque(barcoSeminovoInput.destaque);
+        barcoseminovoInputVO.setPreco(precoVO.extractData());
+        barcoseminovoInputVO.setImagens(imagens);
+        barcoseminovoInputVO.setItens(itens);
+        barcoseminovoInputVO.setVideoPromocional(barcoSeminovoInput.videoPromocional);
+
+        return barcoseminovoInputVO.extractDataWithId()
     }
 }
 

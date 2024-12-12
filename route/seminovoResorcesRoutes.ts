@@ -22,6 +22,10 @@ router.get('/item-seminovo', async (req: Request, res: Response, next: NextFunct
     await barcoSeminovoResourcesController.listItemSeminovo(req, res, next)
 })
 
+router.get('/imagens-seminovo/:id', async (req: Request, res: Response, next: NextFunction) => {
+    await barcoSeminovoResourcesController.listImagensByIdSeminovo(req, res, next)
+})
+
 router.post('/delete-images-from-firebase', async (req: Request, res: Response, next: NextFunction) => {
    await barcoSeminovoResourcesController.deleteImagesFromFirebase(req, res, next)
 })

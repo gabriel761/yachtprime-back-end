@@ -1,6 +1,6 @@
 import { CustomError } from "../infra/CustoError.ts";
 import db from "../infra/database.ts";
-import { BarcoSeminovoDatabase, BarcoSeminovoInput } from "../types/BarcoSeminovo.ts";
+import { BarcoSeminovoDatabase, BarcoSeminovoInput, BarcoSeminovoInputWithId } from "../types/BarcoSeminovo.ts";
 
 
 class BarcoSeminovoRepository {
@@ -61,7 +61,8 @@ WHERE
         return result
     }
     async listBarcoSeminovo() {
-        const result = await db.query(`SELECT 
+        const result = await db.query(`
+        SELECT 
             bs.id AS id,
             mb.modelo AS modelo,
             bs.nome AS nome,
@@ -86,11 +87,97 @@ WHERE
     }
 
     async insertBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoInput, idMotorizacao: number, idCabine: number, idPreco: number) {
-        const idBarco = await db.one("INSERT INTO barco_seminovo (modelo_id, nome, ano, tamanho, motorizacao_id, potencia_total, combustivel, propulsao, cabine, procedencia, destaque, preco_id, video) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, $13) RETURNING id", [barcoSeminovoDTO.modelo.id, barcoSeminovoDTO.nome, barcoSeminovoDTO.ano, barcoSeminovoDTO.tamanho, idMotorizacao, barcoSeminovoDTO.potenciaTotal, barcoSeminovoDTO.combustivel.id, barcoSeminovoDTO.propulsao.id, idCabine, barcoSeminovoDTO.procedencia, barcoSeminovoDTO.destaque, idPreco, barcoSeminovoDTO.videoPromocional])
+        const idBarco = await db.one(`
+            INSERT INTO barco_seminovo (
+                modelo_id,
+                nome,
+                ano,
+                tamanho,
+                motorizacao_id,
+                potencia_total,
+                combustivel,
+                propulsao,
+                cabine,
+                procedencia,
+                destaque,
+                preco_id,
+                video
+                ) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, $13) RETURNING id`,
+            [
+                barcoSeminovoDTO.modelo.id,
+                barcoSeminovoDTO.nome,
+                barcoSeminovoDTO.ano,
+                barcoSeminovoDTO.tamanho,
+                idMotorizacao,
+                barcoSeminovoDTO.potenciaTotal,
+                barcoSeminovoDTO.combustivel.id,
+                barcoSeminovoDTO.propulsao.id,
+                idCabine, barcoSeminovoDTO.procedencia,
+                barcoSeminovoDTO.destaque,
+                idPreco,
+                barcoSeminovoDTO.videoPromocional
+            ])
             .catch((error) => {
                 throw new CustomError(`Repository level error: BarcoSeminovoRepository:insertBarcoSeminovo: ${error.message}`, 500)
             });
         return idBarco.id
+    }
+
+    async updateBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoInputWithId) {
+        const idBarco = await db.query(`
+            UPDATE 
+                barco_seminovo
+            SET 
+                modelo_id = $1,
+                nome = $2,
+                ano = $3,
+                tamanho = $4,
+                potencia_total = $5,
+                combustivel = $6,
+                propulsao = $7,
+                procedencia = $8,
+                destaque = $9,
+                video = $10
+            WHERE
+                id = $11
+                `,
+            [
+                barcoSeminovoDTO.modelo.id,
+                barcoSeminovoDTO.nome,
+                barcoSeminovoDTO.ano,
+                barcoSeminovoDTO.tamanho,
+                barcoSeminovoDTO.potenciaTotal,
+                barcoSeminovoDTO.combustivel.id,
+                barcoSeminovoDTO.propulsao.id,
+                barcoSeminovoDTO.procedencia,
+                barcoSeminovoDTO.destaque,
+                barcoSeminovoDTO.videoPromocional,
+                barcoSeminovoDTO.id
+            ])
+            .catch((error) => {
+                throw new CustomError(`Repository level error: BarcoSeminovoRepository:updateBarcoSeminovo: ${error.message}`, 500)
+            });
+        return idBarco.id
+    }
+
+    async getIdsByIdSeminovo(idSeminovo: number){
+        const result = await db.oneOrNone(`
+            SELECT
+                motorizacao_id AS id_motorizacao,
+                preco_id AS id_preco,
+                cabine AS id_cabine
+            FROM 
+                barco_seminovo 
+            WHERE 
+                id = $1
+            `,[idSeminovo])
+            .catch((error) => {
+            throw new CustomError(`Repository level error: BarcoSeminovoRepository:getIdsByIdSeminovo: ${error.message}`, 500)
+        })
+        if (!result) {
+            throw new CustomError("Erro ao pegar id de preço. Barco não encontrado: id=" + result, 404);
+        }
+        return result
     }
 
     async deleteBarcoSeminovo(idBarcoSeminovo: number) {

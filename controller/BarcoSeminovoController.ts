@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import BarcoSeminovoService from '../service/BarcoSeminovoService.ts';
 import { validateIntegerPositiveNumber } from '../util/validationUtil.ts';
 import { CustomError } from '../infra/CustoError.ts';
-import { BarcoSeminovoInput } from '../types/BarcoSeminovo.ts';
+import { BarcoSeminovoInput, BarcoSeminovoInputWithId } from '../types/BarcoSeminovo.ts';
 import { FirebaseModel } from '../models/external/FirebaseModel.ts';
 
 
@@ -50,6 +50,19 @@ export class BarcoSeminovoController {
         }
 
     }
+
+    async updateBarcoSeminovo(req: Request, res: Response, next: NextFunction) {
+        const body: BarcoSeminovoInputWithId = req.body
+        try {
+            if (!body) throw new CustomError("Empty body patch", 400)
+            await this.barcoSeminovoService.updateBarcoSeminovo(body)
+            res.status(200).end();
+        } catch (error: any) {
+            next(error)
+        }
+
+    }
+
     async deleteBarcoSeminovo(req: Request, res: Response, next: NextFunction) {
         try {
             const body = req.body
