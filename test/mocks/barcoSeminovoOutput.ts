@@ -81,7 +81,8 @@ const barcoSeminovo: BarcoSeminovoOutput = {
     preco: preco,
     imagens: imagens,
     equipadoCom: equipadoCom,
-    videoPromocional: null
+    videoPromocional: null,
+    oportunidade: true
 }
 
 export default barcoSeminovo

@@ -1,6 +1,6 @@
 
 import BarcoSeminovoRepository from "../repository/BarcoSeminovoRepository.ts";
-import { BarcoSeminovoDatabase, BarcoSeminovoInput, BarcoSeminovoInputWithId } from "../types/BarcoSeminovo.ts";
+import { BarcoSeminovoDatabase, BarcoSeminovoFilters, BarcoSeminovoFrontEndList, BarcoSeminovoInput, BarcoSeminovoInputWithId } from "../types/BarcoSeminovo.ts";
 import { BarcoSeminovoOutput } from "../types/BarcoSeminovo.ts";
 import { Imagem } from "../types/Imagem.ts";
 import { ItemSeminovo } from "../types/ItemSeminovo.ts";
@@ -27,10 +27,32 @@ export class BarcoSeminovoModel {
         return barcoSeminovoDB 
     }
 
-    async listBarcoSeminovo(barcoSeminovoRepository: BarcoSeminovoRepository){
-       const result = await barcoSeminovoRepository.listBarcoSeminovo()
+    async listBarcoSeminovoDashboard(barcoSeminovoRepository: BarcoSeminovoRepository){
+       const result = await barcoSeminovoRepository.listBarcoSeminovoDashboard()
        return result
     }
+
+    async listBarcoSeminovoFrontEnd(filters:BarcoSeminovoFilters,barcoSeminovoRepository: BarcoSeminovoRepository) {
+        const result = await barcoSeminovoRepository.listBarcoSeminovoFrontEnd(filters)
+        const barcoSeminovoListFrontEnd = result.map((item):BarcoSeminovoFrontEndList => {
+            const barcoSeminovoForList:BarcoSeminovoFrontEndList = {
+                id: item.id,
+                imagem: item.imagem,
+                modelo: item.modelo,
+                ano: item.ano,
+                tamanho: item.tamanho,
+                combustivel: item.combustivel,
+                potencia: item.potencia_total,
+                motorizacao: {
+                    quantidade: item.motor_quantidade,
+                    modelo: item.motor_modelo
+                }
+            }
+            return barcoSeminovoForList
+        })
+        return barcoSeminovoListFrontEnd
+    }
+
     async getIdsByIdSeminovo (idSeminovo: number | undefined, barcoSeminovoRepository: BarcoSeminovoRepository){
         if(!idSeminovo){
             throw new CustomError("Erro: idSeminovo não encontrado na requisição ", 400);
@@ -57,7 +79,7 @@ export class BarcoSeminovoModel {
     }
 
     buildBarcoSeminovoOutputObject(barcoSeminovoDB:BarcoSeminovoDatabase, barcoseminovoOutputVO: BarcoSeminovoOutputVO, imagens: Imagem[], itens: ItemSeminovo[], modeloVO: ModeloOutputVO, motorizacaoVO: MotorizacaoOutputVO, combustivelVO: CombustivelOutputVO, propulsaoVO: PropulsaoOutputVO, cabinesVO: CabinesOutputVO, precoVO: PrecoOutputVO):BarcoSeminovoOutput{
-
+        console.log(barcoSeminovoDB.oportunidade)
         modeloVO.setModelo(barcoSeminovoDB.modelo_modelo)
         modeloVO.setMarca(barcoSeminovoDB.marca_modelo)
         modeloVO.setId(barcoSeminovoDB.id_modelo)
@@ -91,6 +113,7 @@ export class BarcoSeminovoModel {
         barcoseminovoOutputVO.setImagens(imagens);
         barcoseminovoOutputVO.setItens(itens);
         barcoseminovoOutputVO.setVideoPromocional(barcoSeminovoDB.video);
+        barcoseminovoOutputVO.setOportunidade(barcoSeminovoDB.oportunidade)
 
         return barcoseminovoOutputVO.extractData()
     }
@@ -128,6 +151,7 @@ export class BarcoSeminovoModel {
         barcoseminovoInputVO.setImagens(imagens);
         barcoseminovoInputVO.setItens(itens);
         barcoseminovoInputVO.setVideoPromocional(barcoSeminovoInput.videoPromocional);
+        barcoseminovoInputVO.setOportunidade(barcoSeminovoInput.oportunidade)
 
         return barcoseminovoInputVO.extractData()
     }
@@ -166,6 +190,7 @@ export class BarcoSeminovoModel {
         barcoseminovoInputVO.setImagens(imagens);
         barcoseminovoInputVO.setItens(itens);
         barcoseminovoInputVO.setVideoPromocional(barcoSeminovoInput.videoPromocional);
+        barcoseminovoInputVO.setOportunidade(barcoSeminovoInput.oportunidade)
 
         return barcoseminovoInputVO.extractDataWithId()
     }

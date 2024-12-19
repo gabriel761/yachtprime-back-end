@@ -12,7 +12,7 @@ import { MoedaRepository } from "../repository/MoedaRepository.ts";
 import { MotorizacaoRepository } from "../repository/MotorizacaoRepository.ts";
 import { ModeloMotorRepository } from "../repository/ModeloMotorRepository.ts";
 import { CabineRepository } from "../repository/CabineRepository.ts";
-import { BarcoSeminovoInput, BarcoSeminovoInputWithId } from "../types/BarcoSeminovo.ts";
+import { BarcoSeminovoFilters, BarcoSeminovoInput, BarcoSeminovoInputWithId } from "../types/BarcoSeminovo.ts";
 import { ModeloOutputVO } from "../value_object/output/ModeloOutputVO.ts";
 import { MotorizacaoOutputVO } from "../value_object/output/MotorizacaoOutputVO.ts";
 import { CombustivelOutputVO } from "../value_object/output/CombustivelOutputVO.ts";
@@ -45,20 +45,25 @@ const itensSeminovoModel = new ItemSeminovoModel()
 
 class BarcoSeminovoService {
     async getBarcoSeminovoById(id: number) {
+        const barcoSeminovoDatabase = await barcoSeminovoModel.getBarcoSeminovo(id, new BarcoSeminovoRepository)
         const imagemSeminovoDtoCollection = await imagemModel.getImagesByIdSeminovo(id, new ImagemRepository)
         const itemSeminovoDtoCollection = await itemSeminovoModel.getItensByIdSeminovo(id, new ItemSeminovoRepository)
-        const barcoSeminovoDatabase = await barcoSeminovoModel.getBarcoSeminovo(id, new BarcoSeminovoRepository)
         const barcoSeminovoResult = barcoSeminovoModel.buildBarcoSeminovoOutputObject(barcoSeminovoDatabase, new BarcoSeminovoOutputVO(), imagemSeminovoDtoCollection, itemSeminovoDtoCollection, new ModeloOutputVO(), new MotorizacaoOutputVO(), new CombustivelOutputVO(), new PropulsaoOutputVO(), new CabinesOutputVO(), new PrecoOutputVO())
         return barcoSeminovoResult
     }
 
-    async listBarcoSeminovo(){
-        const result = await barcoSeminovoModel.listBarcoSeminovo(new BarcoSeminovoRepository())
+    async listBarcoSeminovoDashboard(){
+        const result = await barcoSeminovoModel.listBarcoSeminovoDashboard(new BarcoSeminovoRepository())
+        return result
+    }
+    async listBarcoSeminovoFrontEnd(query: any) {
+        const filters: BarcoSeminovoFilters = query
+        const result = await barcoSeminovoModel.listBarcoSeminovoFrontEnd(filters,new BarcoSeminovoRepository())
         return result
     }
 
     async postBarcoSeminovo(barcoSeminovoClient: BarcoSeminovoInput) {
-
+            
             const validatedImages = imagemModel.validateImages(barcoSeminovoClient.imagens, new ImagemInputVO())
             const validatedItems = itensSeminovoModel.validateItensSeminovo(barcoSeminovoClient.equipadoCom, new ItemSeminovoInputVO())
             const barcoSeminovoValidated = barcoSeminovoModel.buildBarcoSeminovoInputObject(barcoSeminovoClient, new BarcoSeminovoInputVO, validatedImages, validatedItems, new ModeloInputVO(), new MotorizacaoInputVO(), new CombustivelInputVO(), new PropulsaoInputVO(), new CabinesInputVO(), new PrecoInputVO())

@@ -76,7 +76,8 @@ CREATE TABLE barco_seminovo(
      procedencia VARCHAR(50) NOT NULL,
      destaque VARCHAR(100),
      preco_id INTEGER REFERENCES preco(id) NOT NULL,
-     video VARCHAR(1000)
+     video VARCHAR(1000),
+     oportunidade BOOLEAN DEFAULT false
 );
 
 -- CHARTER --

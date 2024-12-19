@@ -26,6 +26,7 @@ export class BarcoSeminovoOutputVO {
     private imagens!: Imagem[];
     private equipadoCom!: ItemSeminovo[];
     private videoPromocional?: string | null;
+    private oportunidade!: boolean
 
     constructor(
     ) { }
@@ -79,6 +80,10 @@ export class BarcoSeminovoOutputVO {
         if(!video) video = null
         this.videoPromocional = video
     }
+    setOportunidade(oportunidade: boolean) {
+        if (typeof oportunidade != "boolean") throw new CustomError("Oportunidade de barco seminovo é inválido", 400)
+        this.oportunidade = oportunidade
+    }
 
     extractData():BarcoSeminovoOutput{
         return {
@@ -97,7 +102,8 @@ export class BarcoSeminovoOutputVO {
             preco: this.preco,
             imagens: this.imagens,
             equipadoCom: this.equipadoCom,
-            videoPromocional: this.videoPromocional
+            videoPromocional: this.videoPromocional,
+            oportunidade: this.oportunidade
         };
     }
 }

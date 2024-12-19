@@ -24,7 +24,9 @@ export type BarcoSeminovoOutput = {
     imagens: Imagem[];
     equipadoCom: ItemSeminovo[];
     videoPromocional?: string | null;
+    oportunidade: boolean;
 };
+
 
 export type BarcoSeminovoInput = {
     modelo: Modelo;
@@ -42,7 +44,9 @@ export type BarcoSeminovoInput = {
     imagens: Imagem[];
     equipadoCom: ItemSeminovo[];
     videoPromocional?: string | null;
+    oportunidade: boolean
 };
+
 
 export type BarcoSeminovoInputWithId = {
     id: number;
@@ -61,9 +65,12 @@ export type BarcoSeminovoInputWithId = {
     imagens: Imagem[];
     equipadoCom: ItemSeminovo[];
     videoPromocional?: string | null;
+    oportunidade: boolean
 };
 
+
 export type BarcoSeminovoDatabase ={
+    oportunidade: boolean;
     barco_id?: number;
     nome_barco: string;
     ano_barco: number;
@@ -104,4 +111,20 @@ export type BarcoSeminovoDashboardList = {
     tamanho: number,
     ano: number,
     preco: {moeda: string, valor: number}
+}
+
+export type BarcoSeminovoFrontEndList = {
+    id: number,
+    modelo: string,
+    imagem: string,
+    tamanho: number,
+    ano: number,
+    potencia: number,
+    combustivel: string,
+    motorizacao: {quantidade:number, modelo:string}
+}
+
+export type BarcoSeminovoFilters = {
+    modelo: string,
+    oportunidade: boolean
 }

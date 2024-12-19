@@ -10,10 +10,12 @@ router.get('/seminovo/:id', async (req: Request, res: Response, next: NextFuncti
         await barcoSeminovoController.getBarcoSeminovoById(req, res, next)
 })
 
-router.get('/seminovo', async (req:Request, res: Response, next) => {
-        await barcoSeminovoController.listBarcoSeminovo(req, res, next)
+router.get('/seminovo-dashboard', async (req:Request, res: Response, next) => {
+        await barcoSeminovoController.listBarcoSeminovoDashboard(req, res, next)
 })
-
+router.get('/seminovo-front-end', async (req: Request, res: Response, next) => {
+        await barcoSeminovoController.listBarcoSeminovoFrontEnd(req, res, next)
+})
 router.post('/seminovo', async (req: Request, res: Response, next: NextFunction) => {
         await barcoSeminovoController.postBarcoSeminovo(req, res, next)
 })

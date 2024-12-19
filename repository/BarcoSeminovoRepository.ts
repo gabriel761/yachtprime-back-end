@@ -1,6 +1,19 @@
 import { CustomError } from "../infra/CustoError.ts";
 import db from "../infra/database.ts";
-import { BarcoSeminovoDatabase, BarcoSeminovoInput, BarcoSeminovoInputWithId } from "../types/BarcoSeminovo.ts";
+import { BarcoSeminovoDatabase, BarcoSeminovoFilters, BarcoSeminovoInput, BarcoSeminovoInputWithId } from "../types/BarcoSeminovo.ts";
+
+
+type ListBarcoSeminovoFrontEndDB = {
+    id: number,
+    modelo: string,
+    motor_quantidade: number,
+    motor_modelo: string,
+    combustivel: string
+    potencia_total: number,
+    tamanho: number,
+    imagem: string,
+    ano: number
+}
 
 
 class BarcoSeminovoRepository {
@@ -36,7 +49,8 @@ SELECT
     pr.valor AS preco,
     mo.nome AS moeda_nome,
     mo.simbolo AS moeda_simbolo,
-    bs.video AS video_barco
+    bs.video AS video_barco,
+    bs.oportunidade
 FROM
     barco_seminovo bs
     JOIN modelo_barco mc ON bs.modelo_id = mc.id
@@ -60,7 +74,7 @@ WHERE
         }
         return result
     }
-    async listBarcoSeminovo() {
+    async listBarcoSeminovoDashboard() {
         const result = await db.query(`
         SELECT 
             bs.id AS id,
@@ -86,6 +100,69 @@ WHERE
         return result
     }
 
+    async listBarcoSeminovoFrontEnd(filters: BarcoSeminovoFilters): Promise<ListBarcoSeminovoFrontEndDB[]> {
+        const { modelo, oportunidade } = filters;
+       
+
+        // Array para armazenar as condições
+        const whereConditions: string[] = [];
+        const params: any[] = []; // Valores para os placeholders do query
+
+        // Adiciona a condição para 'modelo', se existir
+        if (modelo) {
+            whereConditions.push(`mb.modelo ILIKE $${params.length + 1}`);
+            params.push(`%${modelo}%`); // Adiciona os wildcards
+        }
+
+
+        // Adiciona a condição para 'oportunidade', se existir
+        if (typeof oportunidade === 'boolean') {
+            whereConditions.push(`bs.oportunidade = $${params.length + 1}`);
+            params.push(oportunidade);
+        }
+
+        // Adiciona a condição para pegar a menor imagem, que é sempre fixa
+        whereConditions.push(`
+        ibs.id = (
+            SELECT MIN(ibs2.id) 
+            FROM imagem_barco_seminovo ibs2 
+            WHERE ibs2.barco_seminovo_id = bs.id
+        )
+    `);
+
+        // Constrói a cláusula WHERE final
+        const whereClause = whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : '';
+
+        // Query final
+        const query = `
+        SELECT 
+            bs.id AS id,
+            mb.modelo AS modelo,
+            mtrz.quantidade AS motor_quantidade,
+            mt.modelo AS motor_modelo,
+            cb.opcao AS combustivel,
+            bs.potencia_total AS potencia_total,
+            bs.tamanho AS tamanho,
+            im.link AS imagem,
+            bs.ano AS ano
+        FROM 
+            barco_seminovo bs
+            LEFT JOIN modelo_barco mb ON bs.modelo_id = mb.id
+            LEFT JOIN motorizacao mtrz ON bs.motorizacao_id = mtrz.id
+            LEFT JOIN tipo_combustivel cb ON bs.combustivel = cb.id
+            LEFT JOIN motor_cadastrado mt ON mtrz.motor_id = mt.id
+            LEFT JOIN imagem_barco_seminovo ibs ON bs.id = ibs.barco_seminovo_id
+            LEFT JOIN imagem im ON ibs.imagem_id = im.id
+        ${whereClause}
+    `;
+
+        // Executa a query com os valores dinâmicos
+        const result = await db.query(query, params);
+
+        return result;
+    }
+
+
     async insertBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoInput, idMotorizacao: number, idCabine: number, idPreco: number) {
         const idBarco = await db.one(`
             INSERT INTO barco_seminovo (
@@ -101,8 +178,9 @@ WHERE
                 procedencia,
                 destaque,
                 preco_id,
-                video
-                ) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, $13) RETURNING id`,
+                video,
+                oportunidade
+                ) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, $13, $14) RETURNING id`,
             [
                 barcoSeminovoDTO.modelo.id,
                 barcoSeminovoDTO.nome,
@@ -115,7 +193,8 @@ WHERE
                 idCabine, barcoSeminovoDTO.procedencia,
                 barcoSeminovoDTO.destaque,
                 idPreco,
-                barcoSeminovoDTO.videoPromocional
+                barcoSeminovoDTO.videoPromocional,
+                barcoSeminovoDTO.oportunidade
             ])
             .catch((error) => {
                 throw new CustomError(`Repository level error: BarcoSeminovoRepository:insertBarcoSeminovo: ${error.message}`, 500)
@@ -137,9 +216,10 @@ WHERE
                 propulsao = $7,
                 procedencia = $8,
                 destaque = $9,
-                video = $10
+                video = $10,
+                oportunidade = $11
             WHERE
-                id = $11
+                id = $12
                 `,
             [
                 barcoSeminovoDTO.modelo.id,
@@ -152,6 +232,7 @@ WHERE
                 barcoSeminovoDTO.procedencia,
                 barcoSeminovoDTO.destaque,
                 barcoSeminovoDTO.videoPromocional,
+                barcoSeminovoDTO.oportunidade,
                 barcoSeminovoDTO.id
             ])
             .catch((error) => {
@@ -160,7 +241,7 @@ WHERE
         return idBarco.id
     }
 
-    async getIdsByIdSeminovo(idSeminovo: number){
+    async getIdsByIdSeminovo(idSeminovo: number) {
         const result = await db.oneOrNone(`
             SELECT
                 motorizacao_id AS id_motorizacao,
@@ -170,10 +251,10 @@ WHERE
                 barco_seminovo 
             WHERE 
                 id = $1
-            `,[idSeminovo])
+            `, [idSeminovo])
             .catch((error) => {
-            throw new CustomError(`Repository level error: BarcoSeminovoRepository:getIdsByIdSeminovo: ${error.message}`, 500)
-        })
+                throw new CustomError(`Repository level error: BarcoSeminovoRepository:getIdsByIdSeminovo: ${error.message}`, 500)
+            })
         if (!result) {
             throw new CustomError("Erro ao pegar id de preço. Barco não encontrado: id=" + result, 404);
         }

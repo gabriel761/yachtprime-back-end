@@ -27,11 +27,12 @@ export class BarcoSeminovoInputVO {
     private imagens!: Imagem[];
     private equipadoCom!: ItemSeminovo[];
     private videoPromocional?: string | null;
+    private oportunidade!: boolean
 
     constructor(
     ) { }
     setId(id: number) {
-        validateIntegerPositiveNumber(id,"id", "BarcoSeminovo")
+        validateIntegerPositiveNumber(id, "id", "BarcoSeminovo")
         this.id = id
     }
     setModelo(modelo: Modelo) {
@@ -40,7 +41,7 @@ export class BarcoSeminovoInputVO {
     }
     setNome(nome: string) {
         validateString(nome, "nome", "BarcoSeminovo")
-        characterLimit(nome,"nome", 100, "barco seminovo")
+        characterLimit(nome, "nome", 100, "barco seminovo")
         this.nome = nome
     }
     setAno(ano: number) {
@@ -73,15 +74,15 @@ export class BarcoSeminovoInputVO {
     }
     setProcedencia(procedencia: string) {
         if (!procedencia || typeof procedencia != "string") throw new CustomError("Procedência de barco seminovo é inválido", 400)
-        characterLimit(procedencia,"procedência", 50, "barco seminovo")
+        characterLimit(procedencia, "procedência", 50, "barco seminovo")
         this.procedencia = procedencia
     }
     setDestaque(destaque?: string | null) {
         if (!!destaque && typeof destaque != "string") throw new CustomError("Destaque de barco seminovo é inválido", 400)
-        if(!!destaque){
+        if (!!destaque) {
             characterLimit(destaque, "destaque", 100, "barco seminovo")
             this.destaque = destaque
-        }else{
+        } else {
             this.destaque = null
         }
     }
@@ -101,7 +102,11 @@ export class BarcoSeminovoInputVO {
         if (!!video && typeof video != "string") throw new CustomError("Video promocional de barco seminovo é inválido", 400)
         this.videoPromocional = video
     }
-    extractData():BarcoSeminovoInput{
+    setOportunidade(oportunidade: boolean) {
+        if (typeof oportunidade != "boolean") throw new CustomError("Oportunidade de barco seminovo é inválido", 400)
+        this.oportunidade = oportunidade
+    }
+    extractData(): BarcoSeminovoInput {
         return {
             modelo: this.modelo,
             nome: this.nome,
@@ -117,7 +122,8 @@ export class BarcoSeminovoInputVO {
             preco: this.preco,
             imagens: this.imagens,
             equipadoCom: this.equipadoCom,
-            videoPromocional: this.videoPromocional
+            videoPromocional: this.videoPromocional,
+            oportunidade: this.oportunidade
         };
     }
     extractDataWithId(): BarcoSeminovoInputWithId {
@@ -137,7 +143,8 @@ export class BarcoSeminovoInputVO {
             preco: this.preco,
             imagens: this.imagens,
             equipadoCom: this.equipadoCom,
-            videoPromocional: this.videoPromocional
+            videoPromocional: this.videoPromocional,
+            oportunidade: this.oportunidade
         };
     }
 

@@ -79,6 +79,7 @@ const barcoSeminovo: BarcoSeminovoOutput = {
     imagens: imagens,
     equipadoCom: equipadoCom,
     videoPromocional: undefined,
+    oportunidade: true
 }
 
 export default barcoSeminovo

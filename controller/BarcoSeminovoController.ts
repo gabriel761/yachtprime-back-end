@@ -2,8 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import BarcoSeminovoService from '../service/BarcoSeminovoService.ts';
 import { validateIntegerPositiveNumber } from '../util/validationUtil.ts';
 import { CustomError } from '../infra/CustoError.ts';
-import { BarcoSeminovoInput, BarcoSeminovoInputWithId } from '../types/BarcoSeminovo.ts';
+import { BarcoSeminovoFilters, BarcoSeminovoInput, BarcoSeminovoInputWithId } from '../types/BarcoSeminovo.ts';
 import { FirebaseModel } from '../models/external/FirebaseModel.ts';
+import { convertStringToBoolean } from '../util/transformationUtil.ts';
 
 
 
@@ -24,9 +25,23 @@ export class BarcoSeminovoController {
         }
     }
 
-    async listBarcoSeminovo(req: Request, res: Response, next: NextFunction) {
+    async listBarcoSeminovoDashboard(req: Request, res: Response, next: NextFunction) {
         try {
-            const result = await this.barcoSeminovoService.listBarcoSeminovo()
+            const result = await this.barcoSeminovoService.listBarcoSeminovoDashboard()
+            res.json(result)
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async listBarcoSeminovoFrontEnd(req: Request, res: Response, next: NextFunction) {
+        try {
+            const query = req.query
+            const filters = {
+                modelo: query.modelo || undefined,
+                oportunidade: convertStringToBoolean(query.oportunidade)
+            };
+            const result = await this.barcoSeminovoService.listBarcoSeminovoFrontEnd(filters)
             res.json(result)
         } catch (error) {
             next(error)
