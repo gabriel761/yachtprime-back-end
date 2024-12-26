@@ -127,4 +127,12 @@ export type BarcoSeminovoFrontEndList = {
 export type BarcoSeminovoFilters = {
     modelo: string,
     oportunidade: boolean
+    page:number,
+    limit: number
+}
+
+export type BarcoSeminovoRelated = {
+    id:number,
+    modelo: string,
+    imagem: string,
 }

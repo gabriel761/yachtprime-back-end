@@ -61,6 +61,10 @@ class BarcoSeminovoService {
         const result = await barcoSeminovoModel.listBarcoSeminovoFrontEnd(filters,new BarcoSeminovoRepository())
         return result
     }
+    async getRelatedSeminovos(idSeminovo:number){
+        const result = await barcoSeminovoModel.getRelatedSeminovos(idSeminovo, new BarcoSeminovoRepository())
+        return result
+    }
 
     async postBarcoSeminovo(barcoSeminovoClient: BarcoSeminovoInput) {
             

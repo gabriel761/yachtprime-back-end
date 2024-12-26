@@ -1,6 +1,6 @@
 
 import BarcoSeminovoRepository from "../repository/BarcoSeminovoRepository.ts";
-import { BarcoSeminovoDatabase, BarcoSeminovoFilters, BarcoSeminovoFrontEndList, BarcoSeminovoInput, BarcoSeminovoInputWithId } from "../types/BarcoSeminovo.ts";
+import { BarcoSeminovoDatabase, BarcoSeminovoFilters, BarcoSeminovoFrontEndList, BarcoSeminovoInput, BarcoSeminovoInputWithId, BarcoSeminovoRelated } from "../types/BarcoSeminovo.ts";
 import { BarcoSeminovoOutput } from "../types/BarcoSeminovo.ts";
 import { Imagem } from "../types/Imagem.ts";
 import { ItemSeminovo } from "../types/ItemSeminovo.ts";
@@ -19,6 +19,7 @@ import { MotorizacaoInputVO } from "../value_object/input/MotorizacaoInputVO.ts"
 import { PrecoInputVO } from "../value_object/input/PrecoInputVO.ts";
 import { PropulsaoInputVO } from "../value_object/input/PropulsaoInputVO.ts";
 import { CustomError } from "../infra/CustoError.ts";
+import { modelos } from "../test/mocks/modelos.ts";
 
 export class BarcoSeminovoModel {
    
@@ -34,7 +35,8 @@ export class BarcoSeminovoModel {
 
     async listBarcoSeminovoFrontEnd(filters:BarcoSeminovoFilters,barcoSeminovoRepository: BarcoSeminovoRepository) {
         const result = await barcoSeminovoRepository.listBarcoSeminovoFrontEnd(filters)
-        const barcoSeminovoListFrontEnd = result.map((item):BarcoSeminovoFrontEndList => {
+        
+        const barcoSeminovoListFrontEnd = result.map((item:any):BarcoSeminovoFrontEndList => {
             const barcoSeminovoForList:BarcoSeminovoFrontEndList = {
                 id: item.id,
                 imagem: item.imagem,
@@ -50,7 +52,28 @@ export class BarcoSeminovoModel {
             }
             return barcoSeminovoForList
         })
-        return barcoSeminovoListFrontEnd
+        if(!filters.page){
+            return {
+                data: barcoSeminovoListFrontEnd
+            }
+        }
+        return {
+          data:  barcoSeminovoListFrontEnd,
+          totalPages: await barcoSeminovoRepository.getTotalPagesForPagination()
+        }
+    }
+
+    async getRelatedSeminovos(idSeminovo: number, barcoSeminovoRepository: BarcoSeminovoRepository): Promise<BarcoSeminovoRelated[]>{
+        const result = await barcoSeminovoRepository.getRelatedSeminovos(idSeminovo)
+        const barcoSeminovosRelatedList = result.map((item): BarcoSeminovoRelated => {
+            const barcoSeminovoRelated: BarcoSeminovoRelated = {
+                id: item.barco_id,
+                modelo: item.modelo,
+                imagem: item.primeira_imagem
+            }
+            return barcoSeminovoRelated
+        })
+        return barcoSeminovosRelatedList
     }
 
     async getIdsByIdSeminovo (idSeminovo: number | undefined, barcoSeminovoRepository: BarcoSeminovoRepository){
@@ -79,7 +102,6 @@ export class BarcoSeminovoModel {
     }
 
     buildBarcoSeminovoOutputObject(barcoSeminovoDB:BarcoSeminovoDatabase, barcoseminovoOutputVO: BarcoSeminovoOutputVO, imagens: Imagem[], itens: ItemSeminovo[], modeloVO: ModeloOutputVO, motorizacaoVO: MotorizacaoOutputVO, combustivelVO: CombustivelOutputVO, propulsaoVO: PropulsaoOutputVO, cabinesVO: CabinesOutputVO, precoVO: PrecoOutputVO):BarcoSeminovoOutput{
-        console.log(barcoSeminovoDB.oportunidade)
         modeloVO.setModelo(barcoSeminovoDB.modelo_modelo)
         modeloVO.setMarca(barcoSeminovoDB.marca_modelo)
         modeloVO.setId(barcoSeminovoDB.id_modelo)

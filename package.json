@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "index.js",
+    "start": "npx tsx watch --env-file .env index.js",
     "dev": "npx tsx watch --env-file .env index.js ",
     "test": "vitest",
     "database": "psql  -h localhost -U postgres -d yacht-prime -p 5433 "

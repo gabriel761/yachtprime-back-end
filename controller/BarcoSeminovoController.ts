@@ -38,6 +38,7 @@ export class BarcoSeminovoController {
         try {
             const query = req.query
             const filters = {
+                page: query.page,
                 modelo: query.modelo || undefined,
                 oportunidade: convertStringToBoolean(query.oportunidade)
             };
@@ -47,7 +48,15 @@ export class BarcoSeminovoController {
             next(error)
         }
     }
-    
+    async getRelatedSeminovos(req: Request, res: Response, next: NextFunction) {
+        try {
+            const idSeminovo: number = parseInt(req.params.id) 
+            const result = await this.barcoSeminovoService.getRelatedSeminovos(idSeminovo)
+            res.json(result)
+        } catch (error) {
+            next(error)
+        }
+    }
 
     async postBarcoSeminovo(req: Request, res: Response, next: NextFunction) {
         const body: BarcoSeminovoInput = req.body

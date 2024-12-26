@@ -9,12 +9,14 @@ const barcoSeminovoController = new BarcoSeminovoController(new BarcoSeminovoSer
 router.get('/seminovo/:id', async (req: Request, res: Response, next: NextFunction) => {
         await barcoSeminovoController.getBarcoSeminovoById(req, res, next)
 })
-
 router.get('/seminovo-dashboard', async (req:Request, res: Response, next) => {
         await barcoSeminovoController.listBarcoSeminovoDashboard(req, res, next)
 })
 router.get('/seminovo-front-end', async (req: Request, res: Response, next) => {
         await barcoSeminovoController.listBarcoSeminovoFrontEnd(req, res, next)
+})
+router.get('/seminovo-related/:id', async (req: Request, res: Response, next: NextFunction) => {
+        await barcoSeminovoController.getRelatedSeminovos(req, res, next)
 })
 router.post('/seminovo', async (req: Request, res: Response, next: NextFunction) => {
         await barcoSeminovoController.postBarcoSeminovo(req, res, next)

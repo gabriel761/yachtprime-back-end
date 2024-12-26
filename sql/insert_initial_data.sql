@@ -1,3 +1,4 @@
+SET client_encoding TO 'UTF8';
 -- modelo
 INSERT INTO modelo_barco (marca, modelo)
 VALUES

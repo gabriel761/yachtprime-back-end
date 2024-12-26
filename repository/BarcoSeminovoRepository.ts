@@ -1,7 +1,7 @@
 import { CustomError } from "../infra/CustoError.ts";
 import db from "../infra/database.ts";
 import { BarcoSeminovoDatabase, BarcoSeminovoFilters, BarcoSeminovoInput, BarcoSeminovoInputWithId } from "../types/BarcoSeminovo.ts";
-
+import config from "../config.ts";
 
 type ListBarcoSeminovoFrontEndDB = {
     id: number,
@@ -15,6 +15,8 @@ type ListBarcoSeminovoFrontEndDB = {
     ano: number
 }
 
+
+const limit = config.limitQuery || 1
 
 class BarcoSeminovoRepository {
     async getBarcoSeminovo(id: number): Promise<BarcoSeminovoDatabase> {
@@ -101,8 +103,7 @@ WHERE
     }
 
     async listBarcoSeminovoFrontEnd(filters: BarcoSeminovoFilters): Promise<ListBarcoSeminovoFrontEndDB[]> {
-        const { modelo, oportunidade } = filters;
-       
+        const { modelo, oportunidade, page = 1 } = filters;
 
         // Array para armazenar as condições
         const whereConditions: string[] = [];
@@ -132,7 +133,7 @@ WHERE
 
         // Constrói a cláusula WHERE final
         const whereClause = whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : '';
-
+        const offset = (page - 1) * limit;
         // Query final
         const query = `
         SELECT 
@@ -154,12 +155,74 @@ WHERE
             LEFT JOIN imagem_barco_seminovo ibs ON bs.id = ibs.barco_seminovo_id
             LEFT JOIN imagem im ON ibs.imagem_id = im.id
         ${whereClause}
+        LIMIT $${params.length + 1} OFFSET $${params.length + 2}
     `;
+        params.push(limit, offset);
 
-        // Executa a query com os valores dinâmicos
         const result = await db.query(query, params);
 
-        return result;
+        return result
+    }
+
+
+    async getTotalPagesForPagination():Promise<number> {
+            const countQuery = `
+            SELECT COUNT(*) AS total
+            FROM barco_seminovo 
+        `;
+
+            const countResult = await db.query(countQuery);
+            const totalItems = parseInt(countResult[0].total, 10);
+            const totalPages = Math.ceil(totalItems / limit);
+            return totalPages
+    }
+
+    async getRelatedSeminovos(idSeminovo:number):Promise<{barco_id:number, modelo:string, primeira_imagem:string}[]>{
+        try {
+            const result = await db.query(`
+            SELECT 
+                bs.id AS barco_id,
+                mb.modelo AS modelo,
+                pr.valor AS preco,
+                ABS(pr.valor - alvo.valor) AS diferenca_preco,
+                primeira_imagem.link AS primeira_imagem
+            FROM 
+                barco_seminovo bs
+                LEFT JOIN modelo_barco mb ON bs.modelo_id = mb.id
+                LEFT JOIN preco pr ON bs.preco_id = pr.id
+                LEFT JOIN (
+                    SELECT 
+                        ibs.barco_seminovo_id,
+                        im.link
+                    FROM 
+                        imagem_barco_seminovo ibs
+                        LEFT JOIN imagem im ON ibs.imagem_id = im.id
+                    WHERE 
+                        ibs.id = (SELECT MIN(ibs2.id)
+                                FROM imagem_barco_seminovo ibs2
+                                WHERE ibs2.barco_seminovo_id = ibs.barco_seminovo_id)
+                ) primeira_imagem ON bs.id = primeira_imagem.barco_seminovo_id
+                CROSS JOIN (
+                    SELECT 
+                        bs_alvo.id AS barco_id,
+                        pr_alvo.valor
+                    FROM 
+                        barco_seminovo bs_alvo
+                        LEFT JOIN preco pr_alvo ON bs_alvo.preco_id = pr_alvo.id
+                    WHERE 
+                        bs_alvo.id = $1
+                ) alvo
+            WHERE 
+                bs.id != alvo.barco_id
+            ORDER BY 
+                diferenca_preco ASC
+            LIMIT 3;
+            `, [idSeminovo])
+            return result
+        } catch (error:any) {
+            throw new CustomError(`Repository level error: BarcoSeminovoRepository:getRelatedSeminovos: ${error.message}`, 500)
+        }
+        
     }
 
 
