@@ -1,9 +1,9 @@
 import { Propulsao } from "../../types/Propulsao.ts"
-import { validateId, validateString } from "../../util/validationUtil.ts"
+import { validateIntegerPositiveNumber, validateString } from "../../util/validationUtil.ts"
 
 export class PropulsaoOutputVO {
     private opcao!: string
-    private id?: number
+    private id!: number
     constructor(
 
     ) { }

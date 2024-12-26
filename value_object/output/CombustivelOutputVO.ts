@@ -1,10 +1,10 @@
 import { CustomError } from "../../infra/CustoError.ts"
 import { Combustivel } from "../../types/Combustivel.ts"
-import { characterLimit, validateId } from "../../util/validationUtil.ts"
+import { characterLimit, validateIntegerPositiveNumber } from "../../util/validationUtil.ts"
 
 export class CombustivelOutputVO {
     private opcao!: string
-    private id?: number
+    private id!: number
     constructor(
 
     ) { }

@@ -1,10 +1,10 @@
 import { Modelo } from "../../types/Modelo.ts"
-import { characterLimit, validateId, validateString } from "../../util/validationUtil.ts"
+import { characterLimit, validateIntegerPositiveNumber, validateString } from "../../util/validationUtil.ts"
 
 export class ModeloOutputVO {
     private modelo!: string
     private marca?: string
-    private id?: number
+    private id!: number
     constructor(
 
     ) { }
@@ -15,7 +15,7 @@ export class ModeloOutputVO {
     setMarca(marca?: string) {
         this.marca = marca
     }
-    setId(id?: number) {
+    setId(id: number) {
         this.id = id
     }
     extractData():Modelo{
