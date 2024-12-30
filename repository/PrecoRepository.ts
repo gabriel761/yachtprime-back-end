@@ -1,6 +1,6 @@
-import { CustomError } from "../infra/CustoError.ts";
-import db from "../infra/database.ts";
-import { Preco } from "../types/Preco.ts";
+import { CustomError } from "../infra/CustoError.js";
+import db from "../infra/database.js";
+import { Preco } from "../types/Preco.js";
 export class PrecoRepository {
     async insertPreco(valor: number, IdMoeda: number) {
         const result = await db.one("INSERT INTO preco(valor, moeda_id) VALUES($1,$2) RETURNING id", [valor, IdMoeda]);

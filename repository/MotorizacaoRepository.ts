@@ -1,6 +1,6 @@
-import { CustomError } from "../infra/CustoError.ts";
-import db from "../infra/database.ts";
-import { Motorizacao } from "../types/Motorizacao.ts";
+import { CustomError } from "../infra/CustoError.js";
+import db from "../infra/database.js";
+import { Motorizacao } from "../types/Motorizacao.js";
 
 export class MotorizacaoRepository {
     async insertMotorizacao(motorizacao: Motorizacao, idMotorizacao: number) {

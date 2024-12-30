@@ -1,5 +1,5 @@
-import { PrecoModel } from "../models/PrecoModel.ts"
-import { MoedaRepository } from "../repository/MoedaRepository.ts"
+import { PrecoModel } from "../models/PrecoModel.js"
+import { MoedaRepository } from "../repository/MoedaRepository.js"
 
 const precoModel = new PrecoModel()
 

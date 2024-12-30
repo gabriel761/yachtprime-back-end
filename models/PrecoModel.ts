@@ -1,9 +1,9 @@
 
-import { MoedaRepository } from "../repository/MoedaRepository.ts";
-import { PrecoRepository } from "../repository/PrecoRepository.ts";
-import { Moeda } from "../types/Moeda.ts";
-import { Preco } from "../types/Preco.ts";
-import { PrecoInputVO } from "../value_object/input/PrecoInputVO.ts";
+import { MoedaRepository } from "../repository/MoedaRepository.js";
+import { PrecoRepository } from "../repository/PrecoRepository.js";
+import { Moeda } from "../types/Moeda.js";
+import { Preco } from "../types/Preco.js";
+import { PrecoInputVO } from "../value_object/input/PrecoInputVO.js";
 
 
 type PrecoDatabase = {

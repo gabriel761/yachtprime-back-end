@@ -1,11 +1,11 @@
 
 
-import { CustomError } from "../infra/CustoError.ts"
-import { ImagemRepository } from "../repository/ImagemRepository.ts"
-import { Imagem } from "../types/Imagem.ts"
-import { ImagemInputVO } from "../value_object/input/ImagemInputVO.ts"
-import { ImagemOutputVO } from "../value_object/output/ImagemOutputVO.ts"
-import { FirebaseModel } from "./external/FirebaseModel.ts"
+import { CustomError } from "../infra/CustoError.js"
+import { ImagemRepository } from "../repository/ImagemRepository.js"
+import { Imagem } from "../types/Imagem.js"
+import { ImagemInputVO } from "../value_object/input/ImagemInputVO.js"
+import { ImagemOutputVO } from "../value_object/output/ImagemOutputVO.js"
+import { FirebaseModel } from "./external/FirebaseModel.js"
 
 interface imagemDatabase {
     imagem_id: number,

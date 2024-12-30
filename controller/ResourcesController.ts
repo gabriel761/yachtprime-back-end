@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { ResourcesService } from "../service/ResourcesService.ts"
+import { ResourcesService } from "../service/ResourcesService.js"
 
 const resourcesService = new ResourcesService()
 export class ResourcesController {

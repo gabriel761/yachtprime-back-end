@@ -1,6 +1,6 @@
 
-import { CustomError } from "../infra/CustoError.ts"
-import { CombustivelRepository } from "../repository/CombustivelRepository.ts"
+import { CustomError } from "../infra/CustoError.js"
+import { CombustivelRepository } from "../repository/CombustivelRepository.js"
 
 export class CombustivelModel{
 

@@ -1,7 +1,7 @@
 
-import { ModeloMotorRepository } from "../repository/ModeloMotorRepository.ts"
-import { MotorizacaoRepository } from "../repository/MotorizacaoRepository.ts"
-import { Motorizacao } from "../types/Motorizacao.ts"
+import { ModeloMotorRepository } from "../repository/ModeloMotorRepository.js"
+import { MotorizacaoRepository } from "../repository/MotorizacaoRepository.js"
+import { Motorizacao } from "../types/Motorizacao.js"
 
 export class MotorizacaoModel {
     constructor() {

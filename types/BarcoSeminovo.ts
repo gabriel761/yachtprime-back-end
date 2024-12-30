@@ -1,11 +1,11 @@
-import { Cabine } from "./Cabine.ts";
-import { Combustivel } from "./Combustivel.ts";
-import { Imagem } from "./Imagem.ts";
-import { ItemSeminovo } from "./ItemSeminovo.ts";
-import { Modelo } from "./Modelo.ts";
-import { Motorizacao } from "./Motorizacao.ts";
-import { Preco } from "./Preco.ts";
-import { Propulsao } from "./Propulsao.ts";
+import { Cabine } from "./Cabine.js";
+import { Combustivel } from "./Combustivel.js";
+import { Imagem } from "./Imagem.js";
+import { ItemSeminovo } from "./ItemSeminovo.js";
+import { Modelo } from "./Modelo.js";
+import { Motorizacao } from "./Motorizacao.js";
+import { Preco } from "./Preco.js";
+import { Propulsao } from "./Propulsao.js";
 
 export type BarcoSeminovoOutput = {
     id?: number

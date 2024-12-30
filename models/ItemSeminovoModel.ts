@@ -1,8 +1,8 @@
 
-import { ItemSeminovoRepository } from "../repository/ItemSeminovoRepository.ts"
-import { ItemSeminovo } from "../types/ItemSeminovo.ts"
-import { ItemSeminovoInputVO } from "../value_object/input/ItemSeminovoInputVO.ts"
-import { ItemSeminovoOutputVO } from "../value_object/output/ItemSeminovoOutputVO.ts"
+import { ItemSeminovoRepository } from "../repository/ItemSeminovoRepository.js"
+import { ItemSeminovo } from "../types/ItemSeminovo.js"
+import { ItemSeminovoInputVO } from "../value_object/input/ItemSeminovoInputVO.js"
+import { ItemSeminovoOutputVO } from "../value_object/output/ItemSeminovoOutputVO.js"
 
 interface itemSeminovoDatabase {
     item_id: number,

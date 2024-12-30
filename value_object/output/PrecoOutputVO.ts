@@ -1,6 +1,6 @@
-import { CustomError } from "../../infra/CustoError.ts"
-import { Preco } from "../../types/Preco.ts"
-import { characterLimit, validateIntegerPositiveNumber, validateString } from "../../util/validationUtil.ts"
+import { CustomError } from "../../infra/CustoError.js"
+import { Preco } from "../../types/Preco.js"
+import { characterLimit, validateIntegerPositiveNumber, validateString } from "../../util/validationUtil.js"
 
 export class PrecoOutputVO {
     private id?: number

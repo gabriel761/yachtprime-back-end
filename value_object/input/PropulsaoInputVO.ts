@@ -1,5 +1,5 @@
-import { Propulsao } from "../../types/Propulsao.ts"
-import { validateIntegerPositiveNumber, validateString } from "../../util/validationUtil.ts"
+import { Propulsao } from "../../types/Propulsao.js"
+import { validateIntegerPositiveNumber, validateString } from "../../util/validationUtil.js"
 
 export class PropulsaoInputVO{
     private opcao!: string

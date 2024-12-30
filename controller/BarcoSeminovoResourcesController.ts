@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { BarcoSeminovoResourcesService } from '../service/BarcoSeminovoResourcesService.ts';
+import { BarcoSeminovoResourcesService } from '../service/BarcoSeminovoResourcesService.js';
 
 const barcoSeminovoResourcesService = new BarcoSeminovoResourcesService()
 

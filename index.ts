@@ -1,9 +1,9 @@
 import express from 'express';
-import seminovoRoute from './route/seminovoRotes.ts'
-import seminovoResourcesRoute from './route/seminovoResorcesRoutes.ts'
-import resourcesRoute from './route/resorcesRoutes.ts'
+import seminovoRoute from './route/seminovoRotes.js'
+import seminovoResourcesRoute from './route/seminovoResorcesRoutes.js'
+import resourcesRoute from './route/resorcesRoutes.js'
 import config from './config.js';
-import errorHandler from './infra/middlewares/errorHandler.ts';
+import errorHandler from './infra/middlewares/errorHandler.js';
 import cors from "cors"
 
 

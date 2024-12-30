@@ -1,5 +1,5 @@
-import { CustomError } from "../infra/CustoError.ts"
-import db from "../infra/database.ts"
+import { CustomError } from "../infra/CustoError.js"
+import db from "../infra/database.js"
 export class ImagemRepository {
     async getImagensByIdSeminovo(id: number) {
         const result = await db.query(`

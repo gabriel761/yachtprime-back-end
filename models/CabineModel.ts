@@ -1,6 +1,6 @@
 
-import { CabineRepository } from "../repository/CabineRepository.ts";
-import { Cabine } from "../types/Cabine.ts";
+import { CabineRepository } from "../repository/CabineRepository.js";
+import { Cabine } from "../types/Cabine.js";
 
 export class CabineModel {
     constructor() {

@@ -1,6 +1,6 @@
-import { CustomError } from "../../infra/CustoError.ts"
-import { ItemSeminovo } from "../../types/ItemSeminovo.ts"
-import { characterLimit, validateIntegerPositiveNumber, validateString } from "../../util/validationUtil.ts"
+import { CustomError } from "../../infra/CustoError.js"
+import { ItemSeminovo } from "../../types/ItemSeminovo.js"
+import { characterLimit, validateIntegerPositiveNumber, validateString } from "../../util/validationUtil.js"
 
 export class ItemSeminovoOutputVO {
     private item!: string

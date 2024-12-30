@@ -1,25 +1,25 @@
 
-import BarcoSeminovoRepository from "../repository/BarcoSeminovoRepository.ts";
-import { BarcoSeminovoDatabase, BarcoSeminovoFilters, BarcoSeminovoFrontEndList, BarcoSeminovoInput, BarcoSeminovoInputWithId, BarcoSeminovoRelated } from "../types/BarcoSeminovo.ts";
-import { BarcoSeminovoOutput } from "../types/BarcoSeminovo.ts";
-import { Imagem } from "../types/Imagem.ts";
-import { ItemSeminovo } from "../types/ItemSeminovo.ts";
-import { BarcoSeminovoInputVO } from "../value_object/input/BarcoSeminovoInputVO.ts";
-import { BarcoSeminovoOutputVO } from "../value_object/output/BarcoSeminovoOutputVO.ts";
-import { CabinesOutputVO } from "../value_object/output/CabinesOutputVO.ts";
-import { CombustivelOutputVO } from "../value_object/output/CombustivelOutputVO.ts";
-import { ModeloOutputVO } from "../value_object/output/ModeloOutputVO.ts";
-import { MotorizacaoOutputVO } from "../value_object/output/MotorizacaoOutputVO.ts";
-import { PrecoOutputVO } from "../value_object/output/PrecoOutputVO.ts";
-import { PropulsaoOutputVO } from "../value_object/output/PropulsaoOutputVO.ts";
-import { CabinesInputVO } from "../value_object/input/CabinesInputVO.ts";
-import { CombustivelInputVO } from "../value_object/input/CombustivelInputVO.ts";
-import { ModeloInputVO } from "../value_object/input/ModeloInputVO.ts";
-import { MotorizacaoInputVO } from "../value_object/input/MotorizacaoInputVO.ts";
-import { PrecoInputVO } from "../value_object/input/PrecoInputVO.ts";
-import { PropulsaoInputVO } from "../value_object/input/PropulsaoInputVO.ts";
-import { CustomError } from "../infra/CustoError.ts";
-import { modelos } from "../test/mocks/modelos.ts";
+import BarcoSeminovoRepository from "../repository/BarcoSeminovoRepository.js";
+import { BarcoSeminovoDatabase, BarcoSeminovoFilters, BarcoSeminovoFrontEndList, BarcoSeminovoInput, BarcoSeminovoInputWithId, BarcoSeminovoRelated } from "../types/BarcoSeminovo.js";
+import { BarcoSeminovoOutput } from "../types/BarcoSeminovo.js";
+import { Imagem } from "../types/Imagem.js";
+import { ItemSeminovo } from "../types/ItemSeminovo.js";
+import { BarcoSeminovoInputVO } from "../value_object/input/BarcoSeminovoInputVO.js";
+import { BarcoSeminovoOutputVO } from "../value_object/output/BarcoSeminovoOutputVO.js";
+import { CabinesOutputVO } from "../value_object/output/CabinesOutputVO.js";
+import { CombustivelOutputVO } from "../value_object/output/CombustivelOutputVO.js";
+import { ModeloOutputVO } from "../value_object/output/ModeloOutputVO.js";
+import { MotorizacaoOutputVO } from "../value_object/output/MotorizacaoOutputVO.js";
+import { PrecoOutputVO } from "../value_object/output/PrecoOutputVO.js";
+import { PropulsaoOutputVO } from "../value_object/output/PropulsaoOutputVO.js";
+import { CabinesInputVO } from "../value_object/input/CabinesInputVO.js";
+import { CombustivelInputVO } from "../value_object/input/CombustivelInputVO.js";
+import { ModeloInputVO } from "../value_object/input/ModeloInputVO.js";
+import { MotorizacaoInputVO } from "../value_object/input/MotorizacaoInputVO.js";
+import { PrecoInputVO } from "../value_object/input/PrecoInputVO.js";
+import { PropulsaoInputVO } from "../value_object/input/PropulsaoInputVO.js";
+import { CustomError } from "../infra/CustoError.js";
+import { modelos } from "../test/mocks/modelos.js";
 
 export class BarcoSeminovoModel {
    

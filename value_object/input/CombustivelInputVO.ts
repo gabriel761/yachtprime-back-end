@@ -1,6 +1,6 @@
-import { CustomError } from "../../infra/CustoError.ts"
-import { Combustivel } from "../../types/Combustivel.ts"
-import { characterLimit, validateIntegerPositiveNumber, validateString } from "../../util/validationUtil.ts"
+import { CustomError } from "../../infra/CustoError.js"
+import { Combustivel } from "../../types/Combustivel.js"
+import { characterLimit, validateIntegerPositiveNumber, validateString } from "../../util/validationUtil.js"
 
 export class CombustivelInputVO {
     private opcao!: string

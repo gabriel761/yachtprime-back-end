@@ -1,6 +1,6 @@
-import { CustomError } from "../infra/CustoError.ts";
-import db from "../infra/database.ts";
-import { Cabine } from "../types/Cabine.ts";
+import { CustomError } from "../infra/CustoError.js";
+import db from "../infra/database.js";
+import { Cabine } from "../types/Cabine.js";
 
 export class CabineRepository {
     async insertCabine(cabine: Cabine) {

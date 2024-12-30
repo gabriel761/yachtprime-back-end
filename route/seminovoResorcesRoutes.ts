@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express';
-import { BarcoSeminovoResourcesController } from '../controller/BarcoSeminovoResourcesController.ts';
+import { BarcoSeminovoResourcesController } from '../controller/BarcoSeminovoResourcesController.js';
 
 const router = express.Router();
 const barcoSeminovoResourcesController = new BarcoSeminovoResourcesController() 

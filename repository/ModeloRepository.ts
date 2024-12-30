@@ -1,6 +1,6 @@
-import { CustomError } from "../infra/CustoError.ts";
-import db from "../infra/database.ts";
-import { Modelo } from "../types/Modelo.ts";
+import { CustomError } from "../infra/CustoError.js";
+import db from "../infra/database.js";
+import { Modelo } from "../types/Modelo.js";
 
 export class ModeloRepository {
    async getIdModeloByName(modelo:string){

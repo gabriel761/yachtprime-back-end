@@ -1,6 +1,6 @@
-import { CustomError } from "../infra/CustoError.ts";
-import db from "../infra/database.ts"
-import { ItemSeminovo } from "../types/ItemSeminovo.ts";
+import { CustomError } from "../infra/CustoError.js";
+import db from "../infra/database.js"
+import { ItemSeminovo } from "../types/ItemSeminovo.js";
 export class ItemSeminovoRepository {
     async getItensSeminovoByIdSeminovo(id: number) {
             const result = await db.query(`

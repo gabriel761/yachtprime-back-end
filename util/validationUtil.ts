@@ -1,4 +1,4 @@
-import { CustomError } from "../infra/CustoError.ts"
+import { CustomError } from "../infra/CustoError.js"
 
 export const characterLimit = (proprety: string, propretyName:string, limit: number, className: string) =>{
     const firstLeter = proprety.charAt(0).toUpperCase()

@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
-import { BarcoSeminovoController } from '../controller/BarcoSeminovoController.ts';
-import BarcoSeminovoService from '../service/BarcoSeminovoService.ts';
-import BarcoSeminovoRepository from '../repository/BarcoSeminovoRepository.ts';
+import { BarcoSeminovoController } from '../controller/BarcoSeminovoController.js';
+import BarcoSeminovoService from '../service/BarcoSeminovoService.js';
+import BarcoSeminovoRepository from '../repository/BarcoSeminovoRepository.js';
 
 const router = express.Router();
 const barcoSeminovoController = new BarcoSeminovoController(new BarcoSeminovoService)

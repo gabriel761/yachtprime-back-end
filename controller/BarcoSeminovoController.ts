@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
-import BarcoSeminovoService from '../service/BarcoSeminovoService.ts';
-import { validateIntegerPositiveNumber } from '../util/validationUtil.ts';
-import { CustomError } from '../infra/CustoError.ts';
-import { BarcoSeminovoFilters, BarcoSeminovoInput, BarcoSeminovoInputWithId } from '../types/BarcoSeminovo.ts';
-import { FirebaseModel } from '../models/external/FirebaseModel.ts';
-import { convertStringToBoolean } from '../util/transformationUtil.ts';
+import BarcoSeminovoService from '../service/BarcoSeminovoService.js';
+import { validateIntegerPositiveNumber } from '../util/validationUtil.js';
+import { CustomError } from '../infra/CustoError.js';
+import { BarcoSeminovoFilters, BarcoSeminovoInput, BarcoSeminovoInputWithId } from '../types/BarcoSeminovo.js';
+import { FirebaseModel } from '../models/external/FirebaseModel.js';
+import { convertStringToBoolean } from '../util/transformationUtil.js';
 
 
 

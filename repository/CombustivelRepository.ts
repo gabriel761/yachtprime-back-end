@@ -1,6 +1,6 @@
-import { CustomError } from "../infra/CustoError.ts";
-import db from "../infra/database.ts";
-import { Combustivel } from "../types/Combustivel.ts";
+import { CustomError } from "../infra/CustoError.js";
+import db from "../infra/database.js";
+import { Combustivel } from "../types/Combustivel.js";
 
 export class CombustivelRepository {
     async getIdCombustivelByName(opcao: string) {

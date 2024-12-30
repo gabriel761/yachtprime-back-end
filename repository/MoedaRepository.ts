@@ -1,6 +1,6 @@
-import { CustomError } from "../infra/CustoError.ts";
-import db from "../infra/database.ts";
-import { Moeda, MoedaDatabase } from "../types/Moeda.ts";
+import { CustomError } from "../infra/CustoError.js";
+import db from "../infra/database.js";
+import { Moeda, MoedaDatabase } from "../types/Moeda.js";
 
 export class MoedaRepository {
     async getIdMoedaBySimbolo(moedaSimbolo:string){

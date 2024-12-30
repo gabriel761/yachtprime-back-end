@@ -1,6 +1,6 @@
-import { CustomError } from "../../infra/CustoError.ts"
-import { Motorizacao } from "../../types/Motorizacao.ts"
-import { characterLimit, validateIntegerPositiveNumber, validateString, validateYear } from "../../util/validationUtil.ts"
+import { CustomError } from "../../infra/CustoError.js"
+import { Motorizacao } from "../../types/Motorizacao.js"
+import { characterLimit, validateIntegerPositiveNumber, validateString, validateYear } from "../../util/validationUtil.js"
 
 export class MotorizacaoInputVO {
     private id?: number

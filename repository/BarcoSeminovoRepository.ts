@@ -1,7 +1,7 @@
-import { CustomError } from "../infra/CustoError.ts";
-import db from "../infra/database.ts";
-import { BarcoSeminovoDatabase, BarcoSeminovoFilters, BarcoSeminovoInput, BarcoSeminovoInputWithId } from "../types/BarcoSeminovo.ts";
-import config from "../config.ts";
+import { CustomError } from "../infra/CustoError.js";
+import db from "../infra/database.js";
+import { BarcoSeminovoDatabase, BarcoSeminovoFilters, BarcoSeminovoInput, BarcoSeminovoInputWithId } from "../types/BarcoSeminovo.js";
+import config from "../config.js";
 
 type ListBarcoSeminovoFrontEndDB = {
     id: number,

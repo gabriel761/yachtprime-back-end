@@ -1,5 +1,5 @@
-import { CustomError } from "../../infra/CustoError.ts";
-import { admin } from "../../infra/firebase/firebase-config.ts"
+import { CustomError } from "../../infra/CustoError.js";
+import { admin } from "../../infra/firebase/firebase-config.js"
 
 export class FirebaseModel{
     async deleteImage(folderName:string, fileName:string){

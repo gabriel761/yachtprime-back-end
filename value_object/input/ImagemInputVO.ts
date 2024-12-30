@@ -1,6 +1,6 @@
-import { CustomError } from "../../infra/CustoError.ts"
-import { Imagem } from "../../types/Imagem.ts"
-import { characterLimit, validateIntegerPositiveNumber, validateString } from "../../util/validationUtil.ts"
+import { CustomError } from "../../infra/CustoError.js"
+import { Imagem } from "../../types/Imagem.js"
+import { characterLimit, validateIntegerPositiveNumber, validateString } from "../../util/validationUtil.js"
 
 export class ImagemInputVO {
     private id?: number

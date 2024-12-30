@@ -1,13 +1,13 @@
-import { CustomError } from "../../infra/CustoError.ts";
-import { BarcoSeminovoOutput } from "../../types/BarcoSeminovo.ts";
-import { Cabine } from "../../types/Cabine.ts";
-import { Combustivel } from "../../types/Combustivel.ts";
-import { Imagem } from "../../types/Imagem.ts";
-import { ItemSeminovo } from "../../types/ItemSeminovo.ts";
-import { Modelo } from "../../types/Modelo.ts";
-import { Motorizacao } from "../../types/Motorizacao.ts";
-import { Preco } from "../../types/Preco.ts";
-import { Propulsao } from "../../types/Propulsao.ts";
+import { CustomError } from "../../infra/CustoError.js";
+import { BarcoSeminovoOutput } from "../../types/BarcoSeminovo.js";
+import { Cabine } from "../../types/Cabine.js";
+import { Combustivel } from "../../types/Combustivel.js";
+import { Imagem } from "../../types/Imagem.js";
+import { ItemSeminovo } from "../../types/ItemSeminovo.js";
+import { Modelo } from "../../types/Modelo.js";
+import { Motorizacao } from "../../types/Motorizacao.js";
+import { Preco } from "../../types/Preco.js";
+import { Propulsao } from "../../types/Propulsao.js";
 
 export class BarcoSeminovoOutputVO {
     private id?: number

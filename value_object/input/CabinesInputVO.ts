@@ -1,6 +1,6 @@
-import { CustomError } from "../../infra/CustoError.ts"
-import { Cabine } from "../../types/Cabine.ts"
-import { characterLimit, validateIntegerPositiveNumber, validateYear } from "../../util/validationUtil.ts"
+import { CustomError } from "../../infra/CustoError.js"
+import { Cabine } from "../../types/Cabine.js"
+import { characterLimit, validateIntegerPositiveNumber, validateYear } from "../../util/validationUtil.js"
 
 export class CabinesInputVO {
     private id?:number

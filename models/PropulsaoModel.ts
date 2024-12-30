@@ -1,6 +1,6 @@
 
-import { CustomError } from "../infra/CustoError.ts"
-import { PropulsaoRepository } from "../repository/PropulsaoRepository.ts"
+import { CustomError } from "../infra/CustoError.js"
+import { PropulsaoRepository } from "../repository/PropulsaoRepository.js"
 
 export class PropulsaoModel {
 

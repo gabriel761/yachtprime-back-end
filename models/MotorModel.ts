@@ -1,4 +1,4 @@
-import { ModeloMotorRepository } from "../repository/ModeloMotorRepository.ts";
+import { ModeloMotorRepository } from "../repository/ModeloMotorRepository.js";
 
 export class MotorModel {
     async listMotor(motorRepository: ModeloMotorRepository){

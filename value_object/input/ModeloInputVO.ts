@@ -1,5 +1,5 @@
-import { Modelo } from "../../types/Modelo.ts"
-import { characterLimit, validateIntegerPositiveNumber, validateString } from "../../util/validationUtil.ts"
+import { Modelo } from "../../types/Modelo.js"
+import { characterLimit, validateIntegerPositiveNumber, validateString } from "../../util/validationUtil.js"
 
 export class ModeloInputVO{
     private modelo!: string

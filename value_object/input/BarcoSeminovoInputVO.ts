@@ -1,14 +1,14 @@
-import { CustomError } from "../../infra/CustoError.ts";
-import { BarcoSeminovoInput, BarcoSeminovoInputWithId } from "../../types/BarcoSeminovo.ts";
-import { Cabine } from "../../types/Cabine.ts";
-import { Combustivel } from "../../types/Combustivel.ts";
-import { Imagem } from "../../types/Imagem.ts";
-import { ItemSeminovo } from "../../types/ItemSeminovo.ts";
-import { Modelo } from "../../types/Modelo.ts";
-import { Motorizacao } from "../../types/Motorizacao.ts";
-import { Preco } from "../../types/Preco.ts";
-import { Propulsao } from "../../types/Propulsao.ts";
-import { characterLimit, validateIntegerPositiveNumber, validateString, validateYear } from "../../util/validationUtil.ts";
+import { CustomError } from "../../infra/CustoError.js";
+import { BarcoSeminovoInput, BarcoSeminovoInputWithId } from "../../types/BarcoSeminovo.js";
+import { Cabine } from "../../types/Cabine.js";
+import { Combustivel } from "../../types/Combustivel.js";
+import { Imagem } from "../../types/Imagem.js";
+import { ItemSeminovo } from "../../types/ItemSeminovo.js";
+import { Modelo } from "../../types/Modelo.js";
+import { Motorizacao } from "../../types/Motorizacao.js";
+import { Preco } from "../../types/Preco.js";
+import { Propulsao } from "../../types/Propulsao.js";
+import { characterLimit, validateIntegerPositiveNumber, validateString, validateYear } from "../../util/validationUtil.js";
 
 export class BarcoSeminovoInputVO {
     private id!: number

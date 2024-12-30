@@ -1,6 +1,6 @@
-import { CustomError } from "../infra/CustoError.ts";
-import db from "../infra/database.ts";
-import { Propulsao } from "../types/Propulsao.ts";
+import { CustomError } from "../infra/CustoError.js";
+import db from "../infra/database.js";
+import { Propulsao } from "../types/Propulsao.js";
 
 export class PropulsaoRepository {
     async getIdPropulsaoByName(opcao: string) {
