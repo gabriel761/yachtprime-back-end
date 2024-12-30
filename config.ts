@@ -1,4 +1,7 @@
 import env from 'env-var'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const config = {
     limitQuery: env.get('LIMITQUERY').asInt(),
