@@ -10,7 +10,7 @@ import cors from "cors"
 const app = express()
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: ['http://localhost:3000', 'https://yacht-prime-dashboard-mvy5.vercel.app'] }));
+app.use(cors({ origin: ['http://localhost:3000', 'https://yacht-prime-dashboard-mvy5.vercel.app', 'https://yacht-prime-front-end.vercel.app'] }));
 
 app.use('/barco', seminovoRoute);
 app.use('/resources', resourcesRoute);
