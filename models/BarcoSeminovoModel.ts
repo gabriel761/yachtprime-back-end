@@ -20,24 +20,29 @@ import { PrecoInputVO } from "../value_object/input/PrecoInputVO.js";
 import { PropulsaoInputVO } from "../value_object/input/PropulsaoInputVO.js";
 import { CustomError } from "../infra/CustoError.js";
 import { modelos } from "../test/mocks/modelos.js";
+import { converterPrecoBrasilParaEUA, converterPrecoEUAParaBrasil } from "../util/transformationUtil.js";
 
 export class BarcoSeminovoModel {
-   
+
     async getBarcoSeminovo(idBarcoSeminovo: number, barcoSeminovoRepository: BarcoSeminovoRepository): Promise<BarcoSeminovoDatabase> {
         const barcoSeminovoDB = await barcoSeminovoRepository.getBarcoSeminovo(idBarcoSeminovo)
-        return barcoSeminovoDB 
+        return barcoSeminovoDB
     }
 
-    async listBarcoSeminovoDashboard(barcoSeminovoRepository: BarcoSeminovoRepository){
-       const result = await barcoSeminovoRepository.listBarcoSeminovoDashboard()
-       return result
+    async listBarcoSeminovoDashboard(barcoSeminovoRepository: BarcoSeminovoRepository) {
+        const result = await barcoSeminovoRepository.listBarcoSeminovoDashboard()
+        const updatedList = result.map((seminovo) => {
+            seminovo.valor = converterPrecoEUAParaBrasil(seminovo.valor)
+            return seminovo
+        })
+        return updatedList
     }
 
-    async listBarcoSeminovoFrontEnd(filters:BarcoSeminovoFilters,barcoSeminovoRepository: BarcoSeminovoRepository) {
+    async listBarcoSeminovoFrontEnd(filters: BarcoSeminovoFilters, barcoSeminovoRepository: BarcoSeminovoRepository) {
         const result = await barcoSeminovoRepository.listBarcoSeminovoFrontEnd(filters)
-        
-        const barcoSeminovoListFrontEnd = result.map((item:any):BarcoSeminovoFrontEndList => {
-            const barcoSeminovoForList:BarcoSeminovoFrontEndList = {
+
+        const barcoSeminovoListFrontEnd = result.map((item: any): BarcoSeminovoFrontEndList => {
+            const barcoSeminovoForList: BarcoSeminovoFrontEndList = {
                 id: item.id,
                 imagem: item.imagem,
                 modelo: item.modelo,
@@ -52,18 +57,18 @@ export class BarcoSeminovoModel {
             }
             return barcoSeminovoForList
         })
-        if(!filters.page){
+        if (!filters.page) {
             return {
                 data: barcoSeminovoListFrontEnd
             }
         }
         return {
-          data:  barcoSeminovoListFrontEnd,
-          totalPages: await barcoSeminovoRepository.getTotalPagesForPagination()
+            data: barcoSeminovoListFrontEnd,
+            totalPages: await barcoSeminovoRepository.getTotalPagesForPagination()
         }
     }
 
-    async getRelatedSeminovos(idSeminovo: number, barcoSeminovoRepository: BarcoSeminovoRepository): Promise<BarcoSeminovoRelated[]>{
+    async getRelatedSeminovos(idSeminovo: number, barcoSeminovoRepository: BarcoSeminovoRepository): Promise<BarcoSeminovoRelated[]> {
         const result = await barcoSeminovoRepository.getRelatedSeminovos(idSeminovo)
         const barcoSeminovosRelatedList = result.map((item): BarcoSeminovoRelated => {
             const barcoSeminovoRelated: BarcoSeminovoRelated = {
@@ -76,8 +81,8 @@ export class BarcoSeminovoModel {
         return barcoSeminovosRelatedList
     }
 
-    async getIdsByIdSeminovo (idSeminovo: number | undefined, barcoSeminovoRepository: BarcoSeminovoRepository){
-        if(!idSeminovo){
+    async getIdsByIdSeminovo(idSeminovo: number | undefined, barcoSeminovoRepository: BarcoSeminovoRepository) {
+        if (!idSeminovo) {
             throw new CustomError("Erro: idSeminovo não encontrado na requisição ", 400);
         }
         const result = await barcoSeminovoRepository.getIdsByIdSeminovo(idSeminovo)
@@ -88,20 +93,22 @@ export class BarcoSeminovoModel {
         }
         return structuredResult
     }
-    async saveBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoInput, idMotorizacao: number, idCabine: number, idPreco: number, barcoSeminovoRepository: BarcoSeminovoRepository){
+    async saveBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoInput, idMotorizacao: number, idCabine: number, idPreco: number, barcoSeminovoRepository: BarcoSeminovoRepository) {
         const barcoSeminovoId = await barcoSeminovoRepository.insertBarcoSeminovo(barcoSeminovoDTO, idMotorizacao, idCabine, idPreco)
         return barcoSeminovoId
     }
 
     async updateBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoInputWithId, barcoSeminovoRepository: BarcoSeminovoRepository) {
-     await barcoSeminovoRepository.updateBarcoSeminovo(barcoSeminovoDTO,)
+        await barcoSeminovoRepository.updateBarcoSeminovo(barcoSeminovoDTO,)
     }
 
-    async deleteBarcoSeminovo(idBarcoSeminovo:number, barcoSeminovoRepository: BarcoSeminovoRepository){
-      await barcoSeminovoRepository.deleteBarcoSeminovo(idBarcoSeminovo)
+    async deleteBarcoSeminovo(idBarcoSeminovo: number, barcoSeminovoRepository: BarcoSeminovoRepository) {
+        await barcoSeminovoRepository.deleteBarcoSeminovo(idBarcoSeminovo)
     }
 
-    buildBarcoSeminovoOutputObject(barcoSeminovoDB:BarcoSeminovoDatabase, barcoseminovoOutputVO: BarcoSeminovoOutputVO, imagens: Imagem[], itens: ItemSeminovo[], modeloVO: ModeloOutputVO, motorizacaoVO: MotorizacaoOutputVO, combustivelVO: CombustivelOutputVO, propulsaoVO: PropulsaoOutputVO, cabinesVO: CabinesOutputVO, precoVO: PrecoOutputVO):BarcoSeminovoOutput{
+    buildBarcoSeminovoOutputObject(barcoSeminovoDB: BarcoSeminovoDatabase, barcoseminovoOutputVO: BarcoSeminovoOutputVO, imagens: Imagem[], itens: ItemSeminovo[], modeloVO: ModeloOutputVO, motorizacaoVO: MotorizacaoOutputVO, combustivelVO: CombustivelOutputVO, propulsaoVO: PropulsaoOutputVO, cabinesVO: CabinesOutputVO, precoVO: PrecoOutputVO): BarcoSeminovoOutput {
+
+        barcoSeminovoDB.preco = converterPrecoEUAParaBrasil(barcoSeminovoDB.preco)
         modeloVO.setModelo(barcoSeminovoDB.modelo_modelo)
         modeloVO.setMarca(barcoSeminovoDB.marca_modelo)
         modeloVO.setId(barcoSeminovoDB.id_modelo)
@@ -140,7 +147,7 @@ export class BarcoSeminovoModel {
         return barcoseminovoOutputVO.extractData()
     }
     buildBarcoSeminovoInputObject(barcoSeminovoInput: BarcoSeminovoInput, barcoseminovoInputVO: BarcoSeminovoInputVO, imagens: Imagem[], itens: ItemSeminovo[], modeloVO: ModeloInputVO, motorizacaoVO: MotorizacaoInputVO, combustivelVO: CombustivelInputVO, propulsaoVO: PropulsaoInputVO, cabinesVO: CabinesInputVO, precoVO: PrecoInputVO): BarcoSeminovoOutput {
-
+        barcoSeminovoInput.preco.valor = converterPrecoBrasilParaEUA(barcoSeminovoInput.preco.valor)
         modeloVO.setId(barcoSeminovoInput.modelo.id)
         modeloVO.setModelo(barcoSeminovoInput.modelo.modelo)
         modeloVO.setMarca(barcoSeminovoInput.modelo.marca)

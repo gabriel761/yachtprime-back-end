@@ -1,6 +1,6 @@
 import { CustomError } from "../infra/CustoError.js";
 import db from "../infra/database.js";
-import { BarcoSeminovoDatabase, BarcoSeminovoFilters, BarcoSeminovoInput, BarcoSeminovoInputWithId } from "../types/BarcoSeminovo.js";
+import { BarcoSeminovoDashboardList, BarcoSeminovoDatabase, BarcoSeminovoFilters, BarcoSeminovoInput, BarcoSeminovoInputWithId } from "../types/BarcoSeminovo.js";
 import config from "../config.js";
 
 type ListBarcoSeminovoFrontEndDB = {
@@ -76,7 +76,7 @@ WHERE
         }
         return result
     }
-    async listBarcoSeminovoDashboard() {
+    async listBarcoSeminovoDashboard():Promise<any[]> {
         const result = await db.query(`
         SELECT 
             bs.id AS id,
