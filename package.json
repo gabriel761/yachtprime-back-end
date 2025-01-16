@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsc",
-    "dev": "npx tsx watch --env-file .env index.js",
+    "dev": "set NODE_ENV=development&&  npx tsx watch --env-file .env index.js ",
     "test": "vitest",
     "database": "psql -h localhost -U postgres -d yacht-prime -p 5433",
     "database-production": "psql -h junction.proxy.rlwy.net -U postgres -d railway -p 57446"

@@ -27,7 +27,7 @@ const cabines = {
 }
 const preco = {
     moeda: "$",
-    valor: 5000000.00
+    valor: '5.000.000,00'
 }
 const imagens = [
     {

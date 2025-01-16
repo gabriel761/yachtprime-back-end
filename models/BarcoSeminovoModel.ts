@@ -109,6 +109,7 @@ export class BarcoSeminovoModel {
     buildBarcoSeminovoOutputObject(barcoSeminovoDB: BarcoSeminovoDatabase, barcoseminovoOutputVO: BarcoSeminovoOutputVO, imagens: Imagem[], itens: ItemSeminovo[], modeloVO: ModeloOutputVO, motorizacaoVO: MotorizacaoOutputVO, combustivelVO: CombustivelOutputVO, propulsaoVO: PropulsaoOutputVO, cabinesVO: CabinesOutputVO, precoVO: PrecoOutputVO): BarcoSeminovoOutput {
 
         barcoSeminovoDB.preco = converterPrecoEUAParaBrasil(barcoSeminovoDB.preco)
+        console.log("preço depois da conversão:", barcoSeminovoDB.preco)
         modeloVO.setModelo(barcoSeminovoDB.modelo_modelo)
         modeloVO.setMarca(barcoSeminovoDB.marca_modelo)
         modeloVO.setId(barcoSeminovoDB.id_modelo)
@@ -126,6 +127,7 @@ export class BarcoSeminovoModel {
         cabinesVO.setTripulacao(barcoSeminovoDB.capacidade_tripulacao)
         precoVO.setMoeda(barcoSeminovoDB.moeda_simbolo)
         precoVO.setValor(barcoSeminovoDB.preco)
+        console.log("preço no:", precoVO.extractData())
         barcoseminovoOutputVO.setId(barcoSeminovoDB.barco_id);
         barcoseminovoOutputVO.setModelo(modeloVO.extractData());
         barcoseminovoOutputVO.setNome(barcoSeminovoDB.nome_barco);
@@ -185,7 +187,7 @@ export class BarcoSeminovoModel {
         return barcoseminovoInputVO.extractData()
     }
     buildBarcoSeminovoInputObjectWithId(barcoSeminovoInput: BarcoSeminovoInput, barcoseminovoInputVO: BarcoSeminovoInputVO, imagens: Imagem[], itens: ItemSeminovo[], modeloVO: ModeloInputVO, motorizacaoVO: MotorizacaoInputVO, combustivelVO: CombustivelInputVO, propulsaoVO: PropulsaoInputVO, cabinesVO: CabinesInputVO, precoVO: PrecoInputVO, idSeminovo: number): BarcoSeminovoInputWithId {
-
+        barcoSeminovoInput.preco.valor = converterPrecoBrasilParaEUA(barcoSeminovoInput.preco.valor)
         modeloVO.setId(barcoSeminovoInput.modelo.id)
         modeloVO.setModelo(barcoSeminovoInput.modelo.modelo)
         modeloVO.setMarca(barcoSeminovoInput.modelo.marca)

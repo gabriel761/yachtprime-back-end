@@ -1,0 +1,324 @@
+{
+    "modelo": {
+        "type": "string",
+        "required": true,
+        "maxLength": 100,
+        "description": "Nome do modelo",
+        "enum": [
+            "predefined-models-list"
+        ]
+    },
+    "nome": {
+        "type": "string",
+        "required": false,
+        "maxLength": 100,
+        "description": "Nome do barco"
+    },
+    "ano": {
+        "type": "number",
+        "required": true,
+        "minimum": 1950,
+        "maximum": 2024,
+        "description": "Ano de fabricação"
+    },
+    "tamanho": {
+        "type": "number",
+        "required": true,
+        "format": "tinyint",
+        "description": "tamanho do barco em pés"
+    },
+    "preco": {
+        "type": "object",
+        "required": true,
+        "properties": {
+            "moeda": {
+                "type": "string",
+                "required": true,
+                "enum": [
+                    "dólar",
+                    "real"
+                ]
+            },
+            "valor": {
+                "type": "number",
+                "required": true,
+                "format": "decimal(10,2)"
+            }
+        }
+    },
+    "passageiros": {
+        "type": "object",
+        "required": true,
+        "properties": {
+            "dia": {
+                "type": "number",
+                "required": true,
+                "maximum": 999
+            },
+            "noite": {
+                "type": "number",
+                "required": false,
+                "maximum": 999
+            }
+        }
+    },
+    "duracaoPasseio": {
+        "type": "number",
+        "required": true,
+        "maximum": 24
+    },
+    "tipoPasseio": {
+        "type": "string",
+        "required": true,
+        "enum": [
+            "day use",
+            "day use e pernoite"
+        ]
+    },
+    "pernoite": {
+        "type": "string",
+        "required": false,
+        "enum": [
+            "não",
+            "sob consulta"
+        ]
+    },
+    "petFriendly": {
+        "type": "string",
+        "required": true,
+        "enum": [
+            "não",
+            "pequeno porte",
+            "grande e pequeno porte"
+        ]
+    },
+    "embarquePrincipal": {
+        "type": "object",
+        "required": true,
+        "$ref": "#/definitions/endereco"
+    },
+    "embarqueAlternativo": {
+        "type": "object",
+        "required": false,
+        "properties": {
+            "endereco": {
+                "$ref": "#/definitions/endereco"
+            },
+            "taxaExtra": {
+                "type": "number"
+            }
+        }
+    },
+    "horarios": {
+        "type": "array",
+        "required": true,
+        "items": {
+            "type": "object",
+            "properties": {
+                "inicio": {
+                    "type": "object",
+                    "properties": {
+                        "horas": {
+                            "type": "number",
+                            "minimum": 1,
+                            "maximum": 23,
+                            "required": true
+                        },
+                        "minutos": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 59,
+                            "required": false
+                        }
+                    }
+                },
+                "fim": {
+                    "type": "object",
+                    "properties": {
+                        "horas": {
+                            "type": "number",
+                            "minimum": 1,
+                            "maximum": 23,
+                            "required": true
+                        },
+                        "minutos": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 59,
+                            "required": false
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "pontoEncontro": {
+        "type": "object",
+        "required": false,
+        "$ref": "#/definitions/endereco"
+    },
+    "itensDisponiveis": {
+        "type": "array",
+        "required": false,
+        "items": {
+            "type": "object",
+            "properties": {
+                "nome": {
+                    "type": "string",
+                    "required": true,
+                    "maxLength": 50
+                },
+                "quantidade": {
+                    "type": "number",
+                    "required": false,
+                    "format": "tinyint"
+                }
+            }
+        }
+    },
+    "itensLazer": {
+        "type": "array",
+        "required": false,
+        "items": {
+            "type": "object",
+            "properties": {
+                "nome": {
+                    "type": "string",
+                    "required": true,
+                    "maxLength": 50
+                },
+                "quantidade": {
+                    "type": "number",
+                    "required": false,
+                    "format": "tinyint"
+                }
+            }
+        }
+    },
+    "tripulacaoSkipper": {
+        "type": "string",
+        "required": true,
+        "enum": [
+            "tripulação inclusa",
+            "skipper incluso"
+        ]
+    },
+    "consumo": {
+        "type": "object",
+        "required": true,
+        "properties": {
+            "litrosHora": {
+                "type": "number",
+                "required": false,
+                "format": "tinyint"
+            },
+            "reaisHora": {
+                "type": "number",
+                "required": false,
+                "format": "decimal(10,2)"
+            }
+        }
+    },
+    "tipoCombustivel": {
+        "type": "object",
+        "required": true,
+        "properties": {
+            "opcao": {
+                "type": "string",
+                "required": true,
+                "enum": [
+                    "disel",
+                    "gasolina"
+                ]
+            }
+        }
+    },
+    "horaExtra": {
+        "type": "number",
+        "required": true,
+        "format": "decimal(10,2)"
+    },
+    "aluguelLancha": {
+        "type": "number",
+        "required": false,
+        "format": "decimal(10,2)"
+    },
+    "roteirosPrefixados": {
+        "type": "array",
+        "required": false,
+        "items": {
+            "type": "object",
+            "properties": {
+                "nome": {
+                    "type": "string",
+                    "required": true,
+                    "maxLength": 100
+                },
+                "preco": {
+                    "type": "number",
+                    "required": true,
+                    "format": "decimal(10,2)"
+                },
+                "dias": {
+                    "type": "string",
+                    "required": true,
+                    "enum": [
+                        "sábado, domingo e feriados",
+                        "dias de semana",
+                        "todos os dias",
+                        "sob consulta"
+                    ]
+                }
+            }
+        }
+    },
+    "roteirosLivres": {
+        "type": "string",
+        "required": true,
+        "enum": [
+            "não disponível",
+            "sob consulta"
+        ]
+    },
+    "condicoes": {
+        "type": "array",
+        "required": true,
+        "items": {
+            "type": "string",
+            "maxLength": 100
+        }
+    },
+    "taxaChurrasco": {
+        "type": "object",
+        "required": false,
+        "properties": {
+            "disponivel": {
+                "type": "boolean",
+                "required": false
+            },
+            "preco": {
+                "type": "number",
+                "required": true,
+                "format": "decimal(10,2)"
+            },
+            "mensagem": {
+                "type": "string",
+                "required": false
+            }
+        }
+    },
+    "modelosSemelhantes": {
+        "type": "array",
+        "required": true,
+        "minItems": 3,
+        "maxItems": 3,
+        "items": {
+            "type": "string"
+        }
+    },
+    "videoPromocional": {
+        "type": "string",
+        "required": false,
+        "maxLength": 500
+    }
+}

@@ -5,6 +5,7 @@ import resourcesRoute from './route/resorcesRoutes.js'
 import config from './config.js';
 import errorHandler from './infra/middlewares/errorHandler.js';
 import cors from "cors"
+import { decodeToken } from './infra/middlewares/decodeToken.js';
 
 
 const app = express()
@@ -15,6 +16,15 @@ app.use(cors({ origin: ['http://localhost:3000', 'https://yacht-prime-dashboard-
 app.use('/barco', seminovoRoute);
 app.use('/resources', resourcesRoute);
 app.use('/resources/seminovo', seminovoResourcesRoute);
+app.use('/user', decodeToken, (req, res, next) => {
+    try {
+        console.log("token", req.user)
+        res.status(200).end()
+    } catch (error) {
+        next() 
+    }
+   
+})
 
 
 app.use(errorHandler);

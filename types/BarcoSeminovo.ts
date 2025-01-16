@@ -4,7 +4,7 @@ import { Imagem } from "./Imagem.js";
 import { ItemSeminovo } from "./ItemSeminovo.js";
 import { Modelo } from "./Modelo.js";
 import { Motorizacao } from "./Motorizacao.js";
-import { Preco } from "./Preco.js";
+import { PrecoInput, PrecoOutput } from "./Preco.js";
 import { Propulsao } from "./Propulsao.js";
 
 export type BarcoSeminovoOutput = {
@@ -20,7 +20,7 @@ export type BarcoSeminovoOutput = {
     cabines: Cabine;
     procedencia: string;
     destaque?: string | null;
-    preco: Preco;
+    preco: PrecoOutput;
     imagens: Imagem[];
     equipadoCom: ItemSeminovo[];
     videoPromocional?: string | null;
@@ -40,7 +40,7 @@ export type BarcoSeminovoInput = {
     cabines: Cabine;
     procedencia: string;
     destaque?: string | null;
-    preco: Preco;
+    preco: PrecoInput;
     imagens: Imagem[];
     equipadoCom: ItemSeminovo[];
     videoPromocional?: string | null;
@@ -61,7 +61,7 @@ export type BarcoSeminovoInputWithId = {
     cabines: Cabine;
     procedencia: string;
     destaque?: string | null;
-    preco: Preco;
+    preco: PrecoInput;
     imagens: Imagem[];
     equipadoCom: ItemSeminovo[];
     videoPromocional?: string | null;

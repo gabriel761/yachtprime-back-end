@@ -1,51 +1,54 @@
- const motores = [
-    { id: 1, marca: "Caterpillar", modelo: "Caterpillar - - 1653HP - Diesel" },
-    { id: 2, marca: "Caterpillar", modelo: "Caterpillar 3106 - 350HP - Diesel" },
-    { id: 3, marca: "Caterpillar", modelo: "Caterpillar 3116 - 350HP - Diesel" },
-    { id: 4, marca: "Caterpillar", modelo: "Caterpillar 3126 - 420HP - Diesel" },
-    { id: 5, marca: "Caterpillar", modelo: "Caterpillar 3208 - 350HP - Diesel" },
-    { id: 6, marca: "Caterpillar", modelo: "Caterpillar 3408 - 585HP - Diesel" },
-    { id: 7, marca: "Caterpillar", modelo: "Caterpillar 3408 - 800HP - Diesel" },
-    { id: 8, marca: "Caterpillar", modelo: "Caterpillar 3412 - 1200HP - Diesel" },
-    { id: 9, marca: "Caterpillar", modelo: "Caterpillar 420 - 420HP - Diesel" },
-    { id: 10, marca: "Caterpillar", modelo: "Caterpillar 435 - 435HP - Diesel" },
-    { id: 11, marca: "Caterpillar", modelo: "Caterpillar 700 - 700HP - Diesel" },
-    { id: 12, marca: "Caterpillar", modelo: "Caterpillar 750 - 750HP - Diesel" },
-    { id: 13, marca: "Caterpillar", modelo: "Caterpillar C32 - 1675HP - Diesel" },
-    { id: 14, marca: "Caterpillar", modelo: "Caterpillar C32 ACERT V12 - 1825HP - Diesel" },
-    { id: 15, marca: "Caterpillar", modelo: "Caterpillar C9 - 575HP - Diesel" },
-    { id: 16, marca: "Caterpillar", modelo: "Caterpillar 1015 - 1015HP - Diesel" },
-    { id: 17, marca: "Caterpillar", modelo: "Caterpillar 1150 - 1150HP - Diesel" },
-    { id: 18, marca: "Caterpillar", modelo: "Caterpillar DI 1015 - 1015HP - Diesel" },
-    { id: 19, marca: "Cummins", modelo: "Cummins 150 - 150HP - Diesel" },
-    { id: 20, marca: "Cummins", modelo: "Cummins 480 - 480HP - Diesel" },
-    { id: 21, marca: "Cummins", modelo: "Cummins 5,9L - 425HP - Diesel" },
-    { id: 22, marca: "Cummins", modelo: "Cummins 500 - 500HP - Diesel" },
-    { id: 23, marca: "Cummins", modelo: "Cummins 600 - 600HP - Diesel" },
-    { id: 24, marca: "Cummins", modelo: "Cummins 6CT - 220HP - Diesel" },
-    { id: 25, marca: "Cummins", modelo: "Cummins Axus 350 - 350HP - Diesel" },
-    { id: 26, marca: "Cummins", modelo: "Cummins CMD ZEUS 380 - 364HP - Diesel" },
-    { id: 27, marca: "Cummins", modelo: "Cummins - 400HP - Diesel" },
-    { id: 28, marca: "Cummins", modelo: "Cummins 350 - 350HP - Diesel" },
-    { id: 29, marca: "Cummins", modelo: "Cummins QSB 8,3 600 CV - 600HP - Diesel" },
-    { id: 30, marca: "Cummins", modelo: "Cummins QSD 2.0L - 170HP - Diesel" },
-    { id: 31, marca: "Cummins", modelo: "Cummins NTA 855 - 500HP - Diesel" },
-    { id: 32, marca: "Cummins", modelo: "Cummins NTA 855 M3 - 420HP - Diesel" },
-    { id: 33, marca: "Cummins", modelo: "Cummins QSB - 435HP - Diesel" },
-    { id: 34, marca: "Cummins", modelo: "Cummins QSB 5.9 - 355HP - Diesel" },
-    { id: 35, marca: "Cummins", modelo: "Cummins QSD 4.2L - 270HP - Diesel" },
-    { id: 36, marca: "Detroit", modelo: "Detroit 8VF92 - 735HP - Diesel" },
-    { id: 37, marca: "Evinrude", modelo: "Evinrude 175 Ficht - 175HP - Gasolina" },
-    { id: 38, marca: "Evinrude", modelo: "Evinrude 220 - 220HP - Gasolina" },
-    { id: 39, marca: "Evinrude", modelo: "Evinrude E-tec - 115HP - Gasolina" },
-    { id: 40, marca: "Evinrude", modelo: "Evinrude E-Tec - 150HP - Gasolina" },
-    { id: 41, marca: "Evinrude", modelo: "Evinrude E-Tec - 225HP - Gasolina" },
-    { id: 42, marca: "Evinrude", modelo: "Evinrude E-Tec - 250HP - Gasolina" },
-    { id: 43, marca: "Evinrude", modelo: "Evinrude EFI - 150HP - Gasolina" },
-    { id: 44, marca: "Evinrude", modelo: "Evinrude Ficht Ram - 225HP - Gasolina" },
-    { id: 45, marca: "Evinrude", modelo: "Evinrude Fight Ram - 250HP - Gasolina" },
-    { id: 46, marca: "Evinrude", modelo: "Evinrude Optimax - 200HP - Gasolina" },
-    { id: 47, marca: "Evinrude", modelo: "Evinrude Vindicator - 200HP - Gasolina" }
-];
+const motores = [
+    {
+        id: 1,
+        marca: "Caterpilla",
+        modelo: "Caterpilla Caterpilla - 1622HP - Diesel"
+    },
+    {
+        id: 2,
+        marca: "Caterpillar",
+        modelo: "Caterpillar - - 1653HP - Diesel"
+    },
+    {
+        id: 3,
+        marca: "Caterpillar",
+        modelo: "Caterpillar 3106 - 350HP - Diesel"
+    },
+    {
+        id: 4,
+        marca: "Caterpillar",
+        modelo: "Caterpillar 3116 - 350HP - Diesel"
+    },
+    {
+        id: 5,
+        marca: "Caterpillar",
+        modelo: "Caterpillar 3126 - 420HP - Diesel"
+    },
+    {
+        id: 6,
+        marca: "Caterpillar",
+        modelo: "Caterpillar 3208 - 435HP - Diesel"
+    },
+    {
+        id: 7,
+        marca: "Caterpillar",
+        modelo: "Caterpillar 3408 - 585HP - Diesel"
+    },
+    {
+        id: 8,
+        marca: "Caterpillar",
+        modelo: "Caterpillar 3408 - 800HP - Diesel"
+    },
+    {
+        id: 9,
+        marca: "Caterpillar",
+        modelo: "Caterpillar 3412 - 1200HP - Diesel"
+    },
+    {
+        id: 10,
+        marca: "Caterpillar",
+        modelo: "Caterpillar 420 - 420HP - Diesel"
+    }
+]
 
 export default motores

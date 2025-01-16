@@ -27,5 +27,5 @@ export function converterPrecoEUAParaBrasil(precoEUA: string): string {
         .replace('.', ',') // Substitui o ponto pelo separador decimal brasileiro
         .replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // Adiciona os pontos como separadores de milhar
 
-    return `R$ ${precoFormatado}`;
+    return `${precoFormatado}`;
 }

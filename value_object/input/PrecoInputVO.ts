@@ -1,5 +1,5 @@
 import { CustomError } from "../../infra/CustoError.js"
-import { Preco } from "../../types/Preco.js"
+import { PrecoInput } from "../../types/Preco.js"
 import { characterLimit, validateFloatPositiveNumber, validateIntegerPositiveNumber, validateString } from "../../util/validationUtil.js"
 
 export class PrecoInputVO {
@@ -24,7 +24,7 @@ export class PrecoInputVO {
         validateIntegerPositiveNumber(id,"id","Preço")
         this.id = id
     }
-    extractData():Preco{
+    extractData():PrecoInput{
         return {
             id: this.id,
             valor: this.valor,

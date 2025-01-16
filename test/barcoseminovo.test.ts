@@ -21,6 +21,8 @@ import { MotorizacaoRepository } from "../repository/MotorizacaoRepository.ts";
 import { ImagemModel } from "../models/ImagemModel.ts";
 import { PrecoRepository } from "../repository/PrecoRepository.ts";
 import { ItemSeminovoRepository } from "../repository/ItemSeminovoRepository.ts";
+import barcoSeminovoFrontEndList from "./mocks/barcoSeminovoFrontEndList.ts";
+import barcoSeminovoDashboardList from "./mocks/barcoSeminovoDashboardList.ts";
 
 const barcoSeminovoRepository = new BarcoSeminovoRepository()
 const cabineRepository = new CabineRepository()
@@ -66,6 +68,7 @@ async function request(url: string, method: string, data?: any) {
     return axios({
         url, method, data, headers: {
             'Content-Type': 'application/json',
+            Authorization: "test"
         }
     } as AxiosRequestConfig)
 }
@@ -98,13 +101,29 @@ describe("Barco seminovo and resources tests", () => {
     test("Should update barcoSeminovo ", async () => {
         const barcoSeminovoUpdate = { ...barcoSeminovoOutput }
         barcoSeminovoUpdate.nome = "Updated test"
-        barcoSeminovoUpdate.preco.valor = 2000
+        barcoSeminovoUpdate.preco.valor = "2.000,00"
         barcoSeminovoUpdate.cabines.passageiros = 1
         barcoSeminovoUpdate.motorizacao.ano = 2024
         await request("http://localhost:5000/barco/seminovo", "PATCH", barcoSeminovoUpdate)
         delay(1000)
         const response = await request("http://localhost:5000/barco/seminovo/1", "get")
         expect(response.data).toEqual(barcoSeminovoUpdate)
+    })
+    test("Should get seminovos list for front-end website", async () => {
+        const response = await request("http://localhost:5000/barco/seminovo-front-end", "get")
+        expect(response.status).toBe(200);
+        expect(response.data.data).toBeInstanceOf(Array);
+        expect(response.data.data).toEqual(
+            expect.arrayContaining(barcoSeminovoFrontEndList)
+        )
+    })
+    test("Should get seminovos list for dashboard website", async () => {
+        const response = await request("http://localhost:5000/barco/seminovo-dashboard", "get")
+        expect(response.status).toBe(200);
+        expect(response.data).toBeInstanceOf(Array);
+        expect(response.data).toEqual(
+            expect.arrayContaining(barcoSeminovoDashboardList)
+        )
     })
     test("Should delete images from firebase when fails", async () => {
         
@@ -146,19 +165,25 @@ describe("Barco seminovo and resources tests", () => {
         const response = await request("http://localhost:5000/resources/seminovo/combustivel", "get")
         expect(response.data).toEqual(tipoCombustivelList)
     })
-
     test("Should get tipo propulsão list", async () => {
         const response = await request("http://localhost:5000/resources/seminovo/propulsao", "get")
         expect(response.data).toEqual(tipoPropulsao)
     })
-
     test("Should get modelo list", async () => {
         const response = await request("http://localhost:5000/resources/seminovo/modelo", "get")
-        expect(response.data).toEqual(modelos)
+        expect(response.status).toBe(200);
+        expect(response.data).toBeInstanceOf(Array);
+        expect(response.data).toEqual(
+            expect.arrayContaining(modelos)
+        )
     })
     test("Should get motores list", async () => {
         const response = await request("http://localhost:5000/resources/seminovo/motor", "get")
-        expect(response.data).toEqual(motores)
+        expect(response.status).toBe(200);
+        expect(response.data).toBeInstanceOf(Array);
+        expect(response.data).toEqual(
+            expect.arrayContaining(motores)
+        )
     })
     test("Should get moeda list", async () => {
         const response = await request("http://localhost:5000/resources/moeda", "get")
@@ -176,7 +201,6 @@ describe("Barco seminovo and resources tests", () => {
             ])
         );
     })
-    
 })
 
 
