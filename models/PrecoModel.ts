@@ -2,7 +2,7 @@
 import { MoedaRepository } from "../repository/MoedaRepository.js";
 import { PrecoRepository } from "../repository/PrecoRepository.js";
 import { Moeda } from "../types/Moeda.js";
-import { Preco } from "../types/Preco.js";
+import { PrecoInput, PrecoOutput } from "../types/Preco.js";
 import { converterPrecoBrasilParaEUA, converterPrecoEUAParaBrasil } from "../util/transformationUtil.js";
 import { PrecoInputVO } from "../value_object/input/PrecoInputVO.js";
 import { PrecoOutputVO } from "../value_object/output/PrecoOutputVO.js";
@@ -16,19 +16,20 @@ export class PrecoModel {
     constructor() {
 
     }
-    buildPrecoDtoFromDatabase(input: PrecoDatabase):Preco {
-        const valorFloat = parseFloat(input.preco)
+    buildPrecoDtoFromDatabase(input: PrecoDatabase):PrecoOutput {
+        
         const  precoOutputVO = new PrecoOutputVO()
-        precoOutputVO.setValor(valorFloat)
+        precoOutputVO.setValor(input.preco)
         precoOutputVO.setMoeda(input.moeda_simbolo)
         return precoOutputVO.extractData()
     }
-    async savePreco(preco:Preco, precoRepo:PrecoRepository, moedaRepo: MoedaRepository){
+    async savePreco(preco:PrecoInput, precoRepo:PrecoRepository, moedaRepo: MoedaRepository){
         const idMoeda = await moedaRepo.getIdMoedaBySimbolo(preco.moeda)
         const idPrecoSaved = await precoRepo.insertPreco(preco.valor, idMoeda.id)
         return idPrecoSaved.id
     }
-    async updatePreco(preco: Preco, idPreco: number, precoRepo: PrecoRepository, moedaRepo: MoedaRepository) {
+    async updatePreco(preco: PrecoInput, idPreco: number, precoRepo: PrecoRepository, moedaRepo: MoedaRepository) {
+        
         const idMoeda = await moedaRepo.getIdMoedaBySimbolo(preco.moeda)
         await precoRepo.updatePreco(preco.valor, idMoeda.id, idPreco)
     }

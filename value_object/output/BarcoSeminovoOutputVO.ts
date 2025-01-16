@@ -6,7 +6,7 @@ import { Imagem } from "../../types/Imagem.js";
 import { ItemSeminovo } from "../../types/ItemSeminovo.js";
 import { Modelo } from "../../types/Modelo.js";
 import { Motorizacao } from "../../types/Motorizacao.js";
-import { Preco } from "../../types/Preco.js";
+import { PrecoOutput } from "../../types/Preco.js";
 import { Propulsao } from "../../types/Propulsao.js";
 
 export class BarcoSeminovoOutputVO {
@@ -22,7 +22,7 @@ export class BarcoSeminovoOutputVO {
     private cabines!: Cabine;
     private procedencia!: string;
     private destaque?: string | null;
-    private preco!: Preco;
+    private preco!: PrecoOutput;
     private imagens!: Imagem[];
     private equipadoCom!: ItemSeminovo[];
     private videoPromocional?: string | null;
@@ -67,7 +67,7 @@ export class BarcoSeminovoOutputVO {
         if (!destaque) destaque = null
         this.destaque = destaque
     }
-    setPreco(preco: Preco) {
+    setPreco(preco: PrecoOutput) {
         this.preco = preco
     }
     setImagens(imagens: Imagem[]) {

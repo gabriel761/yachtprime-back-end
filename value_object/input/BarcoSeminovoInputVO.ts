@@ -6,7 +6,7 @@ import { Imagem } from "../../types/Imagem.js";
 import { ItemSeminovo } from "../../types/ItemSeminovo.js";
 import { Modelo } from "../../types/Modelo.js";
 import { Motorizacao } from "../../types/Motorizacao.js";
-import { Preco } from "../../types/Preco.js";
+import { PrecoInput } from "../../types/Preco.js";
 import { Propulsao } from "../../types/Propulsao.js";
 import { characterLimit, validateIntegerPositiveNumber, validateString, validateYear } from "../../util/validationUtil.js";
 
@@ -23,7 +23,7 @@ export class BarcoSeminovoInputVO {
     private cabines!: Cabine;
     private procedencia!: string;
     private destaque!: string | null;
-    private preco!: Preco;
+    private preco!: PrecoInput;
     private imagens!: Imagem[];
     private equipadoCom!: ItemSeminovo[];
     private videoPromocional?: string | null;
@@ -86,7 +86,7 @@ export class BarcoSeminovoInputVO {
             this.destaque = null
         }
     }
-    setPreco(preco: Preco) {
+    setPreco(preco: PrecoInput) {
         if (!preco) throw new CustomError("Preço em barco seminovo é inválido", 400)
         this.preco = preco
     }
