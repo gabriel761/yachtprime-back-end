@@ -1,118 +1,77 @@
-INSERT INTO preco(valor, moeda_id)
-VALUES
-    (200, 1),
-    (500, 1),
-    (100, 1),
-    (600, 1),
-    (3500, 1),
-    (500, 1),
-    (800, 1),
-    (1500, 1),
-    (1800, 1);
+-- Inserindo um preço de exemplo
+INSERT INTO preco (valor, id_moeda) VALUES 
+(100, 1),
+(800, 1),
+(600, 1),
+(3500, 1),
+(500, 1),
+(800, 1),
+(1500, 1),
+(1800, 1),
+(200, 1),
+(5000, 1);
 
-INSERT INTO
-    imagem(link)
-VALUES
-    ('https://http2.mlstatic.com/D_NQ_NP_849607-MLB74800340111_022024-O.webp'),
-    ('https://www.thiagolanchas.com.br/admin/image/lancha/401/7435lg.jpg'),
-    ('https://www.thiagolanchas.com.br/admin/image/lancha/401/7440lg.jpg'),
-    ('https://naveguetemporada.com/wp-content/uploads/2023/09/Lancha-Alternativa-21-JGFISHERS-3.jpg'),
-    ('https://www.thiagolanchas.com.br/admin/image/lancha/401/7437md.jpg');
-
-INSERT INTO
-    taxa_churrasco(preco, mensagem)
-VALUES
-(2, 'Pagar durante o embarque');
+--Inserido imagem
+INSERT INTO imagem(id,link) VALUES 
+(31,'https://www.hmy.com/wp-content/uploads/2019/04/ferretti-760.jpg'),
+(32,'https://mondblu.com.br/wp-content/uploads/2022/05/01d0f1f6-f540-4d71-ba68-b8b69a542651.jpg'),
+(33,'https://i.ytimg.com/vi/AxyUXPHmYxY/maxresdefault.jpg'),
+(34,'https://marealtacharter.com.br/wp-content/uploads/2020/09/Aluguel-de-barco-ferretti-760-em-Angra-dos-Reis-003.jpg'),
+(35,'https://sailica-prod-main.s3.eu-central-1.amazonaws.com/3342868030000104834/large/1b651ac54ce528a2275d681abbd21a41.jpg');
 
 
+-- Inserir roteiros prefixados
+INSERT INTO roteiros_prefixados (nome, id_preco, id_dias) VALUES 
+('Urca e Praia Vermelha', 7, 1), 
+('Cagarras ou Itaipu', 8, 2);
 
-INSERT INTO
-    consumo_combustivel(litros_hora, preco_hora, tipo_combustivel)
-VALUES
-    (70,4,1);
+-- Insert into taxa churrasco
+INSERT INTO taxa_churrasco (id_preco, mensagem) VALUES 
+(9,'Pagamento no dia do passeio diretamente ao capitão');
 
-INSERT INTO
-    endereco(nome_local, rua, numero, bairro, cidade, uf, cep)
-VALUES
-    ('Marina da Glória', 'Av. Infante Dom Henrique', 'S/N', 'Glória', 'Rio de Janeiro', 'RJ', '20021-140'),
-    ('Iate Clube Icaraí', 'Estrada Leopoldo Fróes', '450', 'São Francisco', 'Niterói', 'RJ', '24360-005'),
-    ('Marina da Glória', 'Av. Infante Dom Henrique', 'S/N', 'Glória', 'Rio de Janeiro', 'RJ', '20021-140');
+-- Inserindo um local de embarque de exemplo
+INSERT INTO local_embarque (nome_local, taxa_extra, principal) VALUES 
+('Marina da Glória', null, true),
+('Iate clube Niterói', 1, true);
 
 
+-- Inserindo um horário disponível
+INSERT INTO horarios_disponiveis (horario_inicio, horario_fim)
+VALUES ('2025-01-21 08:00:00', '2025-01-21 18:00:00');
 
-INSERT INTO
-    barco_charter(
-        modelo_id,
-        nome,
-        ano,
-        tamanho,
-        preco,
-        passageiros,
-        passageiros_pernoite,
-        tripulacao,
-        duracao_passeio,
-        tipo_passeio,
-        embarque_principal,
-        embarque_alternativo,
-        ponto_encontro,
-        tripulacao_skipper,
-        consumo_combustivel,
-        hora_extra,
-        aluguel_lancha,
-        taxa_churrasco,
-        video
-    )
-VALUES
-    (6,'Peaceful Life', '2015', 40, 3, 15, 6, 1, 5, 2, 1, 2, 3, 1, 1, 4, 5, 1, null);
 
-INSERT INTO
-    horario_disponivel_passeio(horario_inicio, horario_fim, barco_charter_id)
-VALUES
-    ('8:00', '13:00', 1),
-    ('14:00', '20:00', 1);
+-- Inserindo informações de passageiros
+INSERT INTO passageiros (passageiros, passageiros_pernoite, tripulacao)
+VALUES (10, 4, 2);
 
-INSERT INTO
-    item_charter_barco_charter(barco_charter_id, item_seminovo_id, quantidade)
-VALUES
-    (1,1,2),
-    (1,2,3),
-    (1,3,3),
-    (1,4,1),
-    (1,5,1),
-    (1,6,1),
-    (1,14,1),
-    (1,15,1),
-    (1,16,1),
-    (1,17,1),
-    (1,7,1);
+-- Inserindo consumo de combustível
+INSERT INTO consumo_combustivel (litros_hora, id_preco_hora, id_tipo_combustivel)
+VALUES (50, 1, 2);
 
-INSERT INTO
-    imagem_barco_charter(barco_charter_id, imagem_id)
-VALUES
-    (1, 6),
-    (1, 7),
-    (1, 8),
-    (1, 9),
-    (1, 10);
+ -- Inserindo um passeio
+INSERT INTO passeio ( id_tipo_passeio, id_barco_charter, id_embarque_principal, id_embarque_alternativo, ponto_encontro, id_horarios, duracao_passeio, id_tripulacao_skipper)
+VALUES ( 1, 1, 1, 2, 'Restaurante Kitchen', 1, 8, 1);
 
-INSERT INTO
-    roteiro_prefixado(nome, preco, dias, barco_charter_id)
-VALUES
-    ('Urca e Praia Vermelha', 6, 1, 1),
-    ('Cagarras ou Itaipu', 7, 2, 1),
-    ('Urca e Praia Vermelha', 8, 1, 1),
-    ('Cagarras ou Itaipu', 9, 2, 1);
+-- Inserindo um barco charter
+INSERT INTO barco_charter (modelo, nome, ano, tamanho, id_preco, id_passageiros, id_passeio, id_pet_friendly, id_consumo, id_preco_hora_extra, id_preco_aluguel_lancha, taxa_churrasco, video_promocional)
+VALUES (35, 'Lancha Luxo', 2022, 50, 10, 1, 1,  1, 1, 3, 4, 9, 'https://www.youtube.com/watch?v=EZJ-S9RODF0');
 
-INSERT INTO
-    condicao_barco_charter(barco_charter_id, condicao_id)
-VALUES
-    (1, 1),
-    (1, 2),
-    (1, 3),
-    (1, 4),
-    (1, 5);
+-- Inserindo uma condição para o barco
+INSERT INTO passeio_condicoes (id_passeio, id_condicao) VALUES
+ (1, 1),
+ (1, 2),
+ (1, 3);
 
-INSERT INTO
-    embarque_alternativo(barco_charter_id, endereco_id, taxa_extra)
-VALUES
-    (1, 2, 4);
+-- Relacionando itens charter com barco charter
+INSERT INTO item_charter_barco_charter (id_barco_charter, id_item_charter, quantidade) VALUES 
+(1, 8, 1),
+(1, 10, 2),
+(1, 12, 1);
+
+-- Relacionando imagem com charter
+INSERT INTO imagens_barco_charter (id_barco_charter, id_imagem) VALUES 
+(1,31),
+(1,32),
+(1,33),
+(1,34),
+(1,35);
