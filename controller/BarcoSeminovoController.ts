@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import BarcoSeminovoService from '../service/BarcoSeminovoService.js';
 import { validateIntegerPositiveNumber } from '../util/validationUtil.js';
 import { CustomError } from '../infra/CustoError.js';
-import { BarcoSeminovoFilters, BarcoSeminovoInput, BarcoSeminovoInputWithId } from '../types/BarcoSeminovo.js';
+import { BarcoSeminovoFilters, BarcoSeminovoInput, BarcoSeminovoInputWithId } from '../types/seminovo/BarcoSeminovo.js';
 import { FirebaseModel } from '../models/external/FirebaseModel.js';
 import { convertStringToBoolean } from '../util/transformationUtil.js';
 

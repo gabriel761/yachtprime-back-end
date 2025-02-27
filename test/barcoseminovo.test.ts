@@ -13,14 +13,14 @@ import { FirebaseModel } from "../models/external/FirebaseModel.ts";
 import BarcoSeminovoService from "../service/BarcoSeminovoService.ts";
 import { CustomError } from "../infra/CustoError.ts";
 import { BarcoSeminovoController } from "../controller/BarcoSeminovoController.ts";
-import { BarcoSeminovoInput } from "../types/BarcoSeminovo.ts";
-import BarcoSeminovoRepository from "../repository/BarcoSeminovoRepository.ts";
-import { CabineRepository } from "../repository/CabineRepository.ts";
+import { BarcoSeminovoInput } from "../types/seminovo/BarcoSeminovo.ts";
+import BarcoSeminovoRepository from "../repository/seminovo/BarcoSeminovoRepository.ts";
+import { CabineRepository } from "../repository/seminovo/CabineRepository.ts";
 import { ImagemRepository } from "../repository/ImagemRepository.ts";
-import { MotorizacaoRepository } from "../repository/MotorizacaoRepository.ts";
+import { MotorizacaoRepository } from "../repository/seminovo/MotorizacaoRepository.ts";
 import { ImagemModel } from "../models/ImagemModel.ts";
 import { PrecoRepository } from "../repository/PrecoRepository.ts";
-import { ItemSeminovoRepository } from "../repository/ItemSeminovoRepository.ts";
+import { ItemSeminovoRepository } from "../repository/seminovo/ItemSeminovoRepository.ts";
 import barcoSeminovoFrontEndList from "./mocks/barcoSeminovoFrontEndList.ts";
 import barcoSeminovoDashboardList from "./mocks/barcoSeminovoDashboardList.ts";
 
@@ -110,7 +110,7 @@ describe("Barco seminovo and resources tests", () => {
         expect(response.data).toEqual(barcoSeminovoUpdate)
     })
     test("Should get seminovos list for front-end website", async () => {
-        const response = await request("http://localhost:5000/barco/seminovo-front-end", "get")
+        const response = await request("http://localhost:5000/barco/seminovo/list/front-end", "get")
         expect(response.status).toBe(200);
         expect(response.data.data).toBeInstanceOf(Array);
         expect(response.data.data).toEqual(
@@ -118,7 +118,7 @@ describe("Barco seminovo and resources tests", () => {
         )
     })
     test("Should get seminovos list for dashboard website", async () => {
-        const response = await request("http://localhost:5000/barco/seminovo-dashboard", "get")
+        const response = await request("http://localhost:5000/barco/seminovo/list/dashboard", "get")
         expect(response.status).toBe(200);
         expect(response.data).toBeInstanceOf(Array);
         expect(response.data).toEqual(

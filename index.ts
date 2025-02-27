@@ -1,5 +1,6 @@
 import express from 'express';
 import seminovoRoute from './route/seminovoRotes.js'
+import charterRoute from './route/charterRoute.js'
 import seminovoResourcesRoute from './route/seminovoResorcesRoutes.js'
 import resourcesRoute from './route/resorcesRoutes.js'
 import config from './config.js';
@@ -13,7 +14,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: "*" }));
 
-app.use('/barco', seminovoRoute);
+app.use('/barco/seminovo', seminovoRoute);
+app.use('/barco/charter', charterRoute);
 app.use('/resources', resourcesRoute);
 app.use('/resources/seminovo', seminovoResourcesRoute);
 app.use('/user', decodeToken, (req, res, next) => {

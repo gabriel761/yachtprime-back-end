@@ -75,7 +75,7 @@ CREATE TABLE barco_seminovo(
      id_cabine INTEGER  NOT NULL,
      procedencia VARCHAR(50) NOT NULL,
      destaque VARCHAR(100),
-     id_preco INTEGER  NOT NULL,
+     id_preco INTEGER NOT NULL,
      video VARCHAR(1000),
      oportunidade BOOLEAN DEFAULT false,
 
@@ -127,16 +127,19 @@ CREATE TABLE item_charter(
 
 CREATE TABLE local_embarque (
     id SERIAL PRIMARY KEY,
+    id_passeio INTEGER NOT NULL,
     nome_local VARCHAR(200),
-    taxa_extra INTEGER,
+    ponto_encontro VARCHAR(200),
+    id_preco_taxa_extra INTEGER,
     principal BOOLEAN DEFAULT false,
     
-    CONSTRAINT fk_taxa_extra FOREIGN KEY (taxa_extra) REFERENCES preco(id)
+    CONSTRAINT fk_taxa_extra FOREIGN KEY (id_preco_taxa_extra) REFERENCES preco(id),
+    CONSTRAINT fk_passeio FOREIGN KEY (id_passeio) REFERENCES preco(id)
 );
 
 CREATE TABLE condicao (
     id SERIAL PRIMARY KEY,
-    condicao VARCHAR (150)
+    opcao VARCHAR (150)
 );
 
 
@@ -157,11 +160,7 @@ CREATE TABLE opcoes_de_dias (
     dias VARCHAR(100) NOT NULL, CHECK(dias IN ('Sábado, domingo e feriados','Dias de semana', 'Todos os dias', 'Sob consulta'))
 );
 
-CREATE TABLE horarios_disponiveis (
-    id SERIAL PRIMARY KEY,
-    horario_inicio TIMESTAMP,
-    horario_fim TIMESTAMP  
-);
+
 
 CREATE TABLE tipo_passeio (
     id SERIAL PRIMARY KEY,
@@ -202,21 +201,21 @@ CREATE TABLE consumo_combustivel (
 
 CREATE TABLE passeio (
     id SERIAL PRIMARY KEY,
-    id_barco_charter INTEGER NOT NULL,
     id_tipo_passeio INTEGER NOT NULL,
-    id_embarque_principal INTEGER NOT NULL,
-    id_embarque_alternativo INTEGER NOT NULL,
-    ponto_encontro VARCHAR(100),
-    id_horarios INTEGER NOT NULL,
     duracao_passeio INTEGER NOT NULL CHECK (duracao_passeio <= 24),
     id_tripulacao_skipper INTEGER NOT NULL,
 
-    CONSTRAINT fk_barco_charter FOREIGN KEY (id_barco_charter) REFERENCES condicao(id),
     CONSTRAINT fk_tipo_passeio FOREIGN KEY (id_tipo_passeio) REFERENCES tipo_passeio(id),
-    CONSTRAINT fk_embarque_principal FOREIGN KEY (id_embarque_principal) REFERENCES local_embarque(id),
-    CONSTRAINT fk_embarque_alternativo FOREIGN KEY (id_embarque_alternativo) REFERENCES local_embarque(id),
-    CONSTRAINT fk_horarios FOREIGN KEY (id_horarios) REFERENCES horarios_disponiveis(id),
     CONSTRAINT fk_tripulacao_skipper FOREIGN KEY (id_tripulacao_skipper) REFERENCES tripulacao_skipper(id)
+);
+
+CREATE TABLE horarios_disponiveis (
+    id SERIAL PRIMARY KEY,
+    id_passeio INTEGER NOT NULL,
+    horario_inicio TIME,
+    horario_fim TIME, 
+
+    CONSTRAINT fk_passeio FOREIGN KEY (id_passeio) REFERENCES passeio(id)
 );
 
 CREATE TABLE barco_charter (
@@ -232,7 +231,7 @@ CREATE TABLE barco_charter (
     id_consumo INTEGER NOT NULL, 
     id_preco_hora_extra INTEGER NOT NULL,
     id_preco_aluguel_lancha INTEGER NOT NULL,
-    taxa_churrasco INTEGER NOT NULL,
+    id_taxa_churrasco INTEGER NOT NULL,
     video_promocional VARCHAR(500),
 
     CONSTRAINT fk_preco FOREIGN KEY (id_preco) REFERENCES preco(id),
@@ -241,10 +240,11 @@ CREATE TABLE barco_charter (
     CONSTRAINT fk_pet_friendly FOREIGN KEY (id_pet_friendly) REFERENCES pet_friendly(id),
     CONSTRAINT fk_consumo FOREIGN KEY (id_consumo) REFERENCES consumo_combustivel(id),
     CONSTRAINT fk_preco_hora_extra FOREIGN KEY (id_preco_hora_extra) REFERENCES preco(id),
-    CONSTRAINT fk_preco_aluguel_lancha FOREIGN KEY (id_preco_aluguel_lancha) REFERENCES preco(id)
+    CONSTRAINT fk_preco_aluguel_lancha FOREIGN KEY (id_preco_aluguel_lancha) REFERENCES preco(id),
+    CONSTRAINT fk_taxa_churrasco FOREIGN KEY (id_taxa_churrasco) REFERENCES preco(id)
 );
 
-CREATE TABLE imagens_barco_charter (
+CREATE TABLE imagem_barco_charter (
     id SERIAL PRIMARY KEY,
     id_barco_charter  INTEGER NOT NULL,
     id_imagem INTEGER NOT NULL,

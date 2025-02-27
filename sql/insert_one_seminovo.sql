@@ -1,6 +1,6 @@
 --preco
 INSERT INTO
-    preco(valor, moeda_id)
+    preco(valor, id_moeda)
 VALUES
     (5000000, 2);
 
@@ -20,17 +20,17 @@ VALUES
     (5,1);
 --motor
 INSERT INTO 
-    motorizacao(quantidade, potencia, horas, ano, observacoes, motor_id)
+    motorizacao(quantidade, potencia, horas, ano, observacoes, id_motor)
     VALUES
     (2,1400,150,2016,null,36);
 -- seminovo
 INSERT INTO 
-    barco_seminovo (modelo_id, nome, ano, tamanho, motorizacao_id, potencia_total, combustivel, propulsao, cabine, procedencia, destaque, preco_id, video, oportunidade)
+    barco_seminovo (id_modelo, nome, ano, tamanho, id_motorizacao, potencia_total, id_combustivel, id_propulsao, id_cabine, procedencia, destaque, id_preco, video, oportunidade)
 VALUES
     (3,'Sea View',2016,50,1,2800,1,3,1,'Brasil','Guardado no seco por 212 horas',1,null,true);
 -- imagem barco seminovo
 INSERT INTO
-    imagem_barco_seminovo (imagem_id, barco_seminovo_id)
+    imagem_barco_seminovo (id_imagem, id_barco_seminovo)
 VALUES
     (1,1),
     (2,1),
@@ -40,7 +40,7 @@ VALUES
 --
 -- item e barco seminovo
 INSERT INTO
-    item_seminovo_barco_seminovo (barco_seminovo_id, item_seminovo_id, quantidade)
+    item_seminovo_barco_seminovo (id_barco_seminovo, id_item_seminovo, quantidade)
 VALUES
     (1,3,1),
     (1,6,2),

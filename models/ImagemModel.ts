@@ -8,19 +8,29 @@ import { ImagemOutputVO } from "../value_object/output/ImagemOutputVO.js"
 import { FirebaseModel } from "./external/FirebaseModel.js"
 
 interface imagemDatabase {
-    imagem_id: number,
+    id_imagem: number,
     link_imagem: string
     imagem_file_name: string
 }
 
 export class ImagemModel {
-    constructor(){
-
-    }
+    
     async getImagesByIdSeminovo(idSeminovo:number, imagemRepository: ImagemRepository){
         const imagens = await imagemRepository.getImagensByIdSeminovo(idSeminovo)
         const imagensDto = imagens.map((img:imagemDatabase) => {
             const imagemOutputValueObject = new ImagemOutputVO()
+            imagemOutputValueObject.setLink(img.link_imagem)
+            imagemOutputValueObject.setFileName(img.imagem_file_name)
+            return imagemOutputValueObject.extractData()
+        })
+        return imagensDto
+    }
+
+    async getImagesByIdCharter(idCharter: number, imagemRepository: ImagemRepository) {
+        const imagens = await imagemRepository.getImagensByIdCharter(idCharter)
+        const imagensDto = imagens.map((img: imagemDatabase) => {
+            const imagemOutputValueObject = new ImagemOutputVO()
+            imagemOutputValueObject.setId(img.id_imagem)
             imagemOutputValueObject.setLink(img.link_imagem)
             imagemOutputValueObject.setFileName(img.imagem_file_name)
             return imagemOutputValueObject.extractData()
@@ -39,8 +49,8 @@ export class ImagemModel {
     async deleteAllImagesFromSeminovo(idSeminovo: number, imagemRepository: ImagemRepository){
         const imagensSeminovo = await imagemRepository.getImagensByIdSeminovo(idSeminovo)
         const imagensSeminovoPromises = imagensSeminovo.map(async (imagem:imagemDatabase) => {
-            await imagemRepository.deleteAssociationImagemSeminovo(imagem.imagem_id)
-            await imagemRepository.deleteImagem(imagem.imagem_id)
+            await imagemRepository.deleteAssociationImagemSeminovo(imagem.id_imagem)
+            await imagemRepository.deleteImagem(imagem.id_imagem)
         })
         await Promise.all(imagensSeminovoPromises);
     }

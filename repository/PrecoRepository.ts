@@ -2,11 +2,11 @@ import { CustomError } from "../infra/CustoError.js";
 import db from "../infra/database.js";
 export class PrecoRepository {
     async insertPreco(valor: number, IdMoeda: number) {
-        const result = await db.one("INSERT INTO preco(valor, moeda_id) VALUES($1,$2) RETURNING id", [valor, IdMoeda]);
+        const result = await db.one("INSERT INTO preco(valor, id_moeda) VALUES($1,$2) RETURNING id", [valor, IdMoeda]);
         return result
     }
     async updatePreco(valor: number, IdMoeda: number, idPreco: number) {
-        const result = await db.query("UPDATE preco SET valor = $1, moeda_id = $2 WHERE id = $3", [valor, IdMoeda, idPreco]);
+        const result = await db.query("UPDATE preco SET valor = $1, id_moeda = $2 WHERE id = $3", [valor, IdMoeda, idPreco]);
         return result
     }
     async getPrecoById(idPreco: number) {

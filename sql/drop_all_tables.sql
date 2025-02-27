@@ -5,7 +5,7 @@ SET session_replication_role = 'replica';
 DROP TABLE IF EXISTS 
     passeio_condicoes,
     item_charter_barco_charter,
-    imagens_barco_charter,
+    imagem_barco_charter,
     barco_charter,
     passeio,
     consumo_combustivel,

@@ -4,15 +4,15 @@ export class ImagemRepository {
     async getImagensByIdSeminovo(id: number) {
         const result = await db.query(`
                 SELECT 
-                    i.id AS imagem_id,
+                    i.id AS id_imagem,
                     i.link AS link_imagem,
                     i.file_name AS imagem_file_name
                 FROM 
                     imagem_barco_seminovo ibs
                 JOIN 
-                    imagem i ON ibs.imagem_id = i.id
+                    imagem i ON ibs.id_imagem = i.id
                 WHERE 
-                    ibs.barco_seminovo_id = $1;
+                    ibs.id_barco_seminovo = $1;
 
             `, [id])
             .catch((error) => {
@@ -23,8 +23,31 @@ export class ImagemRepository {
         }
         return result
     }
+
+    async getImagensByIdCharter(id: number) {
+        const result = await db.query(`
+                SELECT 
+                    i.id AS id_imagem,
+                    i.link AS link_imagem,
+                    i.file_name AS imagem_file_name
+                FROM 
+                    imagem_barco_charter ibc
+                JOIN 
+                    imagem i ON ibc.id_imagem = i.id
+                WHERE 
+                    ibc.id_barco_charter = $1;
+
+            `, [id])
+            .catch((error) => {
+                throw new CustomError(`Repository level error: ImagemRepository:getImagensByIdCharter: ${error.message}`, 500)
+            })
+        if (result.length == 0) {
+            throw new CustomError("Não há imagens associadas a este barco charter", 404)
+        }
+        return result
+    }
     async getImagemById(idImagem: number,) {
-        const imagem = await db.oneOrNone("SELECT * FROM imagem_barco_seminovo WHERE barco_seminovo_id = $1", [idImagem])
+        const imagem = await db.oneOrNone("SELECT * FROM imagem_barco_seminovo WHERE id_barco_seminovo = $1", [idImagem])
             .catch((error) => {
                 throw new CustomError(`Repository level error: ImagemRepository:getImagensFromAssociationImagemSeminovoByIdSeminovo: ${error.message}`, 500)
             })
@@ -43,14 +66,14 @@ export class ImagemRepository {
     }
     async associateImagemWhithSeminovo(idSeminovo: number, idImagem: number) {
         try {
-            await db.query("INSERT INTO imagem_barco_seminovo(barco_seminovo_id, imagem_id) VAlUES($1,$2)", [idSeminovo, idImagem])
+            await db.query("INSERT INTO imagem_barco_seminovo(id_barco_seminovo, id_imagem) VAlUES($1,$2)", [idSeminovo, idImagem])
         } catch (error: any) {
             throw new CustomError(`Repository level error: ImagemRepository: associateImagemWhithSeminovo: ${error.message}`, 500)
         }
     }
     async deleteAssociationImagemSeminovo(idImagem: number,) {
         try {
-            await db.query("DELETE FROM imagem_barco_seminovo WHERE imagem_id = $1", [idImagem])
+            await db.query("DELETE FROM imagem_barco_seminovo WHERE id_imagem = $1", [idImagem])
         } catch (error: any) {
             throw new CustomError(`Repository lever Error: ImagemRepository deleteAssociationImagemSeminovo: ${error}`, 500)
         }
