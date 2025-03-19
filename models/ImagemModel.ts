@@ -46,6 +46,14 @@ export class ImagemModel {
         }
     }
 
+    async insertImagensForCharter(imagens: Imagem[], idCharter: number, imagemRepository: ImagemRepository,) {
+        for (let i = 0; i < imagens.length; i++) {
+            const imagem = imagens[i];
+            const idImagem = await imagemRepository.insertImagem(imagem.link, imagem.fileName)
+            imagemRepository.associateImagemWhithCharter(idCharter, idImagem)
+        }
+    }
+
     async deleteAllImagesFromSeminovo(idSeminovo: number, imagemRepository: ImagemRepository){
         const imagensSeminovo = await imagemRepository.getImagensByIdSeminovo(idSeminovo)
         const imagensSeminovoPromises = imagensSeminovo.map(async (imagem:imagemDatabase) => {

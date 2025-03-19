@@ -1,4 +1,6 @@
 import { LocalEmbarqueRepository } from "../../repository/charter/LocalEmbarqueRepository.js";
+import { MoedaRepository } from "../../repository/MoedaRepository.js";
+import { PrecoRepository } from "../../repository/PrecoRepository.js";
 import { LocalEmbarqueInput, LocalEmbarqueOutput } from "../../types/charter/LocalEmbarque.js";
 import { converterPrecoBrasilParaEUA, converterPrecoEUAParaBrasil } from "../../util/transformationUtil.js";
 
@@ -24,7 +26,16 @@ export class LocalEmbarqueModel {
         })
         return locaisEmbarqueArray
     }
-    async postLocaisAlternativos(localEmbarqueArray: LocalEmbarqueInput[], localEmbarqueRepository: LocalEmbarqueRepository){
+    async postLocaisAlternativos(idPasseio: number, localEmbarqueArray: LocalEmbarqueInput[], localEmbarqueRepository: LocalEmbarqueRepository, precoRepository:PrecoRepository, moedaRepository: MoedaRepository){
+        for (let i = 0; i < localEmbarqueArray.length; i++) {
+            let precoId = null
+            if(!!localEmbarqueArray[i].preco){
+                const valorPreco = converterPrecoBrasilParaEUA(localEmbarqueArray[i].preco!.valor)
+                const idMoeda = await moedaRepository.getIdMoedaBySimbolo(localEmbarqueArray[i].preco!.moeda)
+                precoId = await precoRepository.insertPreco(valorPreco, idMoeda.id)
+            }
+            localEmbarqueRepository.postLocalEmbarqueAleternativo(idPasseio,false, localEmbarqueArray[i], precoId.id)
+        }
         
     }
 }

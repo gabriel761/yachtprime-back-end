@@ -21,7 +21,7 @@ export class TestDatabase {
     barco_seminovo,
     cabine,
     preco,
-    motorizacao 
+    motorizacao
     RESTART IDENTITY`)
  }
 }

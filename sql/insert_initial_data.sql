@@ -1219,7 +1219,7 @@ VALUES
 ('Tapete flutuante', true),
 ('Caiaque', true);
 
-INSERT INTO roteiro_livre(opcao)
+INSERT INTO roteiros_livres(opcao)
 VALUES
 ('Não disponível'),
 ('Sob consulta');
@@ -1250,7 +1250,7 @@ VALUES
 
 -- condições
 -- Inserção das condições na tabela condicoes
-INSERT INTO condicao (condicao)
+INSERT INTO condicao (opcao)
 VALUES
 ('Os passeios são privativos, não vendemos ingressos.'),
 ('O tempo é medido desde a hora marcada, mesmo que o cliente atrase no embarque.'),
@@ -1265,7 +1265,7 @@ VALUES
 
 
 -- opções dias
-INSERT INTO opcao_dias(opcao)
+INSERT INTO opcoes_de_dias(opcao)
 VALUES
 ('Sábado, domingo e feriados'),
     ('Dias de semana'),

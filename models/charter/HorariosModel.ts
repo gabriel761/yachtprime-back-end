@@ -20,11 +20,9 @@ export class HorariosModel {
     async postHorariosPasseio(horarios: HorariosInput[], horarioRepository: HorarioRepository, idPasseio: number){
         for (let i = 0; i < horarios.length; i++) {
             const horario = horarios[i]
-            await horarioRepository.postHorario(horario)
+            await horarioRepository.postHorario(idPasseio,horario)
             
         }
-
-           
        
     }
 }

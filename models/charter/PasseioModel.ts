@@ -4,6 +4,8 @@ import { LocalEmbarqueRepository } from "../../repository/charter/LocalEmbarqueR
 import { PasseioRepository } from "../../repository/charter/PasseioRepository.js";
 import { TipoPasseioRepository } from "../../repository/charter/TipoPasseioRepo.js";
 import { TripulacaoSkipperRepository } from "../../repository/charter/TripulacaoSkipperRepo.js";
+import { MoedaRepository } from "../../repository/MoedaRepository.js";
+import { PrecoRepository } from "../../repository/PrecoRepository.js";
 import { PasseioInput, PasseioOutput } from "../../types/charter/Passeio.js";
 import { CondicoesModel } from "./CondicoesModel.js";
 import { HorariosModel } from "./HorariosModel.js";
@@ -36,13 +38,14 @@ export class PasseioModel {
         return passeio
     }
 
-    async postPasseio(passeio: PasseioInput, localEmbarqueRepository: LocalEmbarqueRepository, localEmbarqueModel:LocalEmbarqueModel, horariosModel: HorariosModel, condicoesModel:CondicoesModel, passeioRepository:PasseioRepository, TipoPasseioModel: TipoPasseioModel, tripulacaoSkipperModel: TripulacaoSkipperModel){
-        const idTipoPasseio = await TipoPasseioModel.getIdTipoPasseioByString(passeio.tipoPasseio, new TipoPasseioRepository())
+    async  postPasseio(passeio: PasseioInput, localEmbarqueRepository: LocalEmbarqueRepository, localEmbarqueModel:LocalEmbarqueModel, horariosModel: HorariosModel, condicoesModel:CondicoesModel, passeioRepository:PasseioRepository, tipoPasseioModel: TipoPasseioModel, tripulacaoSkipperModel: TripulacaoSkipperModel){
+        const idTipoPasseio = await tipoPasseioModel.getIdTipoPasseioByString(passeio.tipoPasseio, new TipoPasseioRepository())
         const idTripulacaoSkipper = await  tripulacaoSkipperModel.getIdTripulacaoSkipperByString(passeio.tripulacaoSkipper, new TripulacaoSkipperRepository())
-        await localEmbarqueRepository.postLocalEmbarquePrincipal(passeio.embarquePrincipal)
         const idPasseio = await passeioRepository.postPasseio(passeio, idTipoPasseio,idTripulacaoSkipper)
+        await localEmbarqueRepository.postLocalEmbarquePrincipal(idPasseio, true, passeio.embarquePrincipal)
         await horariosModel.postHorariosPasseio(passeio.horarios,new HorarioRepository(), idPasseio) 
-        await localEmbarqueModel.postLocaisAlternativos(passeio.embarquesAlternativos, new LocalEmbarqueRepository()) 
-        await condicoesModel.associateCondicoesPasseio(idPasseio, passeio.condicoes, new CondicoesRepository())    
+        await localEmbarqueModel.postLocaisAlternativos(idPasseio ,passeio.embarquesAlternativos, new LocalEmbarqueRepository(), new PrecoRepository(), new MoedaRepository()) 
+        await condicoesModel.associateCondicoesPasseio(idPasseio, passeio.condicoes, new CondicoesRepository()) 
+        return idPasseio   
     }
 }

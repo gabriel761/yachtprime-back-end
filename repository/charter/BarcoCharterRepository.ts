@@ -1,9 +1,10 @@
 import { CustomError } from "../../infra/CustoError.js";
 import db from "../../infra/database.js";
+import { BarcoCharterInput } from "../../types/charter/BarcoCharter.js";
 
 export class BarcoCharterRepository {
-    async getBarcoCharter(id:number){
-       const result = await db.oneOrNone(`
+    async getBarcoCharter(id: number) {
+        const result = await db.oneOrNone(`
 SELECT
 bc.id,
 bc.nome,
@@ -54,15 +55,36 @@ JOIN preco preco_aluguel_lancha ON bc.id_preco_aluguel_lancha = preco_aluguel_la
 JOIN moeda moeda_aluguel_lancha ON preco_aluguel_lancha.id_moeda = moeda_aluguel_lancha.id
 JOIN taxa_churrasco ON bc.id_taxa_churrasco = taxa_churrasco.id
 JOIN preco preco_churrasco ON taxa_churrasco.id_preco = preco_churrasco.id
-JOIN moeda moeda_churrasco ON preco_churrasco.id_moeda = moeda_churrasco.id;
+JOIN moeda moeda_churrasco ON preco_churrasco.id_moeda = moeda_churrasco.id
+WHERE bc.id = $1;
 
 
-        `, [id]) .catch((error) => {
-                        throw new CustomError(`Repository level error: BarcoCharterRepository:getBarcoCharter: ${error.message}`, 500)
-                    });
-                if (!result) {
-                    throw new CustomError("barco não existe: id=" + id, 404);
-                }
-                return result
+        `, [id]).catch((error) => {
+            throw new CustomError(`Repository level error: BarcoCharterRepository:getBarcoCharter: ${error.message}`, 500)
+        });
+        if (!result) {
+            throw new CustomError("barco não existe: id=" + id, 404);
+        }
+        return result
     }
+
+    async insertBarcoCharter(barcoCharter: BarcoCharterInput, idModel: number, idPreco: number, idPassageiros: number, idPasseio: number, idPetFriendly: number, idConsumo: number, idPrecoHora: number, idPrecoAluguel: number, idTaxaChurrasco: number) {
+        const result = await db.query(`
+    INSERT INTO barco_charter (
+    modelo, nome, ano, tamanho, id_preco, id_passageiros, 
+    id_passeio, id_pet_friendly, id_consumo, 
+    id_preco_hora_extra, id_preco_aluguel_lancha, id_taxa_churrasco, video_promocional
+    ) VALUES (
+    $1, $2, $3, $4, $5, $6, 
+    $7, $8, $9, $10, $11, $12, $13
+    ) 
+    RETURNING id;
+    `, [idModel, barcoCharter.nome, barcoCharter.ano, barcoCharter.tamanho, idPreco, idPassageiros, idPasseio, idPetFriendly, idConsumo, idPrecoHora, idPrecoAluguel, idTaxaChurrasco, barcoCharter.videoPromocional])
+            .catch((error) => {
+                throw new CustomError(`Repository level error: BarcoCharterRepository:insertBarcoCharter: ${error.message}`, 500)
+            })
+
+        return result[0].id
+    }
+
 }

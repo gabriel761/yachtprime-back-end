@@ -32,10 +32,10 @@ export class PasseioRepository {
     }
 
     async postPasseio(passeio:PasseioInput, idTipoPasseio: number, idTripulacaoSkipper: number){
-        const idPasseio = await db.query("INSERT INTO passeio (id_tipo_paseio, duracao_passeio, id_tripulacao_skipper) VALUES ($1,$2,$3) RETURNING id" , [idTipoPasseio,  passeio.duracaoPasseio,  idTripulacaoSkipper] ).catch((error) => {
-            throw new CustomError(`Repository lever Error: PasseioRepository getPasseioByIdCharter: ${error}`, 500)
+        const idPasseio = await db.query("INSERT INTO passeio (id_tipo_passeio, duracao_passeio, id_tripulacao_skipper) VALUES ($1,$2,$3) RETURNING id" , [idTipoPasseio,  passeio.duracaoPasseio,  idTripulacaoSkipper] ).catch((error) => {
+            throw new CustomError(`Repository lever Error: PasseioRepository postPasseio:  ${error}`, 500)
         })
-        return idPasseio
+        return idPasseio[0].id
     }
     
 }

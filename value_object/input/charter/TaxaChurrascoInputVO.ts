@@ -1,22 +1,18 @@
 import { CustomError } from "../../../infra/CustoError.js";
-import { TaxaChurrasco } from "../../../types/charter/TaxaChurrasco.js";
-import { PrecoOutput } from "../../../types/Preco.js";
+import { TaxaChurrascoInput } from "../../../types/charter/TaxaChurrasco.js";
+import {  PrecoInput } from "../../../types/Preco.js";
 import { validateIntegerPositiveNumber, validateString } from "../../../util/validationUtil.js";
 
 
 export class TaxaChurrascoInputVO {
-    private id!: number;
-    private preco!: PrecoOutput;
+    private preco!: PrecoInput;
     private mensagem!: string;
 
     constructor() { }
 
-    setId(id: number) {
-        validateIntegerPositiveNumber(id, "id", "TaxaChurrasco")
-        this.id = id;
-    }
+   
 
-    setPreco(preco: PrecoOutput) {
+    setPreco(preco: PrecoInput) {
         if (!preco || typeof preco !== "object") {
             throw new CustomError("Preço inválido", 400);
         }
@@ -28,9 +24,8 @@ export class TaxaChurrascoInputVO {
         this.mensagem = mensagem;
     }
 
-    extractData(): TaxaChurrasco {
+    extractData(): TaxaChurrascoInput {
         return {
-            id: this.id,
             preco: this.preco,
             mensagem: this.mensagem
         };

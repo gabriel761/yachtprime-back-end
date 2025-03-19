@@ -157,7 +157,7 @@ CREATE TABLE roteiros_livres (
 
 CREATE TABLE opcoes_de_dias (
     id SERIAL PRIMARY KEY,
-    dias VARCHAR(100) NOT NULL, CHECK(dias IN ('Sábado, domingo e feriados','Dias de semana', 'Todos os dias', 'Sob consulta'))
+    opcao VARCHAR(100) NOT NULL, CHECK(opcao IN ('Sábado, domingo e feriados','Dias de semana', 'Todos os dias', 'Sob consulta'))
 );
 
 

@@ -1,15 +1,11 @@
-export type ItemCharterOutput = {
+export type ItemCharter = {
     id: number;
     item: string;
     itemLazer: boolean;
     quantidade: number;
 }
 
-export type ItemCharterInput = {
-    item: string;
-    itemLazer: boolean;
-    quantidade: number;
-}
+
 
 export type ItemCharterDb = {
     item_id: number;

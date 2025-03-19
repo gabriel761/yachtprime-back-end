@@ -10,4 +10,8 @@ router.get("/:id", async (req:Request, res: Response, next) => {
     await barcoCharterController.getBarcoCharterById(req, res, next)
 })
 
+router.post("/", async (req: Request, res: Response, next) => {
+    await barcoCharterController.postBarcoCharterById(req, res, next)
+})
+
 export default router

@@ -1,13 +1,18 @@
 import { CustomError } from "../../../infra/CustoError.js";
-import { ItemCharterInput } from "../../../types/charter/ItemCharter.js";
+import { ItemCharter } from "../../../types/charter/ItemCharter.js";
 import { validateIntegerPositiveNumber, validateString } from "../../../util/validationUtil.js";
 
 export class ItemCharterInputVO {
+    private id!:number;
     private item!: string;
     private itemLazer!: boolean;
     private quantidade!: number;
     constructor() { }
 
+    setId(id: number){
+        validateIntegerPositiveNumber(id, "id", "item chater")
+        this.id = id
+    }
 
     setItem(item: string) {
        validateString(item, "Item", "ItemCharter")
@@ -21,8 +26,14 @@ export class ItemCharterInputVO {
         this.itemLazer = itemLazer;
     }
 
-    extractData(): ItemCharterInput {
+    setQuantidade(quantidade: number){
+        validateIntegerPositiveNumber(quantidade, "quantidade", "Item charter")
+        this.quantidade = quantidade
+    }
+
+    extractData(): ItemCharter {
         return {
+            id: this.id,
             item: this.item,
             quantidade: this.quantidade,
             itemLazer: this.itemLazer

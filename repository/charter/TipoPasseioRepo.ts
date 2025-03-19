@@ -7,6 +7,6 @@ export class TipoPasseioRepository {
             throw new CustomError(`Repository level error: TipoPasseioRepository:getIdTipoPasseioByString: ${error.message}`, 500)
         })
         
-        return result
+        return result.id
     }
 }

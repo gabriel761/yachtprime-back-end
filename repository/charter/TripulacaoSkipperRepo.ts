@@ -6,6 +6,6 @@ export class TripulacaoSkipperRepository {
        const result = await db.one("SELECT id FROM tripulacao_skipper WHERE opcao = $1", [tripulacaoSkipper]).catch((error) => {
             throw new CustomError(`Repository level error: TripulacaoSkipperRepository:getIdTripulacaoSkipperByString: ${error.message}`, 500)
         })
-        return result
+        return result.id
     }
 }

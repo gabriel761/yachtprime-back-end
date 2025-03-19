@@ -71,6 +71,13 @@ export class ImagemRepository {
             throw new CustomError(`Repository level error: ImagemRepository: associateImagemWhithSeminovo: ${error.message}`, 500)
         }
     }
+    async associateImagemWhithCharter(idSeminovo: number, idImagem: number) {
+        try {
+            await db.query("INSERT INTO imagem_barco_charter(id_barco_charter, id_imagem) VAlUES($1,$2)", [idSeminovo, idImagem])
+        } catch (error: any) {
+            throw new CustomError(`Repository level error: ImagemRepository: associateImagemWhithCharter: ${error.message}`, 500)
+        }
+    }
     async deleteAssociationImagemSeminovo(idImagem: number,) {
         try {
             await db.query("DELETE FROM imagem_barco_seminovo WHERE id_imagem = $1", [idImagem])

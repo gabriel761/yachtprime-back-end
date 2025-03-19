@@ -63,7 +63,7 @@ export class BarcoSeminovoController {
         try {
             if (!body) throw new CustomError("Empty body post", 400)
             await this.barcoSeminovoService.postBarcoSeminovo(body)
-            res.status(200).end();
+            res.sendStatus(200).end();
         } catch (error: any) {
             try {
                 await this.barcoSeminovoService.rollbackPost(body)
@@ -80,7 +80,7 @@ export class BarcoSeminovoController {
         try {
             if (!body) throw new CustomError("Empty body patch", 400)
             await this.barcoSeminovoService.updateBarcoSeminovo(body)
-            res.status(200).end();
+            res.sendStatus(200).end();
         } catch (error: any) {
             next(error)
         }
@@ -93,7 +93,7 @@ export class BarcoSeminovoController {
             if (!body) throw new CustomError("Empty body delete", 400)
             validateIntegerPositiveNumber(body.id, "id", "Barco Seminovo")
             await this.barcoSeminovoService.deleteBarcoSeminovo(body.id, new FirebaseModel())
-             res.status(200).end();
+            res.sendStatus(200).end();
         } catch (error) {
             next(error)
         }

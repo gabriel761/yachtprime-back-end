@@ -14,7 +14,10 @@ export class HorarioRepository {
             return result
     }
 
-    async postHorario(horario: HorariosInput){
-        db.query("INSERT INTO horarios_disponiveis (horario_inicio, horario_fim) VALUES ($1, $2)",[horario.horarioInicio, horario.horarioFim])
+    async postHorario(idPasseio:number ,horario: HorariosInput){
+        await db.query("INSERT INTO horarios_disponiveis (id_passeio, horario_inicio, horario_fim) VALUES ($1, $2, $3)", [idPasseio, horario.horarioInicio, horario.horarioFim]).catch((error) => {
+            throw new CustomError(`Repository lever Error: HorarioRepository postHorario: ${error}`, 500)
+        });
+
     }
 }

@@ -1,7 +1,7 @@
 import { Imagem } from "../Imagem.js";
 import { PrecoInput, PrecoOutput } from "../Preco.js";
 import { ConsumoCombustivelInput, ConsumoCombustivelOutput } from "./ConsumoCombustivel.js";
-import {  ItemCharterInput, ItemCharterOutput } from "./ItemCharter.js";
+import {  ItemCharter } from "./ItemCharter.js";
 import { Passageiros } from "./Passageiros.js";
 import {  PasseioInput, PasseioOutput } from "./Passeio.js";
 import { TaxaChurrascoInput, TaxaChurrascoOutput } from "./TaxaChurrasco.js";
@@ -16,13 +16,13 @@ export type BarcoCharterOutput = {
     passeio: PasseioOutput;
     pernoite: boolean;
     petFriendly: string;
-    itensDisponiveis: ItemCharterOutput[];
+    itensDisponiveis: ItemCharter[];
     imagens: Imagem[];
     consumoCombustivel: ConsumoCombustivelOutput;
     horaExtra: PrecoOutput;
     aluguelLancha: PrecoOutput;
     taxaChurrasco: TaxaChurrascoOutput;
-    videoPromocional: String | null;
+    videoPromocional: string | null;
 }
 
 export type BarcoCharterInput = {
@@ -35,14 +35,14 @@ export type BarcoCharterInput = {
     passeio: PasseioInput;
     pernoite: boolean;
     petFriendly: string;
-    itensDisponiveis: ItemCharterInput[];
+    itensDisponiveis: ItemCharter[];
     imagens: Imagem[];
     consumoCombustivel: ConsumoCombustivelInput;
     
     horaExtra: PrecoInput;
     aluguelLancha: PrecoInput;
     taxaChurrasco: TaxaChurrascoInput;
-    videoPromocional: String | null
+    videoPromocional: string | null
 }
 
 
