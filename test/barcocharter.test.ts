@@ -5,6 +5,7 @@ import axios, { AxiosRequestConfig } from 'axios'
 import { TestDatabase } from "../infra/TestDatabase.ts";
 import barcoCharterOutput from "./mocks/barcoCharterOutput.ts";
 import barcoCharterInput from "./mocks/barcoCharterInput.ts"
+import barcoCharterOutputUpdate from "./mocks/barcoCharterInputUpdate.ts";
 
 // const barcoSeminovoRepository = new BarcoSeminovoRepository()
 // const cabineRepository = new CabineRepository()
@@ -59,10 +60,10 @@ beforeAll(async () => {
     const testDatabase = new TestDatabase()
     await testDatabase.resetDbToInitialState()
 })
-// afterAll(async () => {
-//     const testDatabase = new TestDatabase()
-//     await testDatabase.resetDbToInitialState()
-// })
+afterAll(async () => {
+    const testDatabase = new TestDatabase()
+    await testDatabase.resetDbToInitialState()
+})
 
 describe("Barco seminovo and resources tests", () => {
     test.skip("Should get full barco charter",  async () => {
@@ -75,13 +76,12 @@ describe("Barco seminovo and resources tests", () => {
         const response = await request("http://localhost:5000/barco/charter/1", "get")
         expect(response.data).toEqual(barcoCharterOutput)
     })
-    test("Should post full barco charter", async () => {
-        const barcoCharterUpdate = {...barcoCharterInput}
+    test("Should update barco charter", async () => {
+        const barcoCharterUpdate = {...barcoCharterOutputUpdate}
         barcoCharterUpdate.ano = 2019
-        barcoCharterUpdate.passeio.tripulacaoSkipper = "Tripulação inclusa"
-        barcoCharterUpdate.passageiros.passageiros = 10
+        barcoCharterUpdate.passageiros.passageiros = 12
         barcoCharterUpdate.consumoCombustivel.litrosHora = 40
-        await request("http://localhost:5000/barco/charter", "UPDATE", barcoCharterUpdate)
+        await request("http://localhost:5000/barco/charter", "PATCH", barcoCharterUpdate)
         delay(2000)
         const response = await request("http://localhost:5000/barco/charter/1", "get")
         expect(response.data).toEqual(barcoCharterUpdate)

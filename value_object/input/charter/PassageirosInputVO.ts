@@ -4,21 +4,24 @@ import { validateIntegerPositiveNumber } from "../../../util/validationUtil.js";
 
 
 export class PassageirosInputVO {
-   
+    private id?: number;
     private passageiros!: number;
     private passageirosPernoite!: number | null;
     private tripulacao!: number;
 
     constructor() { }
 
-
+    setId(id: number) {
+        validateIntegerPositiveNumber(id, "id", "Passageiros")
+        this.id = id;
+    }
     setPassageiros(passageiros: number) {
         validateIntegerPositiveNumber(passageiros, "passageiros", "Passageiros")
         this.passageiros = passageiros;
     }
 
-    setPassageirosPernoite(passageirosPernoite: number| null) {
-        if(passageirosPernoite == null) return
+    setPassageirosPernoite(passageirosPernoite: number | null) {
+        if (passageirosPernoite == null) return
         validateIntegerPositiveNumber(passageirosPernoite, "passageiros pernoite", "Passageiros")
         this.passageirosPernoite = passageirosPernoite;
     }
@@ -30,6 +33,7 @@ export class PassageirosInputVO {
 
     extractData(): Passageiros {
         return {
+            id: this.id,
             passageiros: this.passageiros,
             passageirosPernoite: this.passageirosPernoite,
             tripulacao: this.tripulacao

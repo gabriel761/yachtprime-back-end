@@ -6,6 +6,7 @@ export type HorariosOutput = {
 }
 
 export type HorariosInput = {
+    id?: number;
     horarioInicio: string;
     horarioFim: string;
 }

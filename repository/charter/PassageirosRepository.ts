@@ -9,4 +9,10 @@ export class PassageirosRepository {
         })
         return idPassageiros.id
     }
+
+    async updatePassageiros(passageiros: Passageiros) {
+         await db.none("UPDATE passageiros SET passageiros=$1, passageiros_pernoite=$2, tripulacao=$3 WHERE id=$4", [passageiros.passageiros, passageiros.passageirosPernoite, passageiros.tripulacao, passageiros.id]).catch((error) => {
+            throw new CustomError(`Repository lever Error: PassageirosRepository insertPassageiros:  ${error}`, 500)
+        })
+    }
 }

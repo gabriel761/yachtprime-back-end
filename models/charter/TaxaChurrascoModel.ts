@@ -11,4 +11,10 @@ export class TaxaChurrascoModel {
         const idTaxaChurrasco = await taxaChurrascoRepository.insertTaxaChurrasco(taxaChurrasco.mensagem, idPrecoChurrasco)
         return idTaxaChurrasco
     }
+    
+
+    async updateTaxaChurrasco(taxaChurrasco: TaxaChurrascoInput, taxaChurrascoRepository: TaxaChurrascoRepository, precoModel: PrecoModel) {
+        await precoModel.updatePreco(taxaChurrasco.preco,taxaChurrasco.preco.id, new PrecoRepository, new MoedaRepository())
+         await taxaChurrascoRepository.updateTaxaChurrasco(taxaChurrasco.mensagem, taxaChurrasco.id)
+    }
 }

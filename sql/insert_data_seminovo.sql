@@ -6,7 +6,7 @@
 
 --preco
 INSERT INTO
-    preco(valor, moeda_id)
+    preco(valor, id_moeda)
 VALUES
     (85000000, 1);
 
@@ -26,17 +26,17 @@ VALUES
     (5,1);
 --motor
 INSERT INTO 
-    motorizacao(quantidade, potencia, horas, ano, observacoes, motor_id)
+    motorizacao(quantidade, potencia, horas, ano, observacoes, id_motor)
     VALUES
     (2,1400,150,2016,null,36);
 -- seminovo
 INSERT INTO 
-    barco_seminovo (modelo_id, nome, ano, tamanho, motorizacao_id, potencia_total, combustivel, propulsao, cabine, procedencia, destaque, preco_id)
+    barco_seminovo (id_modelo, nome, ano, tamanho, id_motorizacao, potencia_total, id_combustivel, id_propulsao, id_cabine, procedencia, destaque, id_preco)
 VALUES
     (3,'Sea View',2016,50,1,2800,1,3,1,'Brasil','Guardado no seco por 212 horas',1);
 -- imagem barco seminovo
 INSERT INTO
-    imagem_barco_seminovo (imagem_id, barco_seminovo_id)
+    imagem_barco_seminovo (id_imagem, id_barco_seminovo)
 VALUES
     (1,1),
     (2,1),
@@ -46,7 +46,7 @@ VALUES
 --
 -- item e barco seminovo
 INSERT INTO
-    item_seminovo_barco_seminovo (barco_seminovo_id, item_seminovo_id, quantidade)
+    item_seminovo_barco_seminovo (id_barco_seminovo, id_item_seminovo, quantidade)
 VALUES
     (1,3,1),
     (1,6,2),
@@ -63,7 +63,7 @@ VALUES
 
     --preco
 INSERT INTO
-    preco(valor, moeda_id)
+    preco(valor, id_moeda)
 VALUES
     (5000000, 2);
 
@@ -83,17 +83,17 @@ VALUES
     (3,1);
 --motor
 INSERT INTO 
-    motorizacao(quantidade, potencia, horas, ano, observacoes, motor_id)
+    motorizacao(quantidade, potencia, horas, ano, observacoes, id_motor)
     VALUES
     (1,1200,600,2018,null,32);
 -- seminovo
 INSERT INTO 
-    barco_seminovo (modelo_id, nome, ano, tamanho, motorizacao_id, potencia_total, combustivel, propulsao, cabine, procedencia, destaque, preco_id)
+    barco_seminovo (id_modelo, nome, ano, tamanho, id_motorizacao, potencia_total, id_combustivel, id_propulsao, id_cabine, procedencia, destaque, id_preco)
 VALUES
     (1,'Peace of Mind',2018,30,2,1200,1,2,2,'Brasil','Guardado no seco por 112 horas',2);
 -- imagem barco seminovo
 INSERT INTO
-    imagem_barco_seminovo (imagem_id, barco_seminovo_id)
+    imagem_barco_seminovo (id_imagem, id_barco_seminovo)
 VALUES
     (6,2),
     (7,2),
@@ -103,7 +103,7 @@ VALUES
 --
 -- item e barco seminovo
 INSERT INTO
-    item_seminovo_barco_seminovo (barco_seminovo_id, item_seminovo_id, quantidade)
+    item_seminovo_barco_seminovo (id_barco_seminovo, id_item_seminovo, quantidade)
 VALUES
     (2,2,1),
     (2,7,2),
@@ -120,7 +120,7 @@ VALUES
 
 -- Preço
 INSERT INTO
-    preco(valor, moeda_id)
+    preco(valor,id_moeda)
 VALUES
     (18000000, 1);
 
@@ -142,19 +142,19 @@ VALUES
 
 -- Motor
 INSERT INTO 
-    motorizacao(quantidade, potencia, horas, ano, observacoes, motor_id)
+    motorizacao(quantidade, potencia, horas, ano, observacoes, id_motor)
 VALUES
     (2, 1000, 200, 2019, null, 35);
 
 -- Seminovo
 INSERT INTO 
-    barco_seminovo (modelo_id, nome, ano, tamanho, motorizacao_id, potencia_total, combustivel, propulsao, cabine, procedencia, destaque, preco_id)
+    barco_seminovo (id_modelo, nome, ano, tamanho, id_motorizacao, potencia_total, id_combustivel, id_propulsao, id_cabine, procedencia, destaque, id_preco)
 VALUES
     (4, 'Blue Horizon', 2019, 45, 3, 2000, 1, 2, 3, 'Brasil', 'Barco impecável', 3);
 
 -- Imagem Barco Seminovo
 INSERT INTO
-    imagem_barco_seminovo (imagem_id, barco_seminovo_id)
+    imagem_barco_seminovo (id_imagem, id_barco_seminovo)
 VALUES
     (11, 3),
     (12, 3),
@@ -164,7 +164,7 @@ VALUES
 
 -- Itens e Barco Seminovo
 INSERT INTO
-    item_seminovo_barco_seminovo (barco_seminovo_id, item_seminovo_id, quantidade)
+    item_seminovo_barco_seminovo (id_barco_seminovo, id_item_seminovo, quantidade)
 VALUES
     (3, 2, 1),
     (3, 6, 2),
@@ -177,7 +177,7 @@ VALUES
 
 -- Preço
 INSERT INTO
-    preco(valor, moeda_id)
+    preco(valor, id_moeda)
 VALUES
     (35000000, 2);
 
@@ -199,19 +199,19 @@ VALUES
 
 -- Motor
 INSERT INTO 
-    motorizacao(quantidade, potencia, horas, ano, observacoes, motor_id)
+    motorizacao(quantidade, potencia, horas, ano, observacoes, id_motor)
 VALUES
     (3, 1500, 300, 2020, null, 37);
 
 -- Seminovo
 INSERT INTO 
-    barco_seminovo (modelo_id, nome, ano, tamanho, motorizacao_id, potencia_total, combustivel, propulsao, cabine, procedencia, destaque, preco_id)
+    barco_seminovo (id_modelo, nome, ano, tamanho, id_motorizacao, potencia_total, id_combustivel, id_propulsao, id_cabine, procedencia, destaque, id_preco)
 VALUES
     (5, 'Ocean Breeze', 2020, 60, 4, 4500, 1, 1, 4, 'Itália', 'Barco com excelente potência', 4);
 
 -- Imagem Barco Seminovo
 INSERT INTO
-    imagem_barco_seminovo (imagem_id, barco_seminovo_id)
+    imagem_barco_seminovo (id_imagem, id_barco_seminovo)
 VALUES
     (16, 4),
     (17, 4),
@@ -221,7 +221,7 @@ VALUES
 
 -- Itens e Barco Seminovo
 INSERT INTO
-    item_seminovo_barco_seminovo (barco_seminovo_id, item_seminovo_id, quantidade)
+    item_seminovo_barco_seminovo (id_barco_seminovo, id_item_seminovo, quantidade)
 VALUES
     (4, 3, 1),
     (4, 7, 2),
@@ -235,7 +235,7 @@ VALUES
 
 -- Preço
 INSERT INTO
-    preco(valor, moeda_id)
+    preco(valor, id_moeda)
 VALUES
     (42000000, 1);
 
@@ -257,19 +257,19 @@ VALUES
 
 -- Motor
 INSERT INTO 
-    motorizacao(quantidade, potencia, horas, ano, observacoes, motor_id)
+    motorizacao(quantidade, potencia, horas, ano, observacoes, id_motor)
 VALUES
     (2, 2000, 400, 2021, null, 38);
 
 -- Seminovo
 INSERT INTO 
-    barco_seminovo (modelo_id, nome, ano, tamanho, motorizacao_id, potencia_total, combustivel, propulsao, cabine, procedencia, destaque, preco_id)
+    barco_seminovo (id_modelo, nome, ano, tamanho, id_motorizacao, potencia_total, id_combustivel, id_propulsao, id_cabine, procedencia, destaque, id_preco)
 VALUES
     (6, 'Dream Catcher', 2021, 70, 5, 4000, 2, 3, 5, 'Estados Unidos', 'Barco com design único', 5);
 
 -- Imagem Barco Seminovo
 INSERT INTO
-    imagem_barco_seminovo (imagem_id, barco_seminovo_id)
+    imagem_barco_seminovo (id_imagem, id_barco_seminovo)
 VALUES
     (21, 5),
     (22, 5),
@@ -279,7 +279,7 @@ VALUES
 
 -- Itens e Barco Seminovo
 INSERT INTO
-    item_seminovo_barco_seminovo (barco_seminovo_id, item_seminovo_id, quantidade)
+    item_seminovo_barco_seminovo (id_barco_seminovo, id_item_seminovo, quantidade)
 VALUES
     (5, 1, 1),
     (5, 4, 3),

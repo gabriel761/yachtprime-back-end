@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { BarcoCharterService } from "../service/BarcoCharterService.js";
-import { BarcoCharterInput } from '../types/charter/BarcoCharter.js';
+import { BarcoCharterInput, BarcoCharterInputWithId } from '../types/charter/BarcoCharter.js';
 
 export class BarcoCharterController {
     constructor(
@@ -23,6 +23,16 @@ export class BarcoCharterController {
         try {
             const barcoCharterInput: BarcoCharterInput = req.body
             await this.barcoCharterService.postBarcoCharter(barcoCharterInput)
+            res.sendStatus(200)
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async updateBarcoCharterById(req: Request, res: Response, next: NextFunction) {
+        try {
+            const barcoCharterInput: BarcoCharterInputWithId = req.body
+            await this.barcoCharterService.updateBarcoCharter(barcoCharterInput)
             res.sendStatus(200)
         } catch (error) {
             next(error)

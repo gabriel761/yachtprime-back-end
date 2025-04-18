@@ -30,7 +30,6 @@ export class ImagemModel {
         const imagens = await imagemRepository.getImagensByIdCharter(idCharter)
         const imagensDto = imagens.map((img: imagemDatabase) => {
             const imagemOutputValueObject = new ImagemOutputVO()
-            imagemOutputValueObject.setId(img.id_imagem)
             imagemOutputValueObject.setLink(img.link_imagem)
             imagemOutputValueObject.setFileName(img.imagem_file_name)
             return imagemOutputValueObject.extractData()
@@ -61,6 +60,15 @@ export class ImagemModel {
             await imagemRepository.deleteImagem(imagem.id_imagem)
         })
         await Promise.all(imagensSeminovoPromises);
+    }
+
+    async deleteAllImagesFromCharter(idCharter: number, imagemRepository: ImagemRepository) {
+        const imagensCharter = await imagemRepository.getImagensByIdCharter(idCharter)
+        const imagensCharterPromises = imagensCharter.map(async (imagem: imagemDatabase) => {
+            await imagemRepository.deleteAssociationImagemCharter(imagem.id_imagem)
+            await imagemRepository.deleteImagem(imagem.id_imagem)
+        })
+        await Promise.all(imagensCharterPromises);
     }
 
     validateImages(imagens: Imagem[], imagemVO: ImagemInputVO):Imagem[]{

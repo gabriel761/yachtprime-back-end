@@ -1,33 +1,44 @@
 import { CustomError } from "../../../infra/CustoError.js";
-import { BarcoCharterInput, BarcoCharterOutput } from "../../../types/charter/BarcoCharter.js";
+import { BarcoCharterInputWithId } from "../../../types/charter/BarcoCharter.js";
 import { PrecoInput } from "../../../types/Preco.js";
 import { Passageiros } from "../../../types/charter/Passageiros.js";
-import { PasseioInput } from "../../../types/charter/Passeio.js";
-import { ItemCharterInput } from "../../../types/charter/ItemCharter.js";
+import { ItemCharter } from "../../../types/charter/ItemCharter.js";
 import { Imagem } from "../../../types/Imagem.js";
 import { ConsumoCombustivelInput } from "../../../types/charter/ConsumoCombustivel.js";
 import { TaxaChurrascoInput } from "../../../types/charter/TaxaChurrasco.js";
 import { characterLimit, validateIntegerPositiveNumber, validateString, validateYear } from "../../../util/validationUtil.js";
+import { RoteiroInput } from "../../../types/charter/Roteiro.js";
+import { PetFriendly } from "../../../types/charter/PetFriendly.js";
+import { TipoPasseio } from "../../../types/charter/TipoPasseio.js";
+import { TripulacaoSkipper } from "../../../types/charter/TripulacaoSkipper.js";
 
 export class BarcoCharterInputVO {
+    private id!: number;
     private modelo!: string;
     private nome!: string;
     private ano!: number;
     private tamanho!: number;
     private preco!: PrecoInput;
     private passageiros!: Passageiros;
-    private passeio!: PasseioInput;
     private pernoite!: boolean;
-    private petFriendly!: string;
-    private itensDisponiveis!: ItemCharterInput[];
+    private petFriendly!: PetFriendly;
+    private itensDisponiveis!: ItemCharter[];
     private imagens!: Imagem[];
     private consumoCombustivel!: ConsumoCombustivelInput;
+    private roteiros!: RoteiroInput[]
     private horaExtra!: PrecoInput;
+    private tipoPasseio!: TipoPasseio;
+    private tripulacaoSkipper!: TripulacaoSkipper;
     private aluguelLancha!: PrecoInput;
     private taxaChurrasco!: TaxaChurrascoInput;
     private videoPromocional!: string;
 
     constructor() { }
+
+    setId(id: number){
+        validateIntegerPositiveNumber(id, "id", "barcoCharterVO")
+        this.id = id
+    }
 
     setModelo(modelo: string) {
         validateString(modelo, "modelo", "BarcoCharter");
@@ -61,22 +72,17 @@ export class BarcoCharterInputVO {
         this.passageiros = passageiros;
     }
 
-    setPasseio(passeio: PasseioInput) {
-        if (!passeio) throw new CustomError("Passeio em barco charter é inválido", 400);
-        this.passeio = passeio;
-    }
-
     setPernoite(pernoite: boolean) {
         if(typeof pernoite != "boolean") return
         this.pernoite = pernoite;
     }
 
-    setPetFriendly(petFriendly: string) {
-        validateString(petFriendly, "petFriendly", "BarcoCharter");
+    setPetFriendly(petFriendly: PetFriendly) {
+        if (!petFriendly) throw new CustomError("Pet friendly em barco charter é inválido", 400);
         this.petFriendly = petFriendly;
     }
 
-    setItensDisponiveis(itens: ItemCharterInput[]) {
+    setItensDisponiveis(itens: ItemCharter[]) {
         if (!itens) throw new CustomError("Itens disponíveis em barco charter são inválidos", 400);
         this.itensDisponiveis = itens;
     }
@@ -84,6 +90,11 @@ export class BarcoCharterInputVO {
     setImagens(imagens: Imagem[]) {
         if (!imagens) throw new CustomError("Imagens em barco charter são inválidas", 400);
         this.imagens = imagens;
+    }
+
+    setRoteiros(roteiros: RoteiroInput[]){
+        if (!roteiros) throw new CustomError("Roteiros em barco charter são inválidos", 400);
+        this.roteiros = roteiros
     }
 
     setConsumoCombustivel(consumo: ConsumoCombustivelInput) {
@@ -106,30 +117,43 @@ export class BarcoCharterInputVO {
         this.taxaChurrasco = taxa;
     }
 
+    setTripulacaoSkipper(tripulacaoSkipper: TripulacaoSkipper){
+        if (!tripulacaoSkipper) throw new CustomError("Tripulação Skipper em barco charter é inválido", 400);
+        this.tripulacaoSkipper = tripulacaoSkipper
+
+    }
+    setTipoPasseio(tipoPasseio: TipoPasseio) {
+        if (!tipoPasseio) throw new CustomError("Tipo passeio em barco charter é inválido", 400);
+        this.tipoPasseio = tipoPasseio
+
+    }
     setVideoPromocional(video: string | null) {
         if(video == null) return
         validateString(video, "videoPromocional", "BarcoCharter");
         this.videoPromocional = video;
     }
-
-    extractData(): BarcoCharterInput {
+    extractData(): BarcoCharterInputWithId {
         return {
+            id: this.id,
             modelo: this.modelo,
             nome: this.nome,
             ano: this.ano,
             tamanho: this.tamanho,
             preco: this.preco,
             passageiros: this.passageiros,
-            passeio: this.passeio,
             pernoite: this.pernoite,
             petFriendly: this.petFriendly,
             itensDisponiveis: this.itensDisponiveis,
             imagens: this.imagens,
+            roteiros: this.roteiros,
             consumoCombustivel: this.consumoCombustivel,
             horaExtra: this.horaExtra,
+            tipoPasseio: this.tipoPasseio,
+            tripulacaoSkipper: this.tripulacaoSkipper,
             aluguelLancha: this.aluguelLancha,
             taxaChurrasco: this.taxaChurrasco,
             videoPromocional: this.videoPromocional
         };
     }
+
 }

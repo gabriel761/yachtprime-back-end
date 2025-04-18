@@ -1,18 +1,15 @@
 import { BarcoCharterRepository } from "../../repository/charter/BarcoCharterRepository.js";
 import { ModeloRepository } from "../../repository/ModeloRepository.js";
-import { BarcoCharterDatabase, BarcoCharterInput, BarcoCharterOutput } from "../../types/charter/BarcoCharter.js";
+import { BarcoCharterDatabase, BarcoCharterInput, BarcoCharterInputWithId, BarcoCharterOutput } from "../../types/charter/BarcoCharter.js";
 import { ItemCharter } from "../../types/charter/ItemCharter.js";
-import { Passageiros } from "../../types/charter/Passageiros.js";
-import { PasseioOutput } from "../../types/charter/Passeio.js";
+import { RoteiroOutput } from "../../types/charter/Roteiro.js";
 import { Imagem } from "../../types/Imagem.js";
-import { PrecoOutput } from "../../types/Preco.js";
 import { converterPrecoBrasilParaEUA, converterPrecoEUAParaBrasil } from "../../util/transformationUtil.js";
 import { BarcoCharterInputVO } from "../../value_object/input/charter/BarcoSeminovoInputVO.js";
 import { PassageirosInputVO } from "../../value_object/input/charter/PassageirosInputVO.js";
 import { TaxaChurrascoInputVO } from "../../value_object/input/charter/TaxaChurrascoInputVO.js";
 import { PrecoInputVO } from "../../value_object/input/PrecoInputVO.js";
 import { BarcoCharterOutputVO } from "../../value_object/output/charter/BarcoSeminovoOutputVO.js";
-import { CondicoesVO } from "../../value_object/output/charter/Condicoes.js";
 import { ConsumoCombustivelOutputVO } from "../../value_object/output/charter/ConsumoCombustivelOutputVO.js";
 import { PassageirosOutputVO } from "../../value_object/output/charter/PassageirosOutputVO.js";
 import { TaxaChurrascoOutputVO } from "../../value_object/output/charter/TaxaChurrascoOutputVO.js";
@@ -20,21 +17,47 @@ import { PrecoOutputVO } from "../../value_object/output/PrecoOutputVO.js";
 import { ModeloModel } from "../ModeloModel.js";
 
 export class BarcoCharterModel {
-    getBarcoCharter(id:number,barcoCharterRepository:BarcoCharterRepository):Promise<BarcoCharterDatabase>{
+    getBarcoCharter(id: number, barcoCharterRepository: BarcoCharterRepository): Promise<BarcoCharterDatabase> {
         return barcoCharterRepository.getBarcoCharter(id)
     }
 
-    async saveBarcoCharter(barcoCharter: BarcoCharterInput, barcoCharterRepository: BarcoCharterRepository, modeloModel: ModeloModel, idPreco: number, idPassageiros: number, idPasseio: number, idPetFriendly: number, idConsumo: number, idPrecoHora: number, idPrecoAluguel: number, idTaxaChurrasco: number){
+    async getIdsByIdCharter(idChater: number, barcoCharterRepository: BarcoCharterRepository) {
+        const result = await barcoCharterRepository.getIdsByIdCharter(idChater)
+        const structuredResult = {
+            idPrecoTaxaChurrasco: result.taxa_churrasco_id_preco,
+            idPrecoBarco: result.id_preco,
+            idPrecoHoraExtra: result.id_preco_hora_extra,
+            idPrecoAluguelLancha: result.id_preco_aluguel_lancha,
+            idPassageiros: result.id_passageiros,
+            idPetFriendly: result.id_pet_friendly,
+            idConsumo: result.id_consumo,
+            idTipoPasseio: result.id_tipo_passeio,
+            idTaxaChurrasco: result.id_taxa_churrasco,
+            idTripulacaoSkipper: result.id_tripulacao_skipper
+        }
+        return structuredResult
+    }
+
+    async saveBarcoCharter(barcoCharter: BarcoCharterInput, barcoCharterRepository: BarcoCharterRepository, modeloModel: ModeloModel, idPrecoBarco: number, idPassageiros: number, idPetFriendly: number, idConsumo: number, idTipoPasseio: number, idTripulacaoSkipper: number, idPrecoHoraExtra: number, idPrecoAluguelLancha: number, idTaxaChurrasco: number) {
         const idModel = await modeloModel.getIdModeloByName(barcoCharter.modelo, new ModeloRepository())
-        const idBarcoCharter = await barcoCharterRepository.insertBarcoCharter(barcoCharter, idModel, idPreco, idPassageiros, idPasseio, idPetFriendly, idConsumo, idPrecoHora, idPrecoAluguel, idTaxaChurrasco)
+        const idBarcoCharter = await barcoCharterRepository.insertBarcoCharter(barcoCharter, idModel, idPrecoBarco, idPassageiros, idPetFriendly, idConsumo,idTipoPasseio,  idTripulacaoSkipper, idPrecoHoraExtra, idPrecoAluguelLancha, idTaxaChurrasco)
         return idBarcoCharter
     }
 
-    validateBarchoCharter(barcoCharter: BarcoCharterInput, barcoCharterVO: BarcoCharterInputVO, precoVO: PrecoInputVO, passageirosVO: PassageirosInputVO, taxaChurrascoVO: TaxaChurrascoInputVO){
+    async updateBarcoCharter(barcoCharter: BarcoCharterInputWithId, barcoCharterRepository: BarcoCharterRepository, modeloModel: ModeloModel, idConsumo: number) {
+        
+        const idModel = await modeloModel.getIdModeloByName(barcoCharter.modelo, new ModeloRepository())
+        await barcoCharterRepository.updateBarcoCharter(barcoCharter, idModel, barcoCharter.preco.id, barcoCharter.passageiros.id,  idConsumo, barcoCharter.horaExtra.id, barcoCharter.aluguelLancha.id, barcoCharter.taxaChurrasco.id)
+       
+    }
+
+
+    validateBarcoCharter(barcoCharter: BarcoCharterInput, barcoCharterVO: BarcoCharterInputVO, precoVO: PrecoInputVO, passageirosVO: PassageirosInputVO, taxaChurrascoVO: TaxaChurrascoInputVO) {
 
         const precoBarcoValor = converterPrecoBrasilParaEUA(barcoCharter.preco.valor)
         precoVO.setValor(precoBarcoValor)
         precoVO.setMoeda(barcoCharter.preco.moeda)
+
         const precoBarco = precoVO.extractData()
 
         passageirosVO.setPassageiros(barcoCharter.passageiros.passageiros)
@@ -65,7 +88,6 @@ export class BarcoCharterModel {
         barcoCharterVO.setTamanho(barcoCharter.tamanho)
         barcoCharterVO.setPreco(precoBarco)
         barcoCharterVO.setPassageiros(passageiros)
-        barcoCharterVO.setPasseio(barcoCharter.passeio)
         barcoCharterVO.setPernoite(barcoCharter.passageiros.passageirosPernoite != null)
         barcoCharterVO.setPetFriendly(barcoCharter.petFriendly)
         barcoCharterVO.setItensDisponiveis(barcoCharter.itensDisponiveis)
@@ -79,8 +101,70 @@ export class BarcoCharterModel {
         return barcoCharterValidated
     }
 
+    async validateBarcoCharterWithId(barcoCharter: BarcoCharterInputWithId, barcoCharterVO: BarcoCharterInputVO, precoVO: PrecoInputVO, passageirosVO: PassageirosInputVO, taxaChurrascoVO: TaxaChurrascoInputVO) {
 
-    buildBarcoSeminovoOutputObject(barcoCharterDatabase:BarcoCharterDatabase, barcoCharterVO:BarcoCharterOutputVO, precoVO:PrecoOutputVO, passageirosVO: PassageirosOutputVO, consumoCombustivelOutputVO:ConsumoCombustivelOutputVO, taxaChurrascoVO: TaxaChurrascoOutputVO, passeio:PasseioOutput, itensCharterArray: ItemCharter[], imagensArray: Imagem[] ):BarcoCharterOutput{
+        const { idPrecoTaxaChurrasco, idPrecoBarco, idPassageiros, idPrecoHoraExtra, idPrecoAluguelLancha, idTaxaChurrasco, idConsumo} = await this.getIdsByIdCharter(barcoCharter.id, new BarcoCharterRepository())
+
+        
+
+        const precoBarcoValor = converterPrecoBrasilParaEUA(barcoCharter.preco.valor)
+        precoVO.setValor(precoBarcoValor)
+        precoVO.setMoeda(barcoCharter.preco.moeda)
+        precoVO.setId(idPrecoBarco)
+        const precoBarco = precoVO.extractData();
+
+        passageirosVO.setPassageiros(barcoCharter.passageiros.passageiros)
+        passageirosVO.setPassageirosPernoite(barcoCharter.passageiros.passageirosPernoite)
+        passageirosVO.setTripulacao(barcoCharter.passageiros.tripulacao)
+        passageirosVO.setId(idPassageiros)
+        const passageiros = passageirosVO.extractData()
+
+        const precoChurrascoValor = converterPrecoBrasilParaEUA(barcoCharter.taxaChurrasco.preco.valor)
+        precoVO.setId(idPrecoTaxaChurrasco)
+        precoVO.setValor(precoChurrascoValor)
+        precoVO.setMoeda(barcoCharter.taxaChurrasco.preco.moeda)
+        taxaChurrascoVO.setPreco(precoVO.extractData())
+        taxaChurrascoVO.setMensagem(barcoCharter.taxaChurrasco.mensagem)
+        taxaChurrascoVO.setId(idTaxaChurrasco)
+        const taxaChurrasco = taxaChurrascoVO.extractData()
+
+        const precoHoraExtraValor = converterPrecoBrasilParaEUA(barcoCharter.horaExtra.valor)
+        precoVO.setValor(precoHoraExtraValor)
+        precoVO.setMoeda(barcoCharter.horaExtra.moeda)
+        precoVO.setId(idPrecoHoraExtra)
+        const precoHoraExtra = precoVO.extractData()
+
+        const precoAluguelLanchaValor = converterPrecoBrasilParaEUA(barcoCharter.aluguelLancha.valor)
+        precoVO.setValor(precoAluguelLanchaValor)
+        precoVO.setMoeda(barcoCharter.aluguelLancha.moeda)
+        precoVO.setId(idPrecoAluguelLancha)
+        const precoAluguelLancha = precoVO.extractData()
+
+
+        barcoCharterVO.setId(barcoCharter.id)
+        barcoCharterVO.setModelo(barcoCharter.modelo)
+        barcoCharterVO.setNome(barcoCharter.nome)
+        barcoCharterVO.setAno(barcoCharter.ano)
+        barcoCharterVO.setTamanho(barcoCharter.tamanho)
+        barcoCharterVO.setPreco(precoBarco)
+        barcoCharterVO.setPassageiros(passageiros)
+        barcoCharterVO.setPernoite(barcoCharter.passageiros.passageirosPernoite != null)
+        barcoCharterVO.setPetFriendly(barcoCharter.petFriendly)
+        barcoCharterVO.setItensDisponiveis(barcoCharter.itensDisponiveis)
+        barcoCharterVO.setImagens(barcoCharter.imagens)
+        barcoCharterVO.setRoteiros(barcoCharter.roteiros)
+        barcoCharterVO.setConsumoCombustivel(barcoCharter.consumoCombustivel)
+        barcoCharterVO.setHoraExtra(precoHoraExtra)
+        barcoCharterVO.setAluguelLancha(precoAluguelLancha)
+        barcoCharterVO.setTaxaChurrasco(taxaChurrasco)
+        barcoCharterVO.setTripulacaoSkipper(barcoCharter.tripulacaoSkipper)
+        barcoCharterVO.setTipoPasseio(barcoCharter.tipoPasseio)
+        barcoCharterVO.setVideoPromocional(barcoCharter.videoPromocional)
+        const barcoCharterValidated = barcoCharterVO.extractData()
+        return {barcoCharterValidated, idConsumo, idTaxaChurrasco}
+    }
+
+    buildBarcoCharterOutputObject(barcoCharterDatabase: BarcoCharterDatabase, barcoCharterVO: BarcoCharterOutputVO, precoVO: PrecoOutputVO, passageirosVO: PassageirosOutputVO, consumoCombustivelOutputVO: ConsumoCombustivelOutputVO, taxaChurrascoVO: TaxaChurrascoOutputVO, itensCharterArray: ItemCharter[], imagensArray: Imagem[], roteirosArray: RoteiroOutput[]): BarcoCharterOutput {
         const precoBarcoValor = converterPrecoEUAParaBrasil(barcoCharterDatabase.preco_valor)
         precoVO.setValor(precoBarcoValor)
         precoVO.setMoeda(barcoCharterDatabase.preco_moeda)
@@ -91,11 +175,15 @@ export class BarcoCharterModel {
         passageirosVO.setTripulacao(barcoCharterDatabase.passageiros_tripulacao)
         const passageiros = passageirosVO.extractData()
 
+        const tipoCombustivel = { 
+            id: barcoCharterDatabase.consumo_combustivel_tipo_combustivel_id , 
+            opcao: barcoCharterDatabase.consumo_combustivel_tipo_combustivel 
+        }
         consumoCombustivelOutputVO.setLitrosHora(barcoCharterDatabase.consumo_combustivel_litros)
-        consumoCombustivelOutputVO.setTipoCombustivel(barcoCharterDatabase.consumo_combustivel_tipo_combustivel)
+        consumoCombustivelOutputVO.setTipoCombustivel(tipoCombustivel)
         const precoCombustivelValor = converterPrecoEUAParaBrasil(barcoCharterDatabase.consumo_combustivel_valor)
         precoVO.setValor(precoCombustivelValor)
-        precoVO.setMoeda(barcoCharterDatabase.comsumo_combustivel_moeda) 
+        precoVO.setMoeda(barcoCharterDatabase.comsumo_combustivel_moeda)
         consumoCombustivelOutputVO.setPrecoHora(precoVO.extractData())
         const consumoCombustivel = consumoCombustivelOutputVO.extractData()
 
@@ -116,20 +204,23 @@ export class BarcoCharterModel {
         precoVO.setMoeda(barcoCharterDatabase.preco_aluguel_lancha_moeda)
         const precoAluguelLancha = precoVO.extractData()
 
+        barcoCharterVO.setId(barcoCharterDatabase.id)
         barcoCharterVO.setModelo(barcoCharterDatabase.modelo_modelo)
         barcoCharterVO.setNome(barcoCharterDatabase.nome)
         barcoCharterVO.setAno(barcoCharterDatabase.ano)
         barcoCharterVO.setTamanho(barcoCharterDatabase.tamanho)
-        barcoCharterVO.setPreco(precoBarco) 
+        barcoCharterVO.setPreco(precoBarco)
         barcoCharterVO.setPassageiros(passageiros)
-        barcoCharterVO.setPasseio(passeio)
-        barcoCharterVO.setPernoite(barcoCharterDatabase.passageiros_pernoite != null)
-        barcoCharterVO.setPetFriendly(barcoCharterDatabase.pet_friendly)
+        barcoCharterVO.setRoteiros(roteirosArray)
+        barcoCharterVO.setPernoite(!!barcoCharterDatabase.passageiros_pernoite)
+        barcoCharterVO.setPetFriendly({id:barcoCharterDatabase.pet_friendly_id, opcao:barcoCharterDatabase.pet_friendly})
         barcoCharterVO.setItensDisponiveis(itensCharterArray)
         barcoCharterVO.setImagens(imagensArray)
-        barcoCharterVO.setConsumoCombustivel(consumoCombustivel) 
+        barcoCharterVO.setTipoPasseio({id:barcoCharterDatabase.tipo_passeio_id, opcao:barcoCharterDatabase.tipo_passeio})
+        barcoCharterVO.setTripulacaoSkipper({id:barcoCharterDatabase.tripulacao_skipper_id, opcao:barcoCharterDatabase.tripulacao_skipper})
+        barcoCharterVO.setConsumoCombustivel(consumoCombustivel)
         barcoCharterVO.setHoraExtra(precoHoraExtra)
-        barcoCharterVO.setAluguelLancha(precoAluguelLancha) 
+        barcoCharterVO.setAluguelLancha(precoAluguelLancha)
         barcoCharterVO.setTaxaChurrasco(taxaChurrasco)
         barcoCharterVO.setVideoPromocional(barcoCharterDatabase.video_promocional)
 

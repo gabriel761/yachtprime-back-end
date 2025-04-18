@@ -14,4 +14,8 @@ router.post("/", async (req: Request, res: Response, next) => {
     await barcoCharterController.postBarcoCharterById(req, res, next)
 })
 
+router.patch("/", async (req: Request, res: Response, next) => {
+    await barcoCharterController.updateBarcoCharterById(req, res, next)
+})
+
 export default router

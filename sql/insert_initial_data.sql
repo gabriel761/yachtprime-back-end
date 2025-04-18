@@ -1219,10 +1219,6 @@ VALUES
 ('Tapete flutuante', true),
 ('Caiaque', true);
 
-INSERT INTO roteiros_livres(opcao)
-VALUES
-('Não disponível'),
-('Sob consulta');
 -- moedas
 INSERT INTO moeda(nome, simbolo, codigo_bancario)
 VALUES
@@ -1263,14 +1259,6 @@ VALUES
 ('Desistências só são aceitas com 72 horas de antecedência.'),
 ('É terminantemente PROIBIDO o uso de drogas.');
 
-
--- opções dias
-INSERT INTO opcoes_de_dias(opcao)
-VALUES
-('Sábado, domingo e feriados'),
-    ('Dias de semana'),
-    ('Todos os dias'),
-    ('Sob consulta');
 
 -- tipo combustivel
 INSERT INTO tipo_combustivel(opcao)

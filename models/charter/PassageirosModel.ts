@@ -5,5 +5,9 @@ export class PassageirosModel {
     async savePassageiros(passageiros:Passageiros, passageirosRepo: PassageirosRepository){
         const idPassageiros = await passageirosRepo.insertPassageiros(passageiros)
         return idPassageiros
+    }
+    async updatePassageiros(passageiros: Passageiros, passageirosRepo: PassageirosRepository) {
+        const idPassageiros = await passageirosRepo.updatePassageiros(passageiros)
+        return idPassageiros
     }   
 }

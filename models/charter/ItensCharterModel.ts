@@ -27,6 +27,10 @@ export class ItensCharterModel {
     return validatedItems
   }
 
+  async deleteAllAssotiationsItemCharter(idBarcoCharter: number, itemCharterRepository: ItensCharterRepository) {
+      await itemCharterRepository.deleteAssiciationOfItemWithCharter(idBarcoCharter)
+  }
+
   async associateItemWithSeminovo(idBarcoCharter: number, itens: ItemCharter[], itemCharterRepository: ItensCharterRepository) {
     for (let i = 0; i < itens.length; i++) {
       const item = itens[i];

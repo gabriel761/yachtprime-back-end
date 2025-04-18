@@ -86,6 +86,14 @@ export class ImagemRepository {
         }
     }
 
+    async deleteAssociationImagemCharter(idImagem: number,) {
+        try {
+            await db.query("DELETE FROM imagem_barco_charter WHERE id_imagem = $1", [idImagem])
+        } catch (error: any) {
+            throw new CustomError(`Repository lever Error: ImagemRepository deleteAssociationImagemCharter: ${error}`, 500)
+        }
+    }
+
     async deleteImagem(idImagem: number,) {
         try {
             await db.query("DELETE FROM imagem WHERE id = $1", [idImagem])

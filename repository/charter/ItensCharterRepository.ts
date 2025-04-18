@@ -38,5 +38,14 @@ INSERT INTO item_charter_barco_charter (id_barco_charter, id_item_charter, quant
             });
 
     }
+    async deleteAssiciationOfItemWithCharter(idCharter:number) {
+        await db.query(`
+                DELETE FROM item_charter_barco_charter WHERE id_barco_charter = $1;
+            `, [idCharter])
+            .catch((error) => {
+                throw new CustomError(`Repository lever Error: ItemCharterRepository deleteAssiciationOfItemWithCharter: ${error}`, 500)
+            });
+
+    }
 
 }

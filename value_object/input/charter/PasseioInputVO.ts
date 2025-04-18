@@ -1,18 +1,20 @@
 import { CustomError } from "../../../infra/CustoError.js";
-import { Horarios } from "../../../types/charter/Horarios.js";
-import { Passeio } from "../../../types/charter/Passeio.js";
+import { Condicao } from "../../../types/charter/Condicoes.js";
+import { HorariosInput } from "../../../types/charter/Horarios.js";
+import { LocalEmbarqueInput, LocalEmbarqueOutput } from "../../../types/charter/LocalEmbarque.js";
+import { PasseioInput } from "../../../types/charter/Roteiro.js";
 import { validateIntegerPositiveNumber, validateString } from "../../../util/validationUtil.js";
 
 
 export class PasseioInputVO {
     private id!: number;
     private tipoPasseio!: string;
-    private embarquePrincipal!: string;
-    private embarquesAlternativos!: string[];
-    private pontoEncontro!: string;
-    private horarios!: Horarios;
+    private embarquePrincipal!: LocalEmbarqueInput;
+    private embarquesAlternativos!: LocalEmbarqueInput[];
+    private horarios!: HorariosInput[];
     private duracaoPasseio!: number;
     private tripulacaoSkipper!: string;
+    private condicoes!: Condicao[]
 
     constructor() { }
 
@@ -26,24 +28,19 @@ export class PasseioInputVO {
         this.tipoPasseio = tipoPasseio;
     }
 
-    setEmbarquePrincipal(embarquePrincipal: string) {
-        validateString(embarquePrincipal, "embarquePrincipal", "Passeio")
+    setEmbarquePrincipal(embarquePrincipal: LocalEmbarqueInput) {
+       if(!this.tipoPasseio) throw new CustomError("PasseioVO: Embarque principal inválido", 500)
         this.embarquePrincipal = embarquePrincipal;
     }
 
-    setEmbarquesAlternativos(embarquesAlternativos: string[]) {
+    setEmbarquesAlternativos(embarquesAlternativos: LocalEmbarqueInput[]) {
        embarquesAlternativos.forEach(item => {
-            validateString(item, 'embarqueAlternativo', 'Passeio')
+           if (!this.tipoPasseio) throw new CustomError("PasseioVO: Embarque principal inválido", 500)
        });
         this.embarquesAlternativos = embarquesAlternativos;
     }
 
-    setPontoEncontro(pontoEncontro: string) {
-        validateString(pontoEncontro, "pontoEncontro", 'Passeio')
-        this.pontoEncontro = pontoEncontro;
-    }
-
-    setHorarios(horarios: Horarios) {
+    setHorarios(horarios: HorariosInput[]) {
         if (!horarios || typeof horarios !== "object") {
             throw new CustomError("Horários inválidos", 400);
         }
@@ -60,16 +57,16 @@ export class PasseioInputVO {
         this.tripulacaoSkipper = tripulacaoSkipper;
     }
 
-    extractData(): Passeio {
+    extractData(): PasseioInput {
         return {
             id: this.id,
             tipoPasseio: this.tipoPasseio,
             embarquePrincipal: this.embarquePrincipal,
             embarquesAlternativos: this.embarquesAlternativos,
-            pontoEncontro: this.pontoEncontro,
             horarios: this.horarios,
             duracaoPasseio: this.duracaoPasseio,
-            tripulacaoSkipper: this.tripulacaoSkipper
+            tripulacaoSkipper: this.tripulacaoSkipper,
+            condicoes: this.condicoes
         };
     }
 }

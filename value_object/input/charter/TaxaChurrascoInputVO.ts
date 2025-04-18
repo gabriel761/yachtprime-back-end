@@ -5,12 +5,17 @@ import { validateIntegerPositiveNumber, validateString } from "../../../util/val
 
 
 export class TaxaChurrascoInputVO {
+    private id?:number;
     private preco!: PrecoInput;
     private mensagem!: string;
 
     constructor() { }
 
    
+    setId(id: number){
+        validateIntegerPositiveNumber(id, "id", "TaxaChurrascoInputVO")
+        this.id = id
+    }
 
     setPreco(preco: PrecoInput) {
         if (!preco || typeof preco !== "object") {
@@ -26,6 +31,7 @@ export class TaxaChurrascoInputVO {
 
     extractData(): TaxaChurrascoInput {
         return {
+            id: this.id,
             preco: this.preco,
             mensagem: this.mensagem
         };

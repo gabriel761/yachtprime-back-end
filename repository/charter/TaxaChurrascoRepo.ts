@@ -9,4 +9,10 @@ export class TaxaChurrascoRepository {
         });
         return idTaxaChurrasco.id
     }
+
+    async updateTaxaChurrasco(mensagem: string, idTaxaChurrasco: number | undefined) {
+         await db.query("UPDATE taxa_churrasco SET mensagem=$1 WHERE id=$2", [mensagem, idTaxaChurrasco]).catch((error) => {
+            throw new CustomError(`Repository lever Error: TaxaChurrascoRepository insertTaxaChurrasco: ${error}`, 500)
+        });
+    }
 }

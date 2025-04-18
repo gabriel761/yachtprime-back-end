@@ -1,13 +1,14 @@
 import { CustomError } from "../../../infra/CustoError.js";
-import { ConsumoCombustivel } from "../../../types/charter/ConsumoCombustivel.js";
+import { ConsumoCombustivelOutput } from "../../../types/charter/ConsumoCombustivel.js";
+import { Combustivel } from "../../../types/Combustivel.js";
 import { PrecoOutput } from "../../../types/Preco.js";
 
 export class ConsumoCombustivelOutputVO {
     private litrosHora!: number;
     private precoHora!: PrecoOutput;
-    private tipoCombustivel!: string;
+    private tipoCombustivel!: Combustivel
 
-    constructor() { }
+    constructor() { } 
 
     setLitrosHora(litrosHora: number) {
         this.litrosHora = litrosHora;
@@ -17,11 +18,11 @@ export class ConsumoCombustivelOutputVO {
         this.precoHora = precoHora;
     }
 
-    setTipoCombustivel(tipoCombustivel: string) {
+    setTipoCombustivel(tipoCombustivel: Combustivel) {
         this.tipoCombustivel = tipoCombustivel;
     }
 
-    extractData(): ConsumoCombustivel {
+    extractData(): ConsumoCombustivelOutput {
         return {
             litrosHora: this.litrosHora,
             precoHora: this.precoHora,

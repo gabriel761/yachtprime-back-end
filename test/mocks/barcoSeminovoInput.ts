@@ -1,4 +1,4 @@
-import { BarcoSeminovoOutput } from '../../types/BarcoSeminovo.ts'
+import { BarcoSeminovoOutput } from '../../types/seminovo/BarcoSeminovo.ts'
 
 const motor = {
     modelo: "Detroit 8VF92 - 735HP - Diesel",

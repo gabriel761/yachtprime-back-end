@@ -1,4 +1,5 @@
 
+import { CustomError } from "../infra/CustoError.js";
 import { MoedaRepository } from "../repository/MoedaRepository.js";
 import { PrecoRepository } from "../repository/PrecoRepository.js";
 import { Moeda } from "../types/Moeda.js";
@@ -24,12 +25,18 @@ export class PrecoModel {
         return precoOutputVO.extractData()
     }
     async savePreco(preco:PrecoInput, precoRepo:PrecoRepository, moedaRepo: MoedaRepository){
+        if (typeof preco.valor == "string") {
+            preco.valor = converterPrecoBrasilParaEUA(preco.valor)
+        }
         const idMoeda = await moedaRepo.getIdMoedaBySimbolo(preco.moeda)
         const idPrecoSaved = await precoRepo.insertPreco(preco.valor, idMoeda.id)
         return idPrecoSaved.id
     }
-    async updatePreco(preco: PrecoInput, idPreco: number, precoRepo: PrecoRepository, moedaRepo: MoedaRepository) {
-        
+    async updatePreco(preco: PrecoInput, idPreco: number | undefined, precoRepo: PrecoRepository, moedaRepo: MoedaRepository) {
+        if(!idPreco) throw new CustomError("Erro ao atualizar preço: id preço não indefinido", 400)  
+        if(typeof preco.valor == "string"){
+            preco.valor = converterPrecoBrasilParaEUA(preco.valor)
+        }
         const idMoeda = await moedaRepo.getIdMoedaBySimbolo(preco.moeda)
         await precoRepo.updatePreco(preco.valor, idMoeda.id, idPreco)
     }

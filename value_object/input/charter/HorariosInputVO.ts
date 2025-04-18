@@ -1,11 +1,11 @@
 import { CustomError } from "../../../infra/CustoError.js";
-import { Horarios } from "../../../types/charter/Horarios.js";
+import { HorariosInput } from "../../../types/charter/Horarios.js";
 import { validateIntegerPositiveNumber, validateString } from "../../../util/validationUtil.js";
 
 
 export class HorariosInputVO {
     private id!: number;
-    private horaInicio!: string;
+    private horarioInicio!: string;
     private horarioFim!: string;
 
     constructor() { }
@@ -17,7 +17,7 @@ export class HorariosInputVO {
 
     setHoraInicio(horaInicio: string) {
         validateString(horaInicio, "hora início", "Horários")
-        this.horaInicio = horaInicio;
+        this.horarioInicio = horaInicio;
     }
 
     setHorarioFim(horarioFim: string) {
@@ -25,10 +25,10 @@ export class HorariosInputVO {
         this.horarioFim = horarioFim;
     }
 
-    extractData(): Horarios {
+    extractData(): HorariosInput {
         return {
             id: this.id,
-            horaInicio: this.horaInicio,
+            horarioInicio: this.horarioInicio,
             horarioFim: this.horarioFim
         };
     }
