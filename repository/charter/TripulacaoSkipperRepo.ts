@@ -8,4 +8,11 @@ export class TripulacaoSkipperRepository {
         })
         return result.id
     }
+
+    async listTripulacaoSkipper() {
+        const result = await db.query("SELECT * FROM tripulacao_skipper").catch((error) => {
+            throw new CustomError(`Repository level error: TripulacaoSkipperRepository:listTripulacaoSkipper: ${error.message}`, 500)
+        })
+        return result
+    }
 }

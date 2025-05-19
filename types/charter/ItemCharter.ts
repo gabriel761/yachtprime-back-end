@@ -1,3 +1,10 @@
+export type ItemCharterList = {
+    id: number;
+    item: string;
+    itemLazer: boolean;
+}
+
+
 export type ItemCharter = {
     id: number;
     item: string;
@@ -6,6 +13,12 @@ export type ItemCharter = {
 }
 
 
+
+export type ItemCharterDbAll = {
+    id: number;
+    item: string;
+    item_lazer: boolean;
+}
 
 export type ItemCharterDb = {
     item_id: number;

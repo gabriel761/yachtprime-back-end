@@ -1,8 +1,23 @@
 import { ItensCharterRepository } from "../../repository/charter/ItensCharterRepository.js"
-import { ItemCharter } from "../../types/charter/ItemCharter.js"
+import { ItemCharter, ItemCharterList } from "../../types/charter/ItemCharter.js"
 import { ItemCharterInputVO } from "../../value_object/input/charter/ItemCharterInputVO.js"
 
 export class ItensCharterModel {
+
+  async getAllItensCharter(itensCharterRepo: ItensCharterRepository){
+    const itensCharterDb = await itensCharterRepo.getAllItensCharter()
+    const itensCharterArray = itensCharterDb.map((item) => {
+      const itemResult: ItemCharterList = {
+        id: item.id,
+        item: item.item,
+        itemLazer: item.item_lazer,
+      
+      }
+      return itemResult
+    })
+    return itensCharterArray
+  }
+
   async getItensCharter(idCharter: number, itensCharterRepo: ItensCharterRepository): Promise<ItemCharter[]> {
     const itensCharterDb = await itensCharterRepo.getItensCharterByIdCharter(idCharter)
     const itensCharterArray = itensCharterDb.map((item) => {

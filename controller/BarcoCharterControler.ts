@@ -19,7 +19,7 @@ export class BarcoCharterController {
         }
     }
 
-    async postBarcoCharterById(req: Request, res: Response, next: NextFunction) {
+    async postBarcoCharter(req: Request, res: Response, next: NextFunction) {
         try {
             const barcoCharterInput: BarcoCharterInput = req.body
             await this.barcoCharterService.postBarcoCharter(barcoCharterInput)

@@ -31,7 +31,7 @@ export class BarcoCharterInputVO {
     private tripulacaoSkipper!: TripulacaoSkipper;
     private aluguelLancha!: PrecoInput;
     private taxaChurrasco!: TaxaChurrascoInput;
-    private videoPromocional!: string;
+    private videoPromocional!: string | null;
 
     constructor() { }
 
@@ -128,7 +128,7 @@ export class BarcoCharterInputVO {
 
     }
     setVideoPromocional(video: string | null) {
-        if(video == null) return
+        if(video == '' || video == null) return
         validateString(video, "videoPromocional", "BarcoCharter");
         this.videoPromocional = video;
     }

@@ -5,4 +5,8 @@ export class TripulacaoSkipperModel {
         const idTripulacaoSkipper = await tripulacaoSkipperRepository.getIdTripulacaoSkipperByString(tripulacaoSkipper)
         return idTripulacaoSkipper
     }
+
+    async listTripulacaoSkipper(tripulacaoSkipper: TripulacaoSkipperRepository){
+       return tripulacaoSkipper.listTripulacaoSkipper()
+    }
 }

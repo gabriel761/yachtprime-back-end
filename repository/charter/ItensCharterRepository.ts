@@ -1,8 +1,14 @@
 import { CustomError } from "../../infra/CustoError.js";
 import db from "../../infra/database.js";
-import { ItemCharterDb, ItemCharter } from "../../types/charter/ItemCharter.js";
+import { ItemCharterDb, ItemCharter, ItemCharterDbAll } from "../../types/charter/ItemCharter.js";
 
 export class ItensCharterRepository {
+
+    async getAllItensCharter(): Promise<ItemCharterDbAll[]>{
+        const result = await db.query(`SELECT * FROM item_charter`)
+        return result
+    }
+
     async getItensCharterByIdCharter(id: number): Promise<ItemCharterDb[]> {
         const result = await db.query(`
 SELECT 

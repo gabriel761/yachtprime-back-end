@@ -1,5 +1,5 @@
 import { CustomError } from "../../../infra/CustoError.js";
-import { ItemCharterOutput } from "../../../types/charter/ItemCharter.js";
+import { ItemCharter } from "../../../types/charter/ItemCharter.js";
 
 export class ItemCharterOutputVO {
     private id!: number;
@@ -21,7 +21,7 @@ export class ItemCharterOutputVO {
         this.itemLazer = itemLazer;
     }
 
-    extractData(): ItemCharterOutput {
+    extractData(): ItemCharter {
         return {
             id: this.id,
             item: this.item,

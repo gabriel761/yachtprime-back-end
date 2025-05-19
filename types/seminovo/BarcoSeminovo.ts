@@ -1,10 +1,14 @@
-import { Cabine } from "./Cabine.js";
+
 import { Combustivel } from "../Combustivel.js";
-import { Imagem } from "./Imagem.js";
+import { Imagem } from "../Imagem.js";
+import { Modelo } from "../Modelo.js";
+import { PrecoInput, PrecoOutput } from "../Preco.js";
+import { Cabine } from "./Cabine.js";
+
 import { ItemSeminovo } from "./ItemSeminovo.js";
-import { Modelo } from "./Modelo.js";
+
 import { Motorizacao } from "./Motorizacao.js";
-import { PrecoInput, PrecoOutput } from "./Preco.js";
+
 import { Propulsao } from "./Propulsao.js";
 
 export type BarcoSeminovoOutput = {

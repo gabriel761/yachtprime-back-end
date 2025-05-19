@@ -50,7 +50,7 @@ export type BarcoCharterInput = {
     horaExtra: PrecoInput;
     aluguelLancha: PrecoInput;
     taxaChurrasco: TaxaChurrascoInput;
-    videoPromocional: string | null
+    videoPromocional: string  | null
 }
 
 export type BarcoCharterInputWithId = {

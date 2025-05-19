@@ -20,6 +20,8 @@ export class ItemCharterInputVO {
     }
 
     setItemLazer(itemLazer: boolean) {
+        console.log("item lazer:", itemLazer)
+        console.log("item lazer typeof:", typeof itemLazer !== "boolean")
         if (typeof itemLazer !== "boolean") {
             throw new CustomError("Valor inválido para item de lazer", 400);
         }

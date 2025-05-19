@@ -9,4 +9,12 @@ export class TipoPasseioRepository {
         
         return result.id
     }
+    async listTipoPasseio() {
+        const result = await db.query("SELECT * FROM tipo_passeio").catch((error) => {
+            throw new CustomError(`Repository level error: TipoPasseioRepository:listTipoPasseio: ${error.message}`, 500)
+        })
+
+        return result
+    }
+    
 }

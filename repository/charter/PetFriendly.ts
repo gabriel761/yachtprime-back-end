@@ -8,4 +8,11 @@ export class PetFriendlyRepository {
         })
         return result.id 
     }
+
+    async listPetFriendly(){
+        const result = await db.query("SELECT * FROM pet_friendly").catch((error) => {
+            throw new CustomError(`Repository lever Error: PetFriendlyRepository listPetFriendly:  ${error}`, 500)
+        })
+        return result
+    }
 }
