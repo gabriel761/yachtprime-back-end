@@ -16,7 +16,7 @@ export class ModeloMotorRepository {
 
     async listModeloMotor(): Promise<Motor[]> {
         try {
-            const result = await db.query("SELECT * FROM motor_cadastrado limit 10")
+            const result = await db.query("SELECT * FROM motor_cadastrado")
             return result
         } catch (error: any) {
             throw new CustomError(`Repository level error: Modelo Motor repository: ${error.message}`, 500)
