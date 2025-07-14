@@ -65,7 +65,7 @@ afterAll(async () => {
     await testDatabase.resetDbToInitialState()
 })
 
-describe("Barco seminovo and resources tests", () => {
+describe("Barco charter and resources tests", () => {
     test.skip("Should get full barco charter",  async () => {
         const response = await request("http://localhost:5000/barco/charter/1", "get")
         expect(response.data).toEqual(barcoCharterOutput)

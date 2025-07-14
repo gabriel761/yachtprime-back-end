@@ -1264,7 +1264,7 @@ VALUES
 INSERT INTO tipo_combustivel(opcao)
 VALUES
 ('Gasolina'),
-('Dísel');
+('Diesel');
 
 --tipo de propulsao
 INSERT INTO

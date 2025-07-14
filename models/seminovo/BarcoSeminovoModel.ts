@@ -70,15 +70,7 @@ export class BarcoSeminovoModel {
 
     async getRelatedSeminovos(idSeminovo: number, barcoSeminovoRepository: BarcoSeminovoRepository): Promise<BarcoSeminovoRelated[]> {
         const result = await barcoSeminovoRepository.getRelatedSeminovos(idSeminovo)
-        const barcoSeminovosRelatedList = result.map((item): BarcoSeminovoRelated => {
-            const barcoSeminovoRelated: BarcoSeminovoRelated = {
-                id: item.barco_id,
-                modelo: item.modelo,
-                imagem: item.primeira_imagem
-            }
-            return barcoSeminovoRelated
-        })
-        return barcoSeminovosRelatedList
+        return result
     }
 
     async getIdsByIdSeminovo(idSeminovo: number | undefined, barcoSeminovoRepository: BarcoSeminovoRepository) {

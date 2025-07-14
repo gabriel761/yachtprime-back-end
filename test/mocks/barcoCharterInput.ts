@@ -49,7 +49,7 @@ const barcoCharterInput: BarcoCharterInputWithId = {
         { fileName: "file-10", link: "https://marealtacharter.com.br/wp-content/uploads/2020/09/Aluguel-de-barco-ferretti-760-em-Angra-dos-Reis-003.jpg" },
         { fileName: "file-11", link: "https://sailica-prod-main.s3.eu-central-1.amazonaws.com/3342868030000104834/large/1b651ac54ce528a2275d681abbd21a41.jpg" },
     ],
-    consumoCombustivel: { litrosHora: 50, precoHora: { moeda: "R$", valor: 100.00 }, tipoCombustivel: {id:2, opcao:"Dísel"} },
+    consumoCombustivel: { litrosHora: 50, precoHora: { moeda: "R$", valor: 100.00 }, tipoCombustivel: {id:2, opcao:"Diesel"} },
     tipoPasseio: {id:1, opcao:"Day use"},
     tripulacaoSkipper: {id: 2, opcao:"Skipper incluso"},
     horaExtra: { moeda: "R$", valor: 600.00 },

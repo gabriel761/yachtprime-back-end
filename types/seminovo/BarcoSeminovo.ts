@@ -139,4 +139,5 @@ export type BarcoSeminovoRelated = {
     id:number,
     modelo: string,
     imagem: string,
+    preco: string,
 }

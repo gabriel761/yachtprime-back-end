@@ -1,6 +1,6 @@
 import { CustomError } from "../../infra/CustoError.js";
 import db from "../../infra/database.js";
-import { BarcoSeminovoDashboardList, BarcoSeminovoDatabase, BarcoSeminovoFilters, BarcoSeminovoInput, BarcoSeminovoInputWithId } from "../../types/seminovo/BarcoSeminovo.js";
+import { BarcoSeminovoDashboardList, BarcoSeminovoDatabase, BarcoSeminovoFilters, BarcoSeminovoInput, BarcoSeminovoInputWithId, BarcoSeminovoRelated } from "../../types/seminovo/BarcoSeminovo.js";
 import config from "../../config.js";
 
 type ListBarcoSeminovoFrontEndDB = {
@@ -76,7 +76,7 @@ WHERE
         }
         return result
     }
-    async listBarcoSeminovoDashboard():Promise<any[]> {
+    async listBarcoSeminovoDashboard(): Promise<any[]> {
         const result = await db.query(`
         SELECT 
             bs.id AS id,
@@ -165,64 +165,57 @@ WHERE
     }
 
 
-    async getTotalPagesForPagination():Promise<number> {
-            const countQuery = `
+    async getTotalPagesForPagination(): Promise<number> {
+        const countQuery = `
             SELECT COUNT(*) AS total
             FROM barco_seminovo 
         `;
 
-            const countResult = await db.query(countQuery);
-            const totalItems = parseInt(countResult[0].total, 10);
-            const totalPages = Math.ceil(totalItems / limit);
-            return totalPages
+        const countResult = await db.query(countQuery);
+        const totalItems = parseInt(countResult[0].total, 10);
+        const totalPages = Math.ceil(totalItems / limit);
+        return totalPages
     }
 
-    async getRelatedSeminovos(idSeminovo:number):Promise<{barco_id:number, modelo:string, primeira_imagem:string}[]>{
+    async getRelatedSeminovos(idSeminovo: number):Promise<BarcoSeminovoRelated[]> {
         try {
             const result = await db.query(`
             SELECT 
-                bs.id AS barco_id,
-                mb.modelo AS modelo,
-                pr.valor AS preco,
-                ABS(pr.valor - alvo.valor) AS diferenca_preco,
-                primeira_imagem.link AS primeira_imagem
+                bs.id,
+                p.valor AS preco,
+                m.modelo AS modelo,
+                im.link AS imagem
             FROM 
                 barco_seminovo bs
-                LEFT JOIN modelo_barco mb ON bs.id_modelo = mb.id
-                LEFT JOIN preco pr ON bs.id_preco = pr.id
-                LEFT JOIN (
-                    SELECT 
-                        ibs.id_barco_seminovo,
-                        im.link
-                    FROM 
-                        imagem_barco_seminovo ibs
-                        LEFT JOIN imagem im ON ibs.id_imagem = im.id
-                    WHERE 
-                        ibs.id = (SELECT MIN(ibs2.id)
-                                FROM imagem_barco_seminovo ibs2
-                                WHERE ibs2.id_barco_seminovo = ibs.id_barco_seminovo)
-                ) primeira_imagem ON bs.id = primeira_imagem.id_barco_seminovo
-                CROSS JOIN (
-                    SELECT 
-                        bs_alvo.id AS barco_id,
-                        pr_alvo.valor
-                    FROM 
-                        barco_seminovo bs_alvo
-                        LEFT JOIN preco pr_alvo ON bs_alvo.id_preco = pr_alvo.id
-                    WHERE 
-                        bs_alvo.id = $1
-                ) alvo
+            JOIN 
+                preco p ON bs.id_preco = p.id
+            JOIN
+                modelo_barco m ON bs.id_modelo = m.id
+            JOIN 
+                imagem_barco_seminovo ibs ON bs.id = ibs.id_barco_seminovo
+            JOIN 
+                imagem im ON ibs.id_imagem = im.id
             WHERE 
-                bs.id != alvo.id_barco
+                ibs.id = (
+                SELECT MIN(ibs2.id) 
+                FROM imagem_barco_seminovo ibs2 
+                WHERE ibs2.id_barco_seminovo = bs.id
+            )
+			AND bs.id <> $1 -- exclui o barco base
             ORDER BY 
-                diferenca_preco ASC
+                ABS(p.valor - (
+                    SELECT p2.valor
+                    FROM barco_seminovo bs2
+                    JOIN preco p2 ON bs2.id_preco = p2.id
+                    WHERE bs2.id = $1
+                )) ASC
             LIMIT 3;
             `, [idSeminovo])
             return result
-        } catch (error:any) {
+        } catch (error: any) {
             throw new CustomError(`Repository level error: BarcoSeminovoRepository:getRelatedSeminovos: ${error.message}`, 500)
         }
-        
+
     }
 
 

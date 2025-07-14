@@ -51,7 +51,7 @@ const barcoCharterOutputUpdate: BarcoCharterOutput = {
     consumoCombustivel: {
         litrosHora: 70,
         precoHora: { moeda: "R$", valor: "150,00" },
-        tipoCombustivel: { id: 2, opcao: "Dísel" }
+        tipoCombustivel: { id: 2, opcao: "Diesel" }
     },
     tipoPasseio: { id: 2, opcao: "Day use e pernoite" },
     tripulacaoSkipper: {id:1,opcao:"Tripulação inclusa"},
