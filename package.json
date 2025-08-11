@@ -8,7 +8,8 @@
     "start": "node dist/index.js",
     "build": "tsc",
     "dev": "set NODE_ENV=development&&  npx tsx watch --env-file .env index.js ",
-    "test": "vitest barcoseminovo.test.ts",
+    "test-seminovo": "vitest barcoseminovo.test.ts",
+    "test-charter": "vitest barcocharter.test.ts",
     "database": "psql -h localhost -U postgres -d yacht-prime -p 5433",
     "database-production": "psql -h junction.proxy.rlwy.net -U postgres -d railway -p 57446"
   },

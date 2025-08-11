@@ -165,17 +165,39 @@ WHERE
     }
 
 
-    async getTotalPagesForPagination(): Promise<number> {
-        const countQuery = `
-            SELECT COUNT(*) AS total
-            FROM barco_seminovo 
-        `;
+    async getTotalPagesForPagination(filters: BarcoSeminovoFilters): Promise<number> {
+        const { modelo, oportunidade } = filters;
 
-        const countResult = await db.query(countQuery);
+        const whereConditions: string[] = [];
+        const params: any[] = [];
+
+        if (modelo) {
+            whereConditions.push(`mb.modelo ILIKE $${params.length + 1}`);
+            params.push(`%${modelo}%`);
+        }
+
+        if (typeof oportunidade === 'boolean') {
+            whereConditions.push(`bs.oportunidade = $${params.length + 1}`);
+            params.push(oportunidade);
+        }
+
+        const whereClause = whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : '';
+
+        const countQuery = `
+        SELECT COUNT(*) AS total
+        FROM barco_seminovo bs
+        LEFT JOIN modelo_barco mb ON bs.id_modelo = mb.id
+        LEFT JOIN motorizacao mtrz ON bs.id_motorizacao = mtrz.id
+        LEFT JOIN tipo_combustivel cb ON bs.id_combustivel = cb.id
+        LEFT JOIN motor_cadastrado mt ON mtrz.id_motor = mt.id
+        ${whereClause}
+    `;
+
+        const countResult = await db.query(countQuery, params);
         const totalItems = parseInt(countResult[0].total, 10);
-        const totalPages = Math.ceil(totalItems / limit);
-        return totalPages
+        return Math.ceil(totalItems / limit);
     }
+
 
     async getRelatedSeminovos(idSeminovo: number):Promise<BarcoSeminovoRelated[]> {
         try {

@@ -1225,6 +1225,12 @@ VALUES
 ('Real', 'R$', 'BRL'),
 ('Dólar', '$', 'USD');
 
+-- cidade 
+INSERT INTO cidade (opcao)
+VALUES
+('Angra dos Reis'),
+('Rio de Janeiro');
+
 -- pet friendly
 INSERT INTO pet_friendly(opcao)
 VALUES

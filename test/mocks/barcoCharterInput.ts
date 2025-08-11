@@ -6,6 +6,7 @@ const barcoCharterInput: BarcoCharterInputWithId = {
     nome: "Lancha Luxo",
     ano: 2022,
     tamanho: 50,
+    cidade: 'Angra dos Reis',
     preco: { moeda: "R$", valor: 1800.00 },
     passageiros: { passageiros: 10, passageirosPernoite: 4, tripulacao: 2 },
     roteiros: [
@@ -43,7 +44,7 @@ const barcoCharterInput: BarcoCharterInputWithId = {
         { id: 12, item: "Plataforma de popa / Plataforma de popa estendida", itemLazer: false, quantidade: 1 }
     ],
     imagens: [
-        { fileName: "file-7", link: "https://www.hmy.com/wp-content/uploads/2019/04/ferretti-760.jpg" },
+        { fileName: "file-7", link: "https://p2.trrsf.com/image/fget/cf/1200/900/middle/images.terra.com/2014/03/01/0170running1.jpg" },
         { fileName: "file-8", link: "https://mondblu.com.br/wp-content/uploads/2022/05/01d0f1f6-f540-4d71-ba68-b8b69a542651.jpg" },
         { fileName: "file-9", link: "https://i.ytimg.com/vi/AxyUXPHmYxY/maxresdefault.jpg" },
         { fileName: "file-10", link: "https://marealtacharter.com.br/wp-content/uploads/2020/09/Aluguel-de-barco-ferretti-760-em-Angra-dos-Reis-003.jpg" },

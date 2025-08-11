@@ -64,7 +64,7 @@ export class BarcoSeminovoModel {
         }
         return {
             data: barcoSeminovoListFrontEnd,
-            totalPages: await barcoSeminovoRepository.getTotalPagesForPagination()
+            totalPages: await barcoSeminovoRepository.getTotalPagesForPagination(filters)
         }
     }
 

@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS
     barco_charter,
     consumo_combustivel,
     roteiro,
+    cidade,
     taxa_churrasco,
     tripulacao_skipper,
     tipo_passeio,

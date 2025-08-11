@@ -111,7 +111,7 @@ class BarcoSeminovoService {
         await cabineModel.deleteCabineByIdCabine(barcoSeminovoData.capacidade_id, new CabineRepository())
         await precoModel.deletePrecoByidPreco(barcoSeminovoData.preco_id, new PrecoRepository())
         await motorizacaoModel.deleteMotorizacaoByIdMotorizacao(barcoSeminovoData.motorizacao_id, new MotorizacaoRepository())
-       // await imagemModel.deleteImagesFromFirebase(imagensFromSeminovo, firebaseModel)
+        await imagemModel.deleteImagesFromFirebase(imagensFromSeminovo, firebaseModel)
     }
 }
 export default BarcoSeminovoService

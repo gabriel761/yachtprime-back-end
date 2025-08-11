@@ -11,12 +11,28 @@ router.get("/:id", async (req:Request, res: Response, next) => {
     await barcoCharterController.getBarcoCharterById(req, res, next)
 })
 
+router.get("/list/dashboard", decodeToken, async (req:Request, res:Response, next)=>{
+    await barcoCharterController.listBarcoCharterDashboard(req, res, next)
+})
+
+router.get('/list/front-end', async (req: Request, res: Response, next) => {
+        await barcoCharterController.listBarcoCharterFrontEnd(req, res, next)
+})
+
+router.get('/related/:id', async (req: Request, res: Response, next) => {
+    await barcoCharterController.getRelatedCharters(req, res, next)
+})
+
 router.post("/", decodeToken, async (req: Request, res: Response, next) => {
     await barcoCharterController.postBarcoCharter(req, res, next)
 })
 
-router.patch("/", async (req: Request, res: Response, next) => {
+router.patch("/", decodeToken, async (req: Request, res: Response, next) => {
     await barcoCharterController.updateBarcoCharterById(req, res, next)
+})
+
+router.delete("/", decodeToken, async (req: Request, res: Response, next) => {
+    await barcoCharterController.deleteBarcoCharter(req, res, next)
 })
 
 export default router

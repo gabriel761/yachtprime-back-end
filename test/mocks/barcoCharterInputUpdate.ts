@@ -6,6 +6,7 @@ const barcoCharterOutputUpdate: BarcoCharterOutput = {
     nome: "Barco Premium",
     ano: 2023,
     tamanho: 60,
+    cidade: "Angra dos Reis",
     preco: { moeda: "R$", valor: "2.200,00" },
     passageiros: { passageiros: 14, passageirosPernoite: 6, tripulacao: 3 },
     roteiros: [
@@ -57,6 +58,18 @@ const barcoCharterOutputUpdate: BarcoCharterOutput = {
     tripulacaoSkipper: {id:1,opcao:"Tripulação inclusa"},
     horaExtra: { moeda: "R$", valor: "800,00" },
     aluguelLancha: { moeda: "R$", valor: "4.200,00" },
+    condicoes: [
+        { id: 1, opcao: 'Os passeios são privativos, não vendemos ingressos.' },
+        { id: 2, opcao: 'O tempo é medido desde a hora marcada, mesmo que o cliente atrase no embarque.' },
+        { id: 3, opcao: 'Só aceitamos pagamentos no PIX.' },
+        { id: 4, opcao: 'Reservas mediante 50% de sinal.' },
+        { id: 5, opcao: 'Os 50% restantes devem ser pagos no dia antes do embarque.' },
+        { id: 6, opcao: 'Em caso de ressaca impeditiva de navegar, aguardar no dia para remarcação de nova data (chuva, frio, tempo nublado não impedem de navegar).' },
+        { id: 7, opcao: 'Toda vida humana conta como passageiro, mesmo no colo.' },
+        { id: 8, opcao: 'Caso a Marinha cobre taxa de embarque, fica por conta do cliente.' },
+        { id: 9, opcao: 'Desistências só são aceitas com 72 horas de antecedência.' },
+        { id: 10, opcao: 'É terminantemente PROIBIDO o uso de drogas.' }
+    ],
     taxaChurrasco: {
         preco: { moeda: "R$", valor: "1.800,00" },
         mensagem: "Taxa paga antecipadamente via Pix"

@@ -15,4 +15,8 @@ export class PassageirosRepository {
             throw new CustomError(`Repository lever Error: PassageirosRepository insertPassageiros:  ${error}`, 500)
         })
     }
+    async deletePassageirosById(idPassageiros: number){
+        db.query("DELETE FROM passageiros WHERE id=$1", [idPassageiros])
+    }
 }
+

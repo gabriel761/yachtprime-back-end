@@ -1,7 +1,7 @@
 import { RoteiroRepository } from "../../repository/charter/RoteiroRepository.js";
 import { MoedaRepository } from "../../repository/MoedaRepository.js";
 import { PrecoRepository } from "../../repository/PrecoRepository.js";
-import { RoteiroInput } from "../../types/charter/Roteiro.js";
+import { RoteiroDataBase, RoteiroInput } from "../../types/charter/Roteiro.js";
 import { converterPrecoBrasilParaEUA, converterPrecoEUAParaBrasil } from "../../util/transformationUtil.js";
 import { RoteiroInputVO } from "../../value_object/input/charter/RoteiroInputVO.js";
 import { PrecoInputVO } from "../../value_object/input/PrecoInputVO.js";
@@ -48,7 +48,12 @@ export class RoteiroModel {
     }
   }
 
-  async deleteAllRoteirosFromCharter(idCharter: number, roteiroRepository: RoteiroRepository) {
-    await roteiroRepository.deleteAllRoteirosByIdCharter(idCharter)
+  async deleteAllRoteirosFromCharter(idCharter: number, roteiroRepository: RoteiroRepository, precoRepository: PrecoRepository) {
+    const roteirosCharter = await roteiroRepository.getRoteirosByIdCharter(idCharter)
+    const roteirosCharterPromises = roteirosCharter.map(async (roteiro: RoteiroDataBase) => {
+      await roteiroRepository.deleteRoteiroById(roteiro.id)
+      await precoRepository.deletePrecoById(roteiro.preco_id)
+    })
+    await Promise.all(roteirosCharterPromises);
   }
 }

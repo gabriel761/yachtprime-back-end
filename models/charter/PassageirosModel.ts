@@ -9,5 +9,8 @@ export class PassageirosModel {
     async updatePassageiros(passageiros: Passageiros, passageirosRepo: PassageirosRepository) {
         const idPassageiros = await passageirosRepo.updatePassageiros(passageiros)
         return idPassageiros
+    }
+    async deletePassageiros(idPassageiros: number, passageirosRepo: PassageirosRepository){
+        await passageirosRepo.deletePassageirosById(idPassageiros)
     }   
 }

@@ -11,6 +11,8 @@ import { RoteiroOutput } from "../../../types/charter/Roteiro.js";
 import { PetFriendly } from "../../../types/charter/PetFriendly.js";
 import { TipoPasseio } from "../../../types/charter/TipoPasseio.js";
 import { TripulacaoSkipper } from "../../../types/charter/TripulacaoSkipper.js";
+import { Modelo } from "../../../types/Modelo.js";
+import { Condicao } from "../../../types/charter/Condicoes.js";
 
 export class BarcoCharterOutputVO {
     private id!:number;
@@ -18,6 +20,7 @@ export class BarcoCharterOutputVO {
     private nome!: string | null;
     private ano!: number;
     private tamanho!: number;
+    private cidade!: "Angra dos Reis" | "Rio de Janeiro";
     private preco!: PrecoOutput;
     private passageiros!: Passageiros;
     private roteiros!: RoteiroOutput[];
@@ -30,6 +33,7 @@ export class BarcoCharterOutputVO {
     private tripulacaoSkpper!: TripulacaoSkipper;
     private horaExtra!: PrecoOutput;
     private aluguelLancha!: PrecoOutput;
+    private condicoes!: Condicao[];
     private taxaChurrasco!: TaxaChurrascoOutput;
     private videoPromocional!: string | null;
 
@@ -53,6 +57,10 @@ export class BarcoCharterOutputVO {
 
     setTamanho(tamanho: number) {
         this.tamanho = tamanho;
+    }
+
+    setCidade(cidade: "Angra dos Reis" | "Rio de Janeiro"){
+        this.cidade = cidade
     }
 
     setPreco(preco: PrecoOutput) {
@@ -103,6 +111,10 @@ export class BarcoCharterOutputVO {
         this.aluguelLancha = aluguelLancha;
     }
 
+    setCondicao(condicoes: Condicao[]){
+        this.condicoes = condicoes
+    }
+
     setTaxaChurrasco(taxa: TaxaChurrascoOutput) {
         this.taxaChurrasco = taxa;
     }
@@ -117,6 +129,7 @@ export class BarcoCharterOutputVO {
             modelo: this.modelo,
             nome: this.nome,
             ano: this.ano,
+            cidade: this.cidade,
             tamanho: this.tamanho,
             preco: this.preco,
             passageiros: this.passageiros,
@@ -130,6 +143,7 @@ export class BarcoCharterOutputVO {
             tripulacaoSkipper: this.tripulacaoSkpper,
             horaExtra: this.horaExtra,
             aluguelLancha: this.aluguelLancha,
+            condicoes: this.condicoes,
             taxaChurrasco: this.taxaChurrasco,
             videoPromocional: this.videoPromocional
         };

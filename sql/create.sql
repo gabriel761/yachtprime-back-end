@@ -164,6 +164,10 @@ CREATE TABLE consumo_combustivel (
     CONSTRAINT fk_tipo_combustivel FOREIGN KEY (id_tipo_combustivel) REFERENCES tipo_combustivel(id)
 );
    
+   CREATE TABLE cidade (
+     id SERIAL PRIMARY KEY,
+     opcao VARCHAR(100)
+);
 
 
 CREATE TABLE barco_charter (
@@ -172,6 +176,7 @@ CREATE TABLE barco_charter (
     nome VARCHAR(100),
     ano INTEGER NOT NULL,
     tamanho INT NOT NULL,
+    id_cidade INT NOT NULL,
     id_preco INTEGER NOT NULL,
     id_passageiros INTEGER NOT NULL,
     id_pet_friendly INTEGER NOT NULL,
@@ -183,6 +188,7 @@ CREATE TABLE barco_charter (
     id_taxa_churrasco INTEGER NOT NULL,
     video_promocional VARCHAR(500),
 
+     CONSTRAINT fk_cidade FOREIGN KEY (id_cidade) REFERENCES cidade(id),
     CONSTRAINT fk_preco FOREIGN KEY (id_preco) REFERENCES preco(id),
     CONSTRAINT fk_passageiros FOREIGN KEY (id_passageiros) REFERENCES passageiros(id),
     CONSTRAINT fk_pet_friendly FOREIGN KEY (id_pet_friendly) REFERENCES pet_friendly(id),
@@ -191,7 +197,7 @@ CREATE TABLE barco_charter (
     CONSTRAINT fk_preco_aluguel_lancha FOREIGN KEY (id_preco_aluguel_lancha) REFERENCES preco(id),
     CONSTRAINT fk_tripulacao_skipper FOREIGN KEY (id_tripulacao_skipper) REFERENCES tripulacao_skipper(id),
     CONSTRAINT fk_tipo_passeio FOREIGN KEY (id_tipo_passeio) REFERENCES tipo_passeio(id),
-    CONSTRAINT fk_taxa_churrasco FOREIGN KEY (id_taxa_churrasco) REFERENCES preco(id)
+    CONSTRAINT fk_taxa_churrasco FOREIGN KEY (id_taxa_churrasco) REFERENCES taxa_churrasco(id)
 );
 
 CREATE TABLE roteiro (
@@ -205,6 +211,8 @@ CREATE TABLE roteiro (
     CONSTRAINT fk_preco FOREIGN KEY (id_preco) REFERENCES preco(id),
     CONSTRAINT fk_barco_charter FOREIGN KEY (id_barco_charter) REFERENCES barco_charter(id)
 );
+
+
 
 CREATE TABLE imagem_barco_charter (
     id SERIAL PRIMARY KEY,

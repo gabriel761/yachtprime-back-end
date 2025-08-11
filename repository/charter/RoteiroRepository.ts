@@ -5,15 +5,19 @@ import { RoteiroDataBase, RoteiroOutput } from "../../types/charter/Roteiro.js";
 export class RoteiroRepository {
     async getRoteirosByIdCharter(idCharter: number): Promise<RoteiroDataBase[]> {
         const result = await db.query(`SELECT
+                    r.id,
                     r.nome,
                     r.descricao,
                     preco.valor AS preco_valor,
+                    preco.id AS preco_id,
                     moeda.simbolo AS preco_moeda,
                     r.detalhes_pagamento AS detalhes_pagamento
                 FROM
                     roteiro r
                     JOIN preco ON id_preco = preco.id
                     JOIN moeda ON preco.id_moeda = moeda.id
+                WHERE 
+                    id_barco_charter = $1
                 `, [idCharter]).catch((error) => {
             throw new CustomError(`Repository level error: RoteiroRepository:getRoteirosByIdCharter: ${error.message}`, 500)
         });
@@ -43,7 +47,18 @@ export class RoteiroRepository {
         }
     }
 
-    async deleteAllRoteirosByIdCharter(idCharter:number){
-      await  db.none(`DELETE FROM roteiro WHERE id_barco_charter=$1`,[idCharter])
+    async deleteAllRoteirosByIdCharter(idCharter: number) {
+        try {
+            await db.none(`DELETE FROM roteiro WHERE id_barco_charter=$1`, [idCharter])
+        } catch (error: any) {
+            throw new CustomError(`Repository level error: RoteiroRepository:deleteAllRoteirosByIdCharter: ${error.message}`, 500)
+        }
+    }
+    async deleteRoteiroById(idRoteiro: number) {
+        try {
+            await db.none(`DELETE FROM roteiro WHERE id=$1`, [idRoteiro])
+        } catch (error: any) {
+            throw new CustomError(`Repository level error: RoteiroRepository:deleteRoteiroByIdCharter: ${error.message}`, 500)
+        }
     }
 }

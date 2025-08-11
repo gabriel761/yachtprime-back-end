@@ -17,9 +17,11 @@ export type RoteiroOutput = {
 } 
 
 export type RoteiroDataBase = {
+    id: number;
     nome: string;
     descricao: string;
     preco_valor: string;
+    preco_id: number;
     preco_moeda: string;
     detalhes_pagamento: string
 }

@@ -17,4 +17,10 @@ export class TaxaChurrascoModel {
         await precoModel.updatePreco(taxaChurrasco.preco,taxaChurrasco.preco.id, new PrecoRepository, new MoedaRepository())
          await taxaChurrascoRepository.updateTaxaChurrasco(taxaChurrasco.mensagem, taxaChurrasco.id)
     }
+
+    async deleteTaxaChurrasco(idChurrasco: number, taxaChurrascoRepo: TaxaChurrascoRepository, precoRepository: PrecoRepository){
+        const taxaChurrasco = await taxaChurrascoRepo.getTaxaChurrascoById(idChurrasco)
+        await taxaChurrascoRepo.deleteTaxaChurrasco(idChurrasco)
+        await precoRepository.deletePrecoById(taxaChurrasco.id_preco)
+    }
 }

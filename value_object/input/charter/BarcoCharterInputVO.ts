@@ -11,6 +11,7 @@ import { RoteiroInput } from "../../../types/charter/Roteiro.js";
 import { PetFriendly } from "../../../types/charter/PetFriendly.js";
 import { TipoPasseio } from "../../../types/charter/TipoPasseio.js";
 import { TripulacaoSkipper } from "../../../types/charter/TripulacaoSkipper.js";
+import { Modelo } from "../../../types/Modelo.js";
 
 export class BarcoCharterInputVO {
     private id!: number;
@@ -18,6 +19,7 @@ export class BarcoCharterInputVO {
     private nome!: string;
     private ano!: number;
     private tamanho!: number;
+    private cidade!: "Angra dos Reis" | "Rio de Janeiro";
     private preco!: PrecoInput;
     private passageiros!: Passageiros;
     private pernoite!: boolean;
@@ -41,7 +43,7 @@ export class BarcoCharterInputVO {
     }
 
     setModelo(modelo: string) {
-        validateString(modelo, "modelo", "BarcoCharter");
+        validateString(modelo, "Modelo", "BarcoCharterVO")
         this.modelo = modelo;
     }
 
@@ -60,6 +62,11 @@ export class BarcoCharterInputVO {
     setTamanho(tamanho: number) {
         validateIntegerPositiveNumber(tamanho, "tamanho", "BarcoCharter");
         this.tamanho = tamanho;
+    }
+
+    setCidade(cidade: "Angra dos Reis" | "Rio de Janeiro"){
+        validateString(cidade, "cidade", "BarcoCharterVO")
+        this.cidade = cidade
     }
 
     setPreco(preco: PrecoInput) {
@@ -139,6 +146,7 @@ export class BarcoCharterInputVO {
             nome: this.nome,
             ano: this.ano,
             tamanho: this.tamanho,
+            cidade: this.cidade,
             preco: this.preco,
             passageiros: this.passageiros,
             pernoite: this.pernoite,

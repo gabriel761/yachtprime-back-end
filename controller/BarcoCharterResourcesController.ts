@@ -42,4 +42,32 @@ export class BarcoCharterResourcesController {
         }
     }
 
+    async listImagensByIdCharter(req: Request, res: Response, next: NextFunction) {
+        try {
+            const idCharter:number = parseInt( req.params.id)
+            const result = await barcoCharterResourcesService.listImagesByIdCharter(idCharter)
+            res.json(result)
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async listCidades(req: Request, res: Response, next: NextFunction){
+        try {
+         const result = await barcoCharterResourcesService.listCidades()
+         res.json(result)   
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async listCondicoes(req: Request, res: Response, next: NextFunction) {
+        try {
+            const result = await barcoCharterResourcesService.listCondicoes()
+            res.json(result)
+        } catch (error) {
+            next(error)
+        }
+    }
+
 }

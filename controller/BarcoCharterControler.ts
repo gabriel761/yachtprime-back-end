@@ -1,6 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import { BarcoCharterService } from "../service/BarcoCharterService.js";
-import { BarcoCharterInput, BarcoCharterInputWithId } from '../types/charter/BarcoCharter.js';
+import { BarcoCharterFilters, BarcoCharterInput, BarcoCharterInputWithId } from '../types/charter/BarcoCharter.js';
+import { CustomError } from '../infra/CustoError.js';
+import { validateIntegerPositiveNumber } from '../util/validationUtil.js';
+import { FirebaseModel } from '../models/external/FirebaseModel.js';
+import { convertStringToBoolean } from '../util/transformationUtil.js';
 
 export class BarcoCharterController {
     constructor(
@@ -13,6 +17,41 @@ export class BarcoCharterController {
         try {
             const id = parseInt(req.params.id)
             const barcoCharterResult = await this.barcoCharterService.getBarcoCharterById(id)
+            res.json(barcoCharterResult)
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async getRelatedCharters(req: Request, res: Response, next: NextFunction){
+        try {
+            const id = parseInt(req.params.id)
+            const relatedCharters = await this.barcoCharterService.getRelatedCharters(id)
+            res.json(relatedCharters)
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async listBarcoCharterDashboard(req: Request, res: Response, next: NextFunction) {
+        try {
+            const barcoCharterResult = await this.barcoCharterService.listBarcoCharterDashboard()
+            res.json(barcoCharterResult)
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async listBarcoCharterFrontEnd(req: Request, res: Response, next: NextFunction) {
+        try {
+            const query = req.query
+             const filters = {
+                            page: query.page,
+                            cidade: query.cidade,
+                            pernoite: convertStringToBoolean(query.pernoite),
+                            capacidade: query.capacidade
+                        };
+            const barcoCharterResult = await this.barcoCharterService.listBarcoCharterFrontEnd(filters)
             res.json(barcoCharterResult)
         } catch (error) {
             next(error)
@@ -38,4 +77,18 @@ export class BarcoCharterController {
             next(error)
         }
     }
+
+     async deleteBarcoCharter(req: Request, res: Response, next: NextFunction) {
+            try {
+                const body = req.body
+                if (!body) throw new CustomError("Empty body delete", 400)
+                validateIntegerPositiveNumber(body.id, "id", "Barco Seminovo")
+                await this.barcoCharterService.deleteBarcoCharter(body.id, new FirebaseModel())
+                res.sendStatus(200).end();
+            } catch (error) {
+                next(error)
+            }
+    
+        }
+
 }

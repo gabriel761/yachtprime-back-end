@@ -1,20 +1,26 @@
 import { BarcoCharterRepository } from "../../repository/charter/BarcoCharterRepository.js";
+import { CidadeRepository } from "../../repository/charter/CidadeRepository.js";
 import { ModeloRepository } from "../../repository/ModeloRepository.js";
-import { BarcoCharterDatabase, BarcoCharterInput, BarcoCharterInputWithId, BarcoCharterOutput } from "../../types/charter/BarcoCharter.js";
+import { BarcoCharterDatabase, BarcoCharterFilters, BarcoCharterInput, BarcoCharterInputWithId, BarcoCharterListDashboard, BarcoCharterListDashboardDatabase, BarcoCharterListFrontEnd, BarcoCharterOutput, BarcoCharterRelated } from "../../types/charter/BarcoCharter.js";
+import { Condicao } from "../../types/charter/Condicoes.js";
 import { ItemCharter } from "../../types/charter/ItemCharter.js";
 import { RoteiroOutput } from "../../types/charter/Roteiro.js";
 import { Imagem } from "../../types/Imagem.js";
+import { BarcoSeminovoFilters } from "../../types/seminovo/BarcoSeminovo.js";
 import { converterPrecoBrasilParaEUA, converterPrecoEUAParaBrasil } from "../../util/transformationUtil.js";
 import { BarcoCharterInputVO } from "../../value_object/input/charter/BarcoCharterInputVO.js";
 import { PassageirosInputVO } from "../../value_object/input/charter/PassageirosInputVO.js";
 import { TaxaChurrascoInputVO } from "../../value_object/input/charter/TaxaChurrascoInputVO.js";
+import { ModeloInputVO } from "../../value_object/input/ModeloInputVO.js";
 import { PrecoInputVO } from "../../value_object/input/PrecoInputVO.js";
 import { BarcoCharterOutputVO } from "../../value_object/output/charter/BarcoCharterOutputVO.js";
 import { ConsumoCombustivelOutputVO } from "../../value_object/output/charter/ConsumoCombustivelOutputVO.js";
 import { PassageirosOutputVO } from "../../value_object/output/charter/PassageirosOutputVO.js";
 import { TaxaChurrascoOutputVO } from "../../value_object/output/charter/TaxaChurrascoOutputVO.js";
+import { ModeloOutputVO } from "../../value_object/output/ModeloOutputVO.js";
 import { PrecoOutputVO } from "../../value_object/output/PrecoOutputVO.js";
 import { ModeloModel } from "../ModeloModel.js";
+import { CidadeModel } from "./CidadeModel.js";
 
 export class BarcoCharterModel {
     getBarcoCharter(id: number, barcoCharterRepository: BarcoCharterRepository): Promise<BarcoCharterDatabase> {
@@ -38,21 +44,92 @@ export class BarcoCharterModel {
         return structuredResult
     }
 
-    async saveBarcoCharter(barcoCharter: BarcoCharterInput, barcoCharterRepository: BarcoCharterRepository, modeloModel: ModeloModel, idPrecoBarco: number, idPassageiros: number, idPetFriendly: number, idConsumo: number, idTipoPasseio: number, idTripulacaoSkipper: number, idPrecoHoraExtra: number, idPrecoAluguelLancha: number, idTaxaChurrasco: number) {
+    async listBarcoCharterDashboard(barcoCharterRepository: BarcoCharterRepository){
+        const barcoCharterListDatabase = await barcoCharterRepository.listBarcoCharterDashboard()
+        const barcoCharterList = barcoCharterListDatabase.map((item) => {
+            const barcoCharter: BarcoCharterListDashboard = {
+                id: item.id,
+                imagem: item.imagem,
+                nome: item.nome,
+                modelo: item.modelo,
+                tamanho: item.tamanho,
+                preco: {
+                    moeda: item.preco_moeda,
+                    valor: converterPrecoEUAParaBrasil(item.preco_valor)
+                },
+                passageiros: item.passageiros
+            }
+            return barcoCharter
+        })
+        return barcoCharterList
+    }
+
+    async listBarcoCharterFrontEnd(filters: BarcoCharterFilters, barcoCharterRepository: BarcoCharterRepository) {
+        const barcoCharterListDatabase = await barcoCharterRepository.listBarcoCharterFrontEnd(filters)
+        const barcoCharterList = barcoCharterListDatabase.map((item) => {
+            const barcoCharter: BarcoCharterListFrontEnd = {
+                id: item.id,
+                imagem: item.imagem,
+                modelo: item.modelo,
+                tamanho: item.tamanho,
+                cidade: item.cidade,
+                pernoite: !!item.passageiros_pernoite,
+                tripulacaoSkipper: item.tripulacao_skipper, 
+                preco: {
+                    moeda: item.preco_moeda,
+                    valor: converterPrecoEUAParaBrasil(item.preco_valor)
+                },
+                passageiros: item.passageiros
+            }
+            return barcoCharter
+        })
+        if (!filters.page) {
+            return {
+                data: barcoCharterList
+            }
+        }
+        return {
+            data: barcoCharterList,
+            totalPages: await barcoCharterRepository.getTotalPagesForPagination(filters)
+        }
+    }
+
+    async getRelatedCharters(idCharter: number, barcoCharterRepository: BarcoCharterRepository){
+        const result =  await barcoCharterRepository.getRelatedCharters(idCharter)
+        const charterRelated = result.map((charter): BarcoCharterRelated => {
+            return {
+                id: charter.id,
+                preco: {
+                    valor: charter.preco_valor,
+                    moeda: charter.preco_moeda
+                },
+                modelo: charter.modelo,
+                imagem: charter.imagem
+            }
+        })
+        return charterRelated
+    }
+
+    async saveBarcoCharter(barcoCharter: BarcoCharterInput, barcoCharterRepository: BarcoCharterRepository, modeloModel: ModeloModel, idPrecoBarco: number, idPassageiros: number, idCidade: number, idPetFriendly: number, idConsumo: number, idTipoPasseio: number, idTripulacaoSkipper: number, idPrecoHoraExtra: number, idPrecoAluguelLancha: number, idTaxaChurrasco: number) {
         const idModel = await modeloModel.getIdModeloByName(barcoCharter.modelo, new ModeloRepository())
-        const idBarcoCharter = await barcoCharterRepository.insertBarcoCharter(barcoCharter, idModel, idPrecoBarco, idPassageiros, idPetFriendly, idConsumo,idTipoPasseio,  idTripulacaoSkipper, idPrecoHoraExtra, idPrecoAluguelLancha, idTaxaChurrasco)
+        const idBarcoCharter = await barcoCharterRepository.insertBarcoCharter(barcoCharter, idModel, idPrecoBarco, idPassageiros,
+            idCidade, idPetFriendly, idConsumo,idTipoPasseio,  idTripulacaoSkipper, idPrecoHoraExtra, idPrecoAluguelLancha, idTaxaChurrasco)
         return idBarcoCharter
     }
 
-    async updateBarcoCharter(barcoCharter: BarcoCharterInputWithId, barcoCharterRepository: BarcoCharterRepository, modeloModel: ModeloModel, idConsumo: number) {
+    async updateBarcoCharter(barcoCharter: BarcoCharterInputWithId, barcoCharterRepository: BarcoCharterRepository, modeloModel: ModeloModel, cidadeModel: CidadeModel, idConsumo: number) {
         
         const idModel = await modeloModel.getIdModeloByName(barcoCharter.modelo, new ModeloRepository())
-        await barcoCharterRepository.updateBarcoCharter(barcoCharter, idModel, barcoCharter.preco.id, barcoCharter.passageiros.id,  idConsumo, barcoCharter.horaExtra.id, barcoCharter.aluguelLancha.id, barcoCharter.taxaChurrasco.id)
+        const idCidade = await cidadeModel.getIdCidadeByString(barcoCharter.cidade, new CidadeRepository())
+        await barcoCharterRepository.updateBarcoCharter(barcoCharter, idModel, idCidade)
        
     }
 
+    async deleteBarcoCharterModel(idBarcoCharter: number, barcoCharterRepository: BarcoCharterRepository){
+      await  barcoCharterRepository.deleteBarcoCharter(idBarcoCharter)
+    }
 
-    validateBarcoCharter(barcoCharter: BarcoCharterInput, barcoCharterVO: BarcoCharterInputVO, precoVO: PrecoInputVO, passageirosVO: PassageirosInputVO, taxaChurrascoVO: TaxaChurrascoInputVO) {
+    validateBarcoCharter(barcoCharter: BarcoCharterInput, barcoCharterVO: BarcoCharterInputVO, precoVO: PrecoInputVO, passageirosVO: PassageirosInputVO, modeloVO:ModeloInputVO, taxaChurrascoVO: TaxaChurrascoInputVO) {
 
         const precoBarcoValor = converterPrecoBrasilParaEUA(barcoCharter.preco.valor)
         precoVO.setValor(precoBarcoValor)
@@ -64,6 +141,11 @@ export class BarcoCharterModel {
         passageirosVO.setPassageirosPernoite(barcoCharter.passageiros.passageirosPernoite)
         passageirosVO.setTripulacao(barcoCharter.passageiros.tripulacao)
         const passageiros = passageirosVO.extractData()
+
+        // modeloVO.setId(barcoCharter.modelo.id)
+        // modeloVO.setMarca(barcoCharter.modelo.marca)
+        // modeloVO.setModelo(barcoCharter.modelo.modelo)
+        // const modelo = modeloVO.extractData()
 
         const precoChurracsoValor = converterPrecoBrasilParaEUA(barcoCharter.taxaChurrasco.preco.valor)
         precoVO.setValor(precoChurracsoValor)
@@ -86,6 +168,7 @@ export class BarcoCharterModel {
         barcoCharterVO.setNome(barcoCharter.nome)
         barcoCharterVO.setAno(barcoCharter.ano)
         barcoCharterVO.setTamanho(barcoCharter.tamanho)
+        barcoCharterVO.setCidade(barcoCharter.cidade)
         barcoCharterVO.setPreco(precoBarco)
         barcoCharterVO.setPassageiros(passageiros)
         barcoCharterVO.setPernoite(barcoCharter.passageiros.passageirosPernoite != null)
@@ -101,7 +184,7 @@ export class BarcoCharterModel {
         return barcoCharterValidated
     }
 
-    async validateBarcoCharterWithId(barcoCharter: BarcoCharterInputWithId, barcoCharterVO: BarcoCharterInputVO, precoVO: PrecoInputVO, passageirosVO: PassageirosInputVO, taxaChurrascoVO: TaxaChurrascoInputVO) {
+    async validateBarcoCharterWithId(barcoCharter: BarcoCharterInputWithId, barcoCharterVO: BarcoCharterInputVO, precoVO: PrecoInputVO, passageirosVO: PassageirosInputVO, modeloVO:ModeloInputVO, taxaChurrascoVO: TaxaChurrascoInputVO) {
 
         const { idPrecoTaxaChurrasco, idPrecoBarco, idPassageiros, idPrecoHoraExtra, idPrecoAluguelLancha, idTaxaChurrasco, idConsumo} = await this.getIdsByIdCharter(barcoCharter.id, new BarcoCharterRepository())
 
@@ -118,6 +201,11 @@ export class BarcoCharterModel {
         passageirosVO.setTripulacao(barcoCharter.passageiros.tripulacao)
         passageirosVO.setId(idPassageiros)
         const passageiros = passageirosVO.extractData()
+
+        // modeloVO.setId(barcoCharter.modelo.id)
+        // modeloVO.setMarca(barcoCharter.modelo.marca)
+        // modeloVO.setModelo(barcoCharter.modelo.modelo)
+        // const modelo = modeloVO.extractData()
 
         const precoChurrascoValor = converterPrecoBrasilParaEUA(barcoCharter.taxaChurrasco.preco.valor)
         precoVO.setId(idPrecoTaxaChurrasco)
@@ -146,6 +234,7 @@ export class BarcoCharterModel {
         barcoCharterVO.setNome(barcoCharter.nome)
         barcoCharterVO.setAno(barcoCharter.ano)
         barcoCharterVO.setTamanho(barcoCharter.tamanho)
+        barcoCharterVO.setCidade(barcoCharter.cidade)
         barcoCharterVO.setPreco(precoBarco)
         barcoCharterVO.setPassageiros(passageiros)
         barcoCharterVO.setPernoite(barcoCharter.passageiros.passageirosPernoite != null)
@@ -164,7 +253,7 @@ export class BarcoCharterModel {
         return {barcoCharterValidated, idConsumo, idTaxaChurrasco}
     }
 
-    buildBarcoCharterOutputObject(barcoCharterDatabase: BarcoCharterDatabase, barcoCharterVO: BarcoCharterOutputVO, precoVO: PrecoOutputVO, passageirosVO: PassageirosOutputVO, consumoCombustivelOutputVO: ConsumoCombustivelOutputVO, taxaChurrascoVO: TaxaChurrascoOutputVO, itensCharterArray: ItemCharter[], imagensArray: Imagem[], roteirosArray: RoteiroOutput[]): BarcoCharterOutput {
+    buildBarcoCharterOutputObject(barcoCharterDatabase: BarcoCharterDatabase, barcoCharterVO: BarcoCharterOutputVO, precoVO: PrecoOutputVO, passageirosVO: PassageirosOutputVO, modeloVO: ModeloOutputVO, consumoCombustivelOutputVO: ConsumoCombustivelOutputVO, taxaChurrascoVO: TaxaChurrascoOutputVO, itensCharterArray: ItemCharter[], imagensArray: Imagem[], roteirosArray: RoteiroOutput[], condicoesArray: Condicao[]): BarcoCharterOutput {
         const precoBarcoValor = converterPrecoEUAParaBrasil(barcoCharterDatabase.preco_valor)
         precoVO.setValor(precoBarcoValor)
         precoVO.setMoeda(barcoCharterDatabase.preco_moeda)
@@ -174,6 +263,11 @@ export class BarcoCharterModel {
         passageirosVO.setPassageirosPernoite(barcoCharterDatabase.passageiros_pernoite)
         passageirosVO.setTripulacao(barcoCharterDatabase.passageiros_tripulacao)
         const passageiros = passageirosVO.extractData()
+
+        // modeloVO.setId(barcoCharterDatabase.modelo_id)
+        // modeloVO.setMarca(barcoCharterDatabase.modelo_marca)
+        // modeloVO.setModelo(barcoCharterDatabase.modelo_modelo)
+        // const modelo = modeloVO.extractData()
 
         const tipoCombustivel = { 
             id: barcoCharterDatabase.consumo_combustivel_tipo_combustivel_id , 
@@ -209,6 +303,7 @@ export class BarcoCharterModel {
         barcoCharterVO.setNome(barcoCharterDatabase.nome)
         barcoCharterVO.setAno(barcoCharterDatabase.ano)
         barcoCharterVO.setTamanho(barcoCharterDatabase.tamanho)
+        barcoCharterVO.setCidade(barcoCharterDatabase.cidade)
         barcoCharterVO.setPreco(precoBarco)
         barcoCharterVO.setPassageiros(passageiros)
         barcoCharterVO.setRoteiros(roteirosArray)
@@ -221,6 +316,7 @@ export class BarcoCharterModel {
         barcoCharterVO.setConsumoCombustivel(consumoCombustivel)
         barcoCharterVO.setHoraExtra(precoHoraExtra)
         barcoCharterVO.setAluguelLancha(precoAluguelLancha)
+        barcoCharterVO.setCondicao(condicoesArray)
         barcoCharterVO.setTaxaChurrasco(taxaChurrasco)
         barcoCharterVO.setVideoPromocional(barcoCharterDatabase.video_promocional)
 

@@ -1,1 +1,22 @@
-TRUNCATE TABLE motorizacao, imagem, preco, barco_seminovo, horario_disponivel_passeio, consumo_combustivel, roteiro_prefixado, taxa_churrasco, endereco, item_seminovo_barco_seminovo, item_charter_barco_charter, barco_charter, imagem_barco_charter, imagem_barco_seminovo, cabine, embarque_alternativo, condicao_barco_charter RESTART IDENTITY
+TRUNCATE TABLE
+    -- tabelas filhas primeiro
+    imagem_barco_seminovo,
+    item_seminovo_barco_seminovo,
+    imagem_barco_charter,
+    item_charter_barco_charter,
+    barco_charter_condicoes,
+    roteiro,
+
+    -- tabelas principais
+    barco_seminovo,
+    barco_charter,
+
+    motorizacao,
+    consumo_combustivel,
+    taxa_churrasco,
+    preco,
+    imagem,
+    cabine,
+    passageiros
+
+RESTART IDENTITY CASCADE;

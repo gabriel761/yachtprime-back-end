@@ -23,4 +23,10 @@ export class ConsumoCombustivelModel {
         consumoCombustivelRepo.updateComsumoCombustivel(consumoCombustivel, idTipoCombustivel, idConsumo)
         
     }
+
+    async deleteConsumoCombustivel(idConsumoCombustivel: number, consumoCombustivelRepo: ConsumoCombustivelRepo, precoRepository: PrecoRepository){
+        const idPreco = await consumoCombustivelRepo.getIdPrecoCombustivelByIdConsumo(idConsumoCombustivel)
+        await consumoCombustivelRepo.deleteConsumoCombustivelById(idConsumoCombustivel)
+        await precoRepository.deletePrecoById(idPreco)
+    }
 }

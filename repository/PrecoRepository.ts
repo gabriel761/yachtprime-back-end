@@ -23,7 +23,7 @@ export class PrecoRepository {
         try {
             await db.query("DELETE FROM preco WHERE id = $1;",[idPreco])
         } catch (error: any) {
-            throw new CustomError(`Repository lever Error: PrecoRepository deleteByIdSeminovo: ${error}`, 500)
+            throw new CustomError(`Repository lever Error: PrecoRepository deleteByIdPreco: ${error}`, 500)
         }
     }
 }
