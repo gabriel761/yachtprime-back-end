@@ -26,7 +26,8 @@
     "nodemailer": "^7.0.5",
     "pg-cursor": "^2.12.1",
     "pg-promise": "^11.10.1",
-    "pg-query-stream": "^4.7.1"
+    "pg-query-stream": "^4.7.1",
+    "picomatch": "^4.0.3"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
