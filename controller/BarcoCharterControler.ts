@@ -17,7 +17,7 @@ export class BarcoCharterController {
         try {
             const id = parseInt(req.params.id)
             const barcoCharterResult = await this.barcoCharterService.getBarcoCharterById(id)
-            res.json(barcoCharterResult)
+            res.json(barcoCharterResult);
         } catch (error) {
             next(error)
         }
