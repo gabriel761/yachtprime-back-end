@@ -10,4 +10,8 @@ router.get('/moeda', decodeToken, async (req: Request, res: Response, next: Next
     await resourcesController.listMoeda(req, res, next)
 })
 
+router.post('/formulario-contato', async (req: Request, res: Response, next: NextFunction) => {
+    await resourcesController.formularioContato(req, res, next)
+})
+
 export default router

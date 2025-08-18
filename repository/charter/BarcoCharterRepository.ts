@@ -118,7 +118,6 @@ WHERE bc.id = $1;
     async listBarcoCharterFrontEnd(filters: BarcoCharterFilters): Promise<BarcoCharterListFrontEndDatabase[]> {
         const { cidade, pernoite, capacidade, page = 1 } = filters;
 
-        console.log(filters)
         // Array para armazenar as condições
         const whereConditions: string[] = [];
         const params: any[] = []; // Valores para os placeholders do query
