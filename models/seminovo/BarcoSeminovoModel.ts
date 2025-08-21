@@ -88,7 +88,6 @@ export class BarcoSeminovoModel {
         return structuredResult
     }
     async saveBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoInput, idMotorizacao: number, idCabine: number, idPreco: number, barcoSeminovoRepository: BarcoSeminovoRepository, modeloModel: ModeloModel) {
-        console.log("modelo:", barcoSeminovoDTO.modelo)
          const idModel = await modeloModel.getIdModeloByName(barcoSeminovoDTO.modelo, new ModeloRepository())
         const barcoSeminovoId = await barcoSeminovoRepository.insertBarcoSeminovo(barcoSeminovoDTO, idMotorizacao, idCabine, idPreco, idModel)
         return barcoSeminovoId
