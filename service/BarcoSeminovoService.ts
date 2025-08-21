@@ -30,6 +30,7 @@ import { BarcoSeminovoInputVO } from "../value_object/input/seminovo/BarcoSemino
 import { ImagemInputVO } from "../value_object/input/ImagemInputVO.js";
 import { ItemSeminovoInputVO } from "../value_object/input/seminovo/ItemSeminovoInputVO.js";
 import { FirebaseModel } from "../models/external/FirebaseModel.js";
+import { ModeloModel } from "../models/ModeloModel.js";
 
 
 const cabineModel = new CabineModel()
@@ -70,12 +71,12 @@ class BarcoSeminovoService {
             
             const validatedImages = imagemModel.validateImages(barcoSeminovoClient.imagens, new ImagemInputVO())
             const validatedItems = itensSeminovoModel.validateItensSeminovo(barcoSeminovoClient.equipadoCom, new ItemSeminovoInputVO())
-            const barcoSeminovoValidated = barcoSeminovoModel.buildBarcoSeminovoInputObject(barcoSeminovoClient, new BarcoSeminovoInputVO, validatedImages, validatedItems, new ModeloInputVO(), new MotorizacaoInputVO(), new CombustivelInputVO(), new PropulsaoInputVO(), new CabinesInputVO(), new PrecoInputVO())
+            const barcoSeminovoValidated = barcoSeminovoModel.buildBarcoSeminovoInputObject(barcoSeminovoClient, new BarcoSeminovoInputVO, validatedImages, validatedItems, new ModeloInputVO(), new MotorizacaoInputVO(), new CombustivelInputVO(), new PropulsaoInputVO(), new CabinesInputVO(), new PrecoInputVO(), new ModeloModel())
 
             const idPreco = await precoModel.savePreco(barcoSeminovoValidated.preco, new PrecoRepository(), new MoedaRepository())
             const idMotorizacao = await motorizacaoModel.saveMotorizacao(barcoSeminovoValidated.motorizacao, new ModeloMotorRepository(), new MotorizacaoRepository())
             const idCabine = await cabineModel.saveCabine(barcoSeminovoValidated.cabines, new CabineRepository())
-            const idBarco = await barcoSeminovoModel.saveBarcoSeminovo(barcoSeminovoValidated, idMotorizacao, idCabine, idPreco, new BarcoSeminovoRepository())
+            const idBarco = await barcoSeminovoModel.saveBarcoSeminovo(barcoSeminovoValidated, idMotorizacao, idCabine, idPreco, new BarcoSeminovoRepository(), new ModeloModel())
             await imagemModel.insertImagensForSeminovo(barcoSeminovoValidated.imagens, idBarco, new ImagemRepository())
             await itensSeminovoModel.associateItemWithSeminovo(idBarco, barcoSeminovoValidated.equipadoCom, new ItemSeminovoRepository())
     
@@ -90,7 +91,7 @@ class BarcoSeminovoService {
         await precoModel.updatePreco(barcoSeminovoValidated.preco, idPreco, new PrecoRepository(), new MoedaRepository())
         await motorizacaoModel.updateMotorizacao(barcoSeminovoValidated.motorizacao, idMotorizacao, new MotorizacaoRepository())
         await cabineModel.updateCabine(barcoSeminovoValidated.cabines, idCabine, new CabineRepository())
-        await barcoSeminovoModel.updateBarcoSeminovo(barcoSeminovoValidated, new BarcoSeminovoRepository())
+        await barcoSeminovoModel.updateBarcoSeminovo(barcoSeminovoValidated, new BarcoSeminovoRepository(), new ModeloModel())
         await imagemModel.deleteAllImagesFromSeminovo(barcoSeminovoValidated.id, new ImagemRepository())
         await itemSeminovoModel.deleteAllAssotiationsItemSeminovo(barcoSeminovoValidated.id, new ItemSeminovoRepository())
         await imagemModel.insertImagensForSeminovo(barcoSeminovoValidated.imagens, barcoSeminovoValidated.id, new ImagemRepository())
@@ -99,7 +100,7 @@ class BarcoSeminovoService {
     }
 
     async rollbackPost(barcoSeminovoClient: BarcoSeminovoInput) {
-        imagemModel.deleteImagesFromFirebase(barcoSeminovoClient.imagens, new FirebaseModel)
+        imagemModel.deleteImagesFromFirebase(barcoSeminovoClient.imagens, new FirebaseModel, "seminovos")
     }
 
     async deleteBarcoSeminovo(idBarcoSeminovo: number, firebaseModel: FirebaseModel) {
@@ -111,7 +112,7 @@ class BarcoSeminovoService {
         await cabineModel.deleteCabineByIdCabine(barcoSeminovoData.capacidade_id, new CabineRepository())
         await precoModel.deletePrecoByidPreco(barcoSeminovoData.preco_id, new PrecoRepository())
         await motorizacaoModel.deleteMotorizacaoByIdMotorizacao(barcoSeminovoData.motorizacao_id, new MotorizacaoRepository())
-        await imagemModel.deleteImagesFromFirebase(imagensFromSeminovo, firebaseModel)
+        await imagemModel.deleteImagesFromFirebase(imagensFromSeminovo, firebaseModel, "seminovos")
     }
 }
 export default BarcoSeminovoService

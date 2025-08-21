@@ -13,7 +13,7 @@ import { Propulsao } from "./Propulsao.js";
 
 export type BarcoSeminovoOutput = {
     id?: number
-    modelo: Modelo;
+    modelo: string;
     nome: string;
     ano: number;
     tamanho: number;
@@ -33,7 +33,7 @@ export type BarcoSeminovoOutput = {
 
 
 export type BarcoSeminovoInput = {
-    modelo: Modelo;
+    modelo: string;
     nome: string;
     ano: number;
     tamanho: number;
@@ -54,7 +54,7 @@ export type BarcoSeminovoInput = {
 
 export type BarcoSeminovoInputWithId = {
     id: number;
-    modelo: Modelo;
+    modelo: string;
     nome: string;
     ano: number;
     tamanho: number;
@@ -103,7 +103,7 @@ export type BarcoSeminovoDatabase ={
     preco_id:number;
     preco: string;
     moeda_simbolo: string;
-    video?: string | null;
+    video_barco?: string | null;
 
 }
 

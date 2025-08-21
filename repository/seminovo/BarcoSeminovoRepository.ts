@@ -241,7 +241,7 @@ WHERE
     }
 
 
-    async insertBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoInput, idMotorizacao: number, idCabine: number, idPreco: number) {
+    async insertBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoInput, idMotorizacao: number, idCabine: number, idPreco: number, idModel: number) {
         const idBarco = await db.one(`
             INSERT INTO barco_seminovo (
                 id_modelo,
@@ -260,7 +260,7 @@ WHERE
                 oportunidade
                 ) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, $13, $14) RETURNING id`,
             [
-                barcoSeminovoDTO.modelo.id,
+                idModel,
                 barcoSeminovoDTO.nome,
                 barcoSeminovoDTO.ano,
                 barcoSeminovoDTO.tamanho,
@@ -280,7 +280,7 @@ WHERE
         return idBarco.id
     }
 
-    async updateBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoInputWithId) {
+    async updateBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoInputWithId, idModelo: number) {
         const idBarco = await db.query(`
             UPDATE 
                 barco_seminovo
@@ -300,7 +300,7 @@ WHERE
                 id = $12
                 `,
             [
-                barcoSeminovoDTO.modelo.id,
+                idModelo,
                 barcoSeminovoDTO.nome,
                 barcoSeminovoDTO.ano,
                 barcoSeminovoDTO.tamanho,

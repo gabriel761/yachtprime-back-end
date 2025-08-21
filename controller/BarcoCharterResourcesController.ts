@@ -70,4 +70,12 @@ export class BarcoCharterResourcesController {
         }
     }
 
+     async deleteImagesFromFirebase(req: Request, res: Response, next: NextFunction) {
+            try {
+             await barcoCharterResourcesService.deleteImagesFromFirebase(req.body)
+                res.send("deleted successfully!")
+            } catch (error) {
+                next(error)
+            }
+        }
 }

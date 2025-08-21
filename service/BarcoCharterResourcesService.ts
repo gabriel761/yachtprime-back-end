@@ -1,9 +1,11 @@
+import { CustomError } from "../infra/CustoError.js";
 import { CidadeModel } from "../models/charter/CidadeModel.js";
 import { CondicoesModel } from "../models/charter/CondicoesModel.js";
 import { ItensCharterModel } from "../models/charter/ItensCharterModel.js";
 import { PetFriendlyModel } from "../models/charter/PetFriendlyModel.js";
 import { TipoPasseioModel } from "../models/charter/TipoPasseioModel.js";
 import { TripulacaoSkipperModel } from "../models/charter/TripulacaoSkipperModel.js";
+import { FirebaseModel } from "../models/external/FirebaseModel.js";
 import { ImagemModel } from "../models/ImagemModel.js";
 import { CidadeRepository } from "../repository/charter/CidadeRepository.js";
 import { CondicoesRepository } from "../repository/charter/CondicoesRepository.js";
@@ -55,4 +57,13 @@ export class BarcoCharterResourcesService {
         const condicoes = await condicoesModel.getAllCondicoes(new CondicoesRepository())
         return condicoes
     }
+
+     async deleteImagesFromFirebase(images:[]){
+            try {
+                imagemModel.deleteImagesFromFirebase(images, new FirebaseModel, "charter")
+            } catch (error: any) {
+                throw new CustomError(error.message, 500)
+            }
+      
+       }
 }

@@ -4,14 +4,13 @@ import { Cabine } from "../../../types/seminovo/Cabine.js";
 import { Combustivel } from "../../../types/Combustivel.js";
 import { Imagem } from "../../../types/Imagem.js";
 import { ItemSeminovo } from "../../../types/seminovo/ItemSeminovo.js";
-import { Modelo } from "../../../types/Modelo.js";
 import { Motorizacao } from "../../../types/seminovo/Motorizacao.js";
 import { PrecoOutput } from "../../../types/Preco.js";
 import { Propulsao } from "../../../types/seminovo/Propulsao.js";
 
 export class BarcoSeminovoOutputVO {
     private id?: number
-    private modelo!: Modelo;
+    private modelo!: string;
     private nome!: string;
     private ano!: number;
     private tamanho!: number;
@@ -33,7 +32,7 @@ export class BarcoSeminovoOutputVO {
     setId(id?: number) {
         this.id = id
     }
-    setModelo(modelo: Modelo) {
+    setModelo(modelo: string) {
         this.modelo = modelo
     }
     setNome(nome: string) {

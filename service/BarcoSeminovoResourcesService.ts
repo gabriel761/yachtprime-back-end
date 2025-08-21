@@ -47,7 +47,7 @@ export class BarcoSeminovoResourcesService {
     }
    async deleteImagesFromFirebase(images:[]){
         try {
-            imagemModel.deleteImagesFromFirebase(images, new FirebaseModel)
+            imagemModel.deleteImagesFromFirebase(images, new FirebaseModel, "seminovos")
         } catch (error: any) {
             throw new CustomError(error.message, 500)
         }

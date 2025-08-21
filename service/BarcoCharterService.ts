@@ -125,6 +125,10 @@ export class BarcoCharterService {
       await roteiroModel.saveRoteiro(barcoCharterValidated.id, barcoCharterValidated.roteiros, new RoteiroRepository(), new PrecoModel())
    }
 
+   async rollbackPost(barcoSeminovoClient: BarcoCharterInput) {
+           imagemModel.deleteImagesFromFirebase(barcoSeminovoClient.imagens, new FirebaseModel, "chartes")
+       }
+
    async deleteBarcoCharter(idCharter: number, firebaseModel: FirebaseModel) {
       const barcoCharter = await barcoCharterModel.getBarcoCharter(idCharter, new BarcoCharterRepository())
       const imagesFromCharter = await imagemModel.getImagesByIdCharter(idCharter, new ImagemRepository())
@@ -138,7 +142,7 @@ export class BarcoCharterService {
       await taxaChurrascoModel.deleteTaxaChurrasco(barcoCharter.taxa_churrasco_id, new TaxaChurrascoRepository(), new PrecoRepository())
       await precoModel.deletePrecoByidPreco(barcoCharter.preco_aluguel_lancha_id, new PrecoRepository())
       await precoModel.deletePrecoByidPreco(barcoCharter.preco_hora_extra_id, new PrecoRepository())
-      await imagemModel.deleteImagesFromFirebase(imagesFromCharter, firebaseModel)
+      await imagemModel.deleteImagesFromFirebase(imagesFromCharter, firebaseModel, "charters")
 
    }
 }

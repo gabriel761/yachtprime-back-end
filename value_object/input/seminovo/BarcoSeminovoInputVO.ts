@@ -12,7 +12,7 @@ import { characterLimit, validateIntegerPositiveNumber, validateString, validate
 
 export class BarcoSeminovoInputVO {
     private id!: number
-    private modelo!: Modelo;
+    private modelo!: string;
     private nome!: string;
     private ano!: number;
     private tamanho!: number;
@@ -35,7 +35,7 @@ export class BarcoSeminovoInputVO {
         validateIntegerPositiveNumber(id, "id", "BarcoSeminovo")
         this.id = id
     }
-    setModelo(modelo: Modelo) {
+    setModelo(modelo: string) {
         if (!modelo) throw new CustomError("Modelo em barco seminovo é inválido", 400)
         this.modelo = modelo
     }

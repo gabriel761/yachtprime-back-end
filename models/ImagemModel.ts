@@ -85,10 +85,10 @@ export class ImagemModel {
         
     }
 
-    async deleteImagesFromFirebase(images: Imagem[], firebaseModel: FirebaseModel) {
+    async deleteImagesFromFirebase(images: Imagem[], firebaseModel: FirebaseModel, pasta: string) {
         const deletePromises = images.map(async (item) => {
             try {
-                await firebaseModel.deleteImage("seminovo", item.fileName)
+                await firebaseModel.deleteImage(pasta, item.fileName)
             } catch (error) {
                 throw error
             }
