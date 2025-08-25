@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 import { Form } from '../../types/Form.js';
 import config from '../../config.js';
+import { CustomError } from '../../infra/CustoError.js';
 
 export class FormModel {
     private transporter: any
@@ -36,8 +37,8 @@ export class FormModel {
                         </ul>`
             })
             console.log('Email enviado: ' + info.messageId);
-        } catch (err) {
-            console.error('Erro ao enviar email:', err);
+        } catch (err: any) {
+            throw new CustomError("erro ao enviar formulario" + err.message, 500)
         }
     }
 }

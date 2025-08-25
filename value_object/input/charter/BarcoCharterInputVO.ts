@@ -100,7 +100,7 @@ export class BarcoCharterInputVO {
     }
 
     setRoteiros(roteiros: RoteiroInput[]){
-        if (!roteiros) throw new CustomError("Roteiros em barco charter são inválidos", 400);
+        if (!roteiros || roteiros.length == 0) throw new CustomError("Roteiros em barco charter são inválidos", 400);
         this.roteiros = roteiros
     }
 

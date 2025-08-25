@@ -9,11 +9,7 @@ const motor = {
     ano: 2016,
     observacoes: null
 }
-const modelo = {
-    id: 3,
-    marca: "Altamar",
-    modelo: "Altamar 50"
-}
+
 const combustivel = {
     id: 1,
     opcao: "Gasolina"
@@ -67,7 +63,7 @@ const equipadoCom = [
 ]
 const barcoSeminovo: BarcoSeminovoOutput = {
     id: 1,
-    modelo: modelo,
+    modelo: "Altamar 50",
     nome: "Sea View",
     ano: 2016,
     tamanho: 50,

@@ -34,7 +34,7 @@ export class BarcoCharterResourcesService {
         return result
     }
     async listTripulacaoSkipper() { 
-        const result = await tripulacaoSkipperModel.listTripulacaoSkipper(new TripulacaoSkipperRepository())
+        const result = await tripulacaoSkipperModel.listTripulacaoSkipper(new TripulacaoSkipperRepository());
         return result
     }
 
