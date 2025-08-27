@@ -38,6 +38,7 @@ export class FormModel {
             })
             console.log('Email enviado: ' + info.messageId);
         } catch (err: any) {
+            console.log(err)
             throw new CustomError("erro ao enviar formulario" + err.message, 500)
         }
     }
