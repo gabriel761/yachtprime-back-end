@@ -21,7 +21,7 @@ export class FormModel {
 
     async enviarEmail(formData: Form) {
         try {
-            this.generateTransporter()
+            await this.generateTransporter()
             const info = await this.transporter.sendMail({
                 from: `${formData.email}`, 
                 to: `${this.email}`,         
