@@ -12,9 +12,17 @@ export class FormModel {
     private async generateTransporter() {
         this.transporter = nodemailer.createTransport({
             service: 'gmail',
+            host: 'smtp.gmail.com',
+            
+            port: 587,
             auth: {
                 user: this.email,
                 pass: this.appPass // colocar no .env
+            },
+            secure: true,
+            tls: {
+                ciphers: "SSLv3",
+                rejectUnauthorized: false
             }
         });
     }
