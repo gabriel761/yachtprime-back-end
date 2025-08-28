@@ -30,11 +30,11 @@ export class FormModel {
     async enviarEmail(formData: Form) {
         try {
             await this.generateTransporter()
-            const info = await this.transporter.sendMail({
-                from: `${formData.email}`, 
-                to: `${this.email}`,         
+            const mailData = {
+                from: `${formData.email}`,
+                to: `${this.email}`,
                 replyTo: formData.email,
-                subject: `Formulário YachtPrime - formulário enviado da página de ${formData.formType}`,   
+                subject: `Formulário YachtPrime - formulário enviado da página de ${formData.formType}`,
                 html: `
                     <h3>Formulário YachtPrime - Formulário enviado da página de ${formData.formType}</h3>
                     <ul>
@@ -43,8 +43,17 @@ export class FormModel {
                             <li>Telefone: ${formData.phone}</li>
                             <li>Mensagem: ${formData.message}</li>
                         </ul>`
-            })
-            console.log('Email enviado: ' + info.messageId);
+            }
+            await new Promise((resolve, reject) => {
+                this.transporter.sendMail(mailData, (err:any, info: any) => {
+                    if (err) {
+                        console.error(err);
+                        reject(err);
+                    } else {
+                        resolve(info);
+                    }
+                });
+            });
         } catch (err: any) {
             console.log(err)
             throw new CustomError("erro ao enviar formulario" + err.message, 500)
