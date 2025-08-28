@@ -1,39 +1,20 @@
-import nodemailer from 'nodemailer';
+import { MailService } from '@sendgrid/mail';
 import { Form } from '../../types/Form.js';
 import config from '../../config.js';
 import { CustomError } from '../../infra/CustoError.js';
 
 export class FormModel {
-    private transporter: any
+    private sgMail: MailService = new MailService()
     private email: string = config.formEmail
-    private appPass: string = config.formAppPassword
-
-
-    private async generateTransporter() {
-        this.transporter = nodemailer.createTransport({
-            service: 'gmail',
-            host: 'smtp.gmail.com',
-            
-            port: 587,
-            auth: {
-                user: this.email,
-                pass: this.appPass // colocar no .env
-            },
-            secure: true,
-            tls: {
-                ciphers: "SSLv3",
-                rejectUnauthorized: false
-            }
-        });
-    }
+    private apiKey: string = config.sendGridApiKey
 
     async enviarEmail(formData: Form) {
+        this.sgMail.setApiKey(this.apiKey)
         try {
-            await this.generateTransporter()
+
             const mailData = {
-                from: `${formData.email}`,
+                from: `${this.email}`,
                 to: `${this.email}`,
-                replyTo: formData.email,
                 subject: `Formulário YachtPrime - formulário enviado da página de ${formData.formType}`,
                 html: `
                     <h3>Formulário YachtPrime - Formulário enviado da página de ${formData.formType}</h3>
@@ -44,19 +25,13 @@ export class FormModel {
                             <li>Mensagem: ${formData.message}</li>
                         </ul>`
             }
-            await new Promise((resolve, reject) => {
-                this.transporter.sendMail(mailData, (err:any, info: any) => {
-                    if (err) {
-                        console.error(err);
-                        reject(err);
-                    } else {
-                        resolve(info);
-                    }
-                });
-            });
+            await this.sgMail.send(mailData);
         } catch (err: any) {
             console.log(err)
-            throw new CustomError("erro ao enviar formulario" + err.message, 500)
+            if (err.response) {
+                console.log(err.response.body)
+                throw new CustomError("erro ao enviar formulario" + err.response.body, 500)
+            }
         }
     }
 }

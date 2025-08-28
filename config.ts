@@ -9,7 +9,7 @@ const config = {
     database: env.get('DATABASE').required().asJsonObject(),
     firebaseCredentials: env.get('FIREBASE_CREDENTIALS').required().asJsonObject(),
     formEmail: env.get('FORM_EMAIL').required().asString(),
-    formAppPassword: env.get('FORM_APP_PASSWORD').required().asString()
+    sendGridApiKey: env.get('SENDGRID_API_KEY').required().asString()
 }
 
 export default config
