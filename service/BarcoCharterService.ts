@@ -93,7 +93,8 @@ export class BarcoCharterService {
       const idPrecoAluguelLancha = await precoModel.savePreco(barcoCharterValidated.aluguelLancha, new PrecoRepository(), new MoedaRepository())
       const idTaxaChurrasco = await taxaChurrascoModel.saveTaxaChurrasco(barcoCharterValidated.taxaChurrasco, new TaxaChurrascoRepository(), new PrecoModel())
 
-      const idBarcoCharter = await barcoCharterModel.saveBarcoCharter(barcoCharterValidated, new BarcoCharterRepository(), new ModeloModel(), idPrecoBarco, idPassageiros, barcoCharter.petFriendly.id, idCidade, idConsumo, barcoCharter.tipoPasseio.id, barcoCharter.tripulacaoSkipper.id, idPrecoHoraExtra, idPrecoAluguelLancha, idTaxaChurrasco);
+      
+      const idBarcoCharter = await barcoCharterModel.saveBarcoCharter(barcoCharterValidated, new BarcoCharterRepository(), new ModeloModel(), idPrecoBarco, idPassageiros, idCidade, barcoCharter.petFriendly.id, idConsumo, barcoCharter.tipoPasseio.id, barcoCharter.tripulacaoSkipper.id, idPrecoHoraExtra, idPrecoAluguelLancha, idTaxaChurrasco);
 
       await roteiroModel.saveRoteiro(idBarcoCharter, validatedRoteiros, new RoteiroRepository(), new PrecoModel())
       await imagemModel.insertImagensForCharter(validatedImages, idBarcoCharter, new ImagemRepository())

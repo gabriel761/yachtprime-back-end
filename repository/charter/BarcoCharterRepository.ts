@@ -306,6 +306,7 @@ WHERE bc.id = $1;
 
 
     async insertBarcoCharter(barcoCharter: BarcoCharterInput, idModel?: number, idPreco?: number, idPassageiros?: number, idCidade?:number, idPetFriendly?: number, idConsumo?: number, idTipoPasseio?: number, idTripulacaoSkipper?: number, idPrecoHora?: number, idPrecoAluguel?: number, idTaxaChurrasco?: number) {
+        
         const result = await db.query(`
     INSERT INTO barco_charter (
     modelo, nome, ano, tamanho, id_preco, id_passageiros, id_cidade,

@@ -112,6 +112,7 @@ export class BarcoCharterModel {
 
     async saveBarcoCharter(barcoCharter: BarcoCharterInput, barcoCharterRepository: BarcoCharterRepository, modeloModel: ModeloModel, idPrecoBarco: number, idPassageiros: number, idCidade: number, idPetFriendly: number, idConsumo: number, idTipoPasseio: number, idTripulacaoSkipper: number, idPrecoHoraExtra: number, idPrecoAluguelLancha: number, idTaxaChurrasco: number) {
         const idModel = await modeloModel.getIdModeloByName(barcoCharter.modelo, new ModeloRepository())
+        
         const idBarcoCharter = await barcoCharterRepository.insertBarcoCharter(barcoCharter, idModel, idPrecoBarco, idPassageiros,
             idCidade, idPetFriendly, idConsumo,idTipoPasseio,  idTripulacaoSkipper, idPrecoHoraExtra, idPrecoAluguelLancha, idTaxaChurrasco)
         return idBarcoCharter
