@@ -17,7 +17,7 @@ export class ModeloRepository {
 
     async listModelo(): Promise<Modelo[]> {
         try {
-            const result = await db.query("SELECT * FROM modelo_barco")
+            const result = await db.query("SELECT * FROM modelo_barco ORDER BY modelo")
             return result
         } catch (error: any) {
             throw new CustomError(`Repository level error: Modelo listModelo: ${error.message}`, 500)
