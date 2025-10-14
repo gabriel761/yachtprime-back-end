@@ -12,6 +12,7 @@ import { ItemSeminovoRepository } from "../repository/seminovo/ItemSeminovoRepos
 import { ModeloMotorRepository } from "../repository/ModeloMotorRepository.js"
 import { ModeloRepository } from "../repository/ModeloRepository.js"
 import { PropulsaoRepository } from "../repository/seminovo/PropulsaoRepository.js"
+import { ItemSeminovo, ItemSeminovoInput } from "../types/seminovo/ItemSeminovo.js"
 
 const combustivelModel = new CombustivelModel()
 const modeloModel = new ModeloModel()
@@ -37,20 +38,24 @@ export class BarcoSeminovoResourcesService {
         const result = await propulsaoModel.listPropulsao(new PropulsaoRepository())
         return result
     }
-    async listItemSeminovo(){
+    async listItemSeminovo() {
         const result = await itemSeminovoModel.listItemSeminovo(new ItemSeminovoRepository)
         return result
     }
-    async listImagensByIdSeminovo(idSeminovo: number){
+    async listImagensByIdSeminovo(idSeminovo: number) {
         const result = await imagemModel.getImagesByIdSeminovo(idSeminovo, new ImagemRepository())
         return result
     }
-   async deleteImagesFromFirebase(images:[]){
+    async deleteImagesFromFirebase(images: []) {
         try {
             imagemModel.deleteImagesFromFirebase(images, new FirebaseModel, "seminovos")
         } catch (error: any) {
             throw new CustomError(error.message, 500)
         }
-  
-   }
+
+    }
+
+    async insertItemCharter(itemCharter: ItemSeminovoInput) {
+        await itemSeminovoModel.insertItemSeminovo(itemCharter, new ItemSeminovoRepository())
+    }
 }

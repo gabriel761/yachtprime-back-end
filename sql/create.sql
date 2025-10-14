@@ -138,7 +138,7 @@ CREATE TABLE passageiros (
 
 CREATE TABLE tipo_passeio (
     id SERIAL PRIMARY KEY,
-    opcao VARCHAR(50) NOT NULL, CHECK(opcao IN ('Day use', 'Day use e pernoite'))
+    opcao VARCHAR(50) NOT NULL, CHECK(opcao IN ('Day use', 'Day use e pernoite', 'Compartilhado'))
 );
 
 CREATE TABLE tripulacao_skipper (

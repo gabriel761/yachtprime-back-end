@@ -12,6 +12,12 @@ export type ItemCharter = {
     quantidade: number;
 }
 
+export type ItemCharterInput = {
+    item: string;
+    itemLazer: boolean;
+    quantidade: number;
+}
+
 
 
 export type ItemCharterDbAll = {

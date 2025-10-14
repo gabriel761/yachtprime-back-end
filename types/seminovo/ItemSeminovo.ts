@@ -4,6 +4,12 @@ export type ItemSeminovo = {
     quantidade: number;
 }
 
+export type ItemSeminovoInput = {
+    id?: number;
+    item: string;
+    quantidade: number;
+}
+
 export type ItemSeminovoCadastrado = {
     id?: number;
     item: string;

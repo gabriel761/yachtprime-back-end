@@ -29,3 +29,10 @@ export function converterPrecoEUAParaBrasil(precoEUA: string): string {
 
     return `${precoFormatado}`;
 }
+
+export const sanitizeString = (string: string) => {
+    let clean = string.trim();
+    clean = clean.replace(/[\x00-\x1F\x7F]/g, "");
+    clean = clean.replace(/\s+/g, " ");
+    return clean;
+}

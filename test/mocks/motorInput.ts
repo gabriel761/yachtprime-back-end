@@ -1,0 +1,1 @@
+export const motorInput = { marca: "teste", modelo: "teste" }

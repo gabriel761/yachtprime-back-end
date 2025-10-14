@@ -22,4 +22,12 @@ export class ModeloMotorRepository {
             throw new CustomError(`Repository level error: Modelo Motor repository: ${error.message}`, 500)
         }
     }
+
+    async insertModeloMotor(motor: Motor) {
+        try {
+            await db.query(`INSERT INTO motor_cadastrado (marca, modelo) VALUES ($1, $2)`, [motor.marca, motor.modelo])
+        } catch (error: any) {
+            throw new CustomError(`Repository level error: Motor insertModelo: ${error.message}`, 500)
+        }
+    }
 }

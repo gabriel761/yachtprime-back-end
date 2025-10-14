@@ -69,5 +69,14 @@ export class BarcoSeminovoResourcesController {
         }
     }
 
+    async insertItemSeminovo(req: Request, res: Response, next: NextFunction){
+        try {
+         await barcoSeminovoResourcesService.insertItemCharter(req.body)   
+         res.sendStatus(200)
+        } catch (error) {
+            next(error)
+        }
+    }
+
     
 }

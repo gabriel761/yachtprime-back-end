@@ -20,5 +20,13 @@ export class TestDatabase {
     cabine,
     passageiros
 RESTART IDENTITY CASCADE;`)
+     await this.db.query(`DELETE FROM modelo_barco WHERE marca = 'teste'`)
+     await this.db.query(`DELETE FROM motor_cadastrado WHERE marca = 'teste'`)
+     await this.db.query(`DELETE FROM item_charter WHERE item = 'teste'`)
+     await this.db.query(`DELETE FROM item_seminovo WHERE item = 'teste'`)
  }
+
+ 
+
+
 }

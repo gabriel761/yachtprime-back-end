@@ -1,10 +1,10 @@
 import { CustomError } from "../../infra/CustoError.js";
 import db from "../../infra/database.js";
-import { ItemCharterDb, ItemCharter, ItemCharterDbAll } from "../../types/charter/ItemCharter.js";
+import { ItemCharterDb, ItemCharter, ItemCharterDbAll, ItemCharterInput } from "../../types/charter/ItemCharter.js";
 
 export class ItensCharterRepository {
 
-    async getAllItensCharter(): Promise<ItemCharterDbAll[]>{
+    async getAllItensCharter(): Promise<ItemCharterDbAll[]> {
         const result = await db.query(`SELECT * FROM item_charter`)
         return result
     }
@@ -30,12 +30,12 @@ WHERE
             throw new CustomError("Não foram encontrados itens associados a este barco idCharter=" + id, 404)
         }
 
-      
+
         return result
 
     }
     async associateItemWithCharter(idCharter: number, itemCharter: ItemCharter) {
-       
+
         await db.query(`
 INSERT INTO item_charter_barco_charter (id_barco_charter, id_item_charter, quantidade) VALUES ($1, $2, $3);
             `, [idCharter, itemCharter.id, itemCharter.quantidade])
@@ -44,7 +44,7 @@ INSERT INTO item_charter_barco_charter (id_barco_charter, id_item_charter, quant
             });
 
     }
-    async deleteAssiciationOfItemWithCharter(idCharter:number) {
+    async deleteAssiciationOfItemWithCharter(idCharter: number) {
         await db.query(`
                 DELETE FROM item_charter_barco_charter WHERE id_barco_charter = $1;
             `, [idCharter])
@@ -52,6 +52,14 @@ INSERT INTO item_charter_barco_charter (id_barco_charter, id_item_charter, quant
                 throw new CustomError(`Repository lever Error: ItemCharterRepository deleteAssiciationOfItemWithCharter: ${error}`, 500)
             });
 
+    }
+
+    async insertItemCharter(itemCharter: ItemCharterInput) {
+        try {
+            await db.query(`INSERT INTO item_charter (item, item_lazer) VALUES ($1, $2);`, [itemCharter.item, itemCharter.itemLazer])
+        } catch (error: any) {
+            throw new CustomError(`Repository lever Error: ItemCharterRepository insertItemCharter: ${error}`, 500)
+        }
     }
 
 }

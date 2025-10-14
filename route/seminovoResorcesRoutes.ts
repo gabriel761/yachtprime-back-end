@@ -31,5 +31,9 @@ router.post('/delete-images-from-firebase', decodeToken, async (req: Request, re
    await barcoSeminovoResourcesController.deleteImagesFromFirebase(req, res, next)
 })
 
+router.post('/item-seminovo', decodeToken, async (req: Request, res: Response, next: NextFunction) => {
+    await barcoSeminovoResourcesController.insertItemSeminovo(req, res, next)
+})
+
 
 export default router

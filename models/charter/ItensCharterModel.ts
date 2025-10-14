@@ -1,5 +1,5 @@
 import { ItensCharterRepository } from "../../repository/charter/ItensCharterRepository.js"
-import { ItemCharter, ItemCharterList } from "../../types/charter/ItemCharter.js"
+import { ItemCharter, ItemCharterInput, ItemCharterList } from "../../types/charter/ItemCharter.js"
 import { ItemCharterInputVO } from "../../value_object/input/charter/ItemCharterInputVO.js"
 
 export class ItensCharterModel {
@@ -51,6 +51,10 @@ export class ItensCharterModel {
       const item = itens[i];
       await itemCharterRepository.associateItemWithCharter(idBarcoCharter, item)
     }
+  }
+
+  async insertItemCharter(itemCharter: ItemCharterInput,itemCharterRepository: ItensCharterRepository){
+    await itemCharterRepository.insertItemCharter(itemCharter)
   }
 
 }

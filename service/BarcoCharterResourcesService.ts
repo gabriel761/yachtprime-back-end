@@ -14,6 +14,7 @@ import { PetFriendlyRepository } from "../repository/charter/PetFriendly.js";
 import { TipoPasseioRepository } from "../repository/charter/TipoPasseioRepo.js";
 import { TripulacaoSkipperRepository } from "../repository/charter/TripulacaoSkipperRepo.js";
 import { ImagemRepository } from "../repository/ImagemRepository.js";
+import { ItemCharter, ItemCharterInput } from "../types/charter/ItemCharter.js";
 
 const petFriendlyModel = new PetFriendlyModel()
 const tipoPasseioModel = new TipoPasseioModel()
@@ -65,5 +66,9 @@ export class BarcoCharterResourcesService {
                 throw new CustomError(error.message, 500)
             }
       
+       }
+
+    async insertItemCharter(itemCharter: ItemCharterInput){
+            await itensCharterModel.insertItemCharter(itemCharter, new ItensCharterRepository())
        }
 }

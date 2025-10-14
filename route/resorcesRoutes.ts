@@ -14,4 +14,12 @@ router.post('/formulario-contato', async (req: Request, res: Response, next: Nex
     await resourcesController.formularioContato(req, res, next)
 })
 
+router.post('/modelo', decodeToken, async (req: Request, res: Response, next: NextFunction) => {
+    await resourcesController.insertModelo(req, res, next)
+})
+
+router.post('/motor', decodeToken, async (req: Request, res: Response, next: NextFunction) => {
+    await resourcesController.insertMotor(req, res, next)
+})
+
 export default router

@@ -3,6 +3,7 @@ import seminovoRoute from './route/seminovoRotes.js'
 import charterRoute from './route/charterRoute.js'
 import seminovoResourcesRoute from './route/seminovoResorcesRoutes.js'
 import charterResourcesRoute from './route/charterResourcesRoute.js'
+import userRoutes from './route/userRoutes.js'
 import resourcesRoute from './route/resorcesRoutes.js'
 import config from './config.js';
 import errorHandler from './infra/middlewares/errorHandler.js';
@@ -20,14 +21,7 @@ app.use('/barco/charter', charterRoute);
 app.use('/resources', resourcesRoute);
 app.use('/resources/seminovo', seminovoResourcesRoute);
 app.use('/resources/charter', charterResourcesRoute);
-app.use('/user', decodeToken, (req, res, next) => {
-    try {
-        res.status(200).end()
-    } catch (error) {
-        next() 
-    }
-   
-})
+app.use('/user', userRoutes)
 
 
 app.use(errorHandler);

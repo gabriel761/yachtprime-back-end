@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { BarcoSeminovoResourcesService } from '../service/BarcoSeminovoResourcesService.js';
 import { BarcoCharterService } from '../service/BarcoCharterService.js';
 import { BarcoCharterResourcesService } from '../service/BarcoCharterResourcesService.js';
+import { convertStringToBoolean } from '../util/transformationUtil.js';
 
 const barcoCharterResourcesService = new BarcoCharterResourcesService()
 
@@ -44,7 +45,7 @@ export class BarcoCharterResourcesController {
 
     async listImagensByIdCharter(req: Request, res: Response, next: NextFunction) {
         try {
-            const idCharter:number = parseInt( req.params.id)
+            const idCharter: number = parseInt(req.params.id)
             const result = await barcoCharterResourcesService.listImagesByIdCharter(idCharter)
             res.json(result)
         } catch (error) {
@@ -52,10 +53,10 @@ export class BarcoCharterResourcesController {
         }
     }
 
-    async listCidades(req: Request, res: Response, next: NextFunction){
+    async listCidades(req: Request, res: Response, next: NextFunction) {
         try {
-         const result = await barcoCharterResourcesService.listCidades()
-         res.json(result)   
+            const result = await barcoCharterResourcesService.listCidades()
+            res.json(result)
         } catch (error) {
             next(error)
         }
@@ -70,12 +71,24 @@ export class BarcoCharterResourcesController {
         }
     }
 
-     async deleteImagesFromFirebase(req: Request, res: Response, next: NextFunction) {
-            try {
-             await barcoCharterResourcesService.deleteImagesFromFirebase(req.body)
-                res.send("deleted successfully!")
-            } catch (error) {
-                next(error)
-            }
+    async deleteImagesFromFirebase(req: Request, res: Response, next: NextFunction) {
+        try {
+            await barcoCharterResourcesService.deleteImagesFromFirebase(req.body)
+            res.send("deleted successfully!")
+        } catch (error) {
+            next(error)
         }
+    }
+    async insertItemCharter(req: Request, res: Response, next: NextFunction) {
+        try {
+            const itemCharter: any = {
+                item: req.body.item,
+                itemLazer: req.body.itemLazer
+            }
+            await barcoCharterResourcesService.insertItemCharter(itemCharter)
+            res.sendStatus(200)
+        } catch (error) {
+            next(error)
+        }
+    }
 }

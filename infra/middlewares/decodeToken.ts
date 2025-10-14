@@ -22,14 +22,14 @@ export const decodeToken = async (
                     req.user = decodeValue
                     next()
                 } else {
-                    res.status(403).json({ message: "Requisição não autorizada" });
+                    res.status(401).json({ message: "Requisição não autorizada" });
                 }
 
             } catch (e: any) {
-                res.status(403).json({ message: "Erro ao verificar autorização: " + e.message });
+                res.status(500).json({ message: "Erro ao verificar autorização: " + e.message });
             }
         } else {
-            res.status(403).json({ message: "Requisição não autorizada" });
+            res.status(401).json({ message: "Requisição não autorizada" });
         }
         
     }

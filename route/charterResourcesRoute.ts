@@ -36,4 +36,9 @@ router.get("/condicoes", decodeToken, async (req: Request, res: Response, next) 
     await barcoCharterResourcesController.listCondicoes(req, res, next)
 })
 
+router.post("/item-charter", decodeToken, async (req: Request, res: Response, next) => {
+    await barcoCharterResourcesController.insertItemCharter(req, res, next)
+})
+
+
 export default router

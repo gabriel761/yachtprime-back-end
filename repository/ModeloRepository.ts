@@ -23,4 +23,12 @@ export class ModeloRepository {
             throw new CustomError(`Repository level error: Modelo listModelo: ${error.message}`, 500)
         }
     }
+
+    async insertModelo(modelo: Modelo) {
+        try {
+            await db.query(`INSERT INTO modelo_barco (marca, modelo) VALUES ($1, $2)`, [modelo.marca, modelo.modelo])
+        } catch (error:any) {
+            throw new CustomError(`Repository level error: Modelo insertModelo: ${ error.message }`, 500)
+        }
+    }
 }   

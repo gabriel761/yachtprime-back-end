@@ -22,3 +22,4 @@ export const validateYear = (ano: number, className:string)=> {
     const date = new Date()
     if (!ano || typeof ano != "number" || ano < 1950 || ano > date.getFullYear()) throw new CustomError(`Ano ${className} é inválido`, 400)
 }
+

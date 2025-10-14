@@ -12,7 +12,7 @@ export class PrecoRepository {
     async getPrecoById(idPreco: number) {
        
           const preco =  await db.oneOrNone("SELECT * FROM preco WHERE id = $1;", [idPreco]).catch((error) => {
-              throw new CustomError(`Repository lever Error: PrecoRepository getPrecoById: ${error}`, 500)
+              throw new CustomError(`Repository level Error: PrecoRepository getPrecoById: ${error}`, 500)
           })
             if(!preco){
                 throw new CustomError("Não há preco com o id " + idPreco, 404)
@@ -23,7 +23,7 @@ export class PrecoRepository {
         try {
             await db.query("DELETE FROM preco WHERE id = $1;",[idPreco])
         } catch (error: any) {
-            throw new CustomError(`Repository lever Error: PrecoRepository deleteByIdPreco: ${error}`, 500)
+            throw new CustomError(`Repository level Error: PrecoRepository deleteByIdPreco: ${error}`, 500)
         }
     }
 }

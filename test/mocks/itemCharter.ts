@@ -1,0 +1,1 @@
+export const itemCharter = {item: "teste", itemLazer: false}

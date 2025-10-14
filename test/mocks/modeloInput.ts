@@ -1,0 +1,1 @@
+export const modeloInput = { marca: "teste", modelo: "teste" } 

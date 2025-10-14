@@ -1,6 +1,6 @@
 
 import { ItemSeminovoRepository } from "../../repository/seminovo/ItemSeminovoRepository.js"
-import { ItemSeminovo } from "../../types/seminovo/ItemSeminovo.js"
+import { ItemSeminovo, ItemSeminovoInput } from "../../types/seminovo/ItemSeminovo.js"
 import { ItemSeminovoInputVO } from "../../value_object/input/seminovo/ItemSeminovoInputVO.js"
 import { ItemSeminovoOutputVO } from "../../value_object/output/seminovo/ItemSeminovoOutputVO.js"
 
@@ -50,4 +50,8 @@ export class ItemSeminovoModel {
         })
            return validatedItems
     }
+
+    async insertItemSeminovo(itemSeminovo: ItemSeminovoInput,itemSeminovoRepository: ItemSeminovoRepository){
+        await itemSeminovoRepository.insertItemSeminovo(itemSeminovo)
+      }
 }

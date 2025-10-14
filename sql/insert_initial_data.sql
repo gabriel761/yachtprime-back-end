@@ -1242,7 +1242,8 @@ VALUES
 INSERT INTO tipo_passeio(opcao)
 VALUES
 ('Day use'),
-('Day use e pernoite');
+('Day use e pernoite'),
+('Compartilhado');
 
 -- tripulação skipper
 INSERT INTO tripulacao_skipper(opcao)

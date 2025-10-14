@@ -10,7 +10,9 @@
     "dev": "set NODE_ENV=development&&  npx tsx watch --env-file .env index.js ",
     "test-seminovo": "vitest barcoseminovo.test.ts",
     "test-charter": "vitest barcocharter.test.ts",
+    "test-resources": "vitest resources.test.ts",
     "database": "psql -h localhost -U postgres -d yacht-prime -p 5433",
+    "database-users": "psql -h localhost -U postgres -d yacht-prime-users -p 5433",
     "database-production": "psql -h junction.proxy.rlwy.net -U postgres -d railway -p 57446"
   },
   "author": "gabriel palacios",
