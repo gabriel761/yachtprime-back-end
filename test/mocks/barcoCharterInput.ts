@@ -1,7 +1,7 @@
 import { BarcoCharterInput, BarcoCharterInputWithId } from '../../types/charter/BarcoCharter.js'
 
-const barcoCharterInput: BarcoCharterInputWithId = {
-    id:1,
+const barcoCharterInput: BarcoCharterInput = {
+    
     modelo: "Azimut 70",
     nome: "Lancha Luxo",
     ano: 2022,
@@ -50,7 +50,13 @@ const barcoCharterInput: BarcoCharterInputWithId = {
         { fileName: "file-10", link: "https://marealtacharter.com.br/wp-content/uploads/2020/09/Aluguel-de-barco-ferretti-760-em-Angra-dos-Reis-003.jpg" },
         { fileName: "file-11", link: "https://sailica-prod-main.s3.eu-central-1.amazonaws.com/3342868030000104834/large/1b651ac54ce528a2275d681abbd21a41.jpg" },
     ],
-    consumoCombustivel: { litrosHora: 50, precoHora: { moeda: "R$", valor: 100.00 }, tipoCombustivel: {id:2, opcao:"Diesel"} },
+    consumoCombustivel: { litrosHora: 50, precoHora: { moeda: "R$", valor: 100.00 },
+    tipoCombustivel: {id:2, opcao:"Diesel"} },
+    proprietario: {
+        nome: "Alice Almeida",
+        email: "alice.almeida@gmail.com",
+        telefone: "+55 21 98391-7378"
+    },
     tipoPasseio: {id:1, opcao:"Day use"},
     tripulacaoSkipper: {id: 2, opcao:"Skipper incluso"},
     horaExtra: { moeda: "R$", valor: 600.00 },

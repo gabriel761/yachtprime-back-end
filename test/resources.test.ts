@@ -7,7 +7,11 @@ import db from "../infra/database";
 import { motorInput } from "./mocks/motorInput";
 import { itemCharter } from "./mocks/itemCharter";
 import { itemSeminovo } from "./mocks/itemSeminivo";
+import { proprietario, proprietarioWithId } from "./mocks/proprietario";
+import { ResourcesService } from "../service/ResourcesService";
 
+
+const resourcesService = new ResourcesService()
 
 function delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -67,5 +71,40 @@ describe("Resources for both boat types or none of them", () => {
             console.error(error)
         })
         expect(itemSeminovoDB).toEqual(itemSeminovo)
+    })
+    test("Should post proprietario", async () => {
+        request("http://localhost:5000/resources/proprietario", "post", proprietario)
+        await delay(100)
+        const proprietarioDB = await db.oneOrNone("SELECT nome, email, telefone FROM proprietario WHERE id = 1").catch((error) => {
+            console.error(error)
+        })
+        expect(proprietarioDB).toEqual(proprietario)
+    })
+    test("Should get proprietario", async () => {
+        const response = await request("http://localhost:5000/resources/proprietario/1", "GET")
+        await delay(100)
+        expect(response.data).toEqual(proprietarioWithId)
+    })
+
+    test("Should update proprietario", async () => {
+        const proprietarioUpdate = {...proprietarioWithId}
+        proprietarioUpdate.nome = "João Gabriel"
+        proprietarioUpdate.email = "jg.7651@gmail.com"
+        proprietarioUpdate.telefone = "21 960183131"
+        request("http://localhost:5000/resources/proprietario", "PATCH", proprietarioUpdate)
+        await delay(100)
+        const response = await request("http://localhost:5000/resources/proprietario/1", "GET")
+        expect(response.data).toEqual(proprietarioUpdate)
+    })
+
+    test("Should delete proprietario", async () => {
+        await request("http://localhost:5000/resources/proprietario", "DELETE", {id:1})
+        await delay(100)
+        await expect(
+           resourcesService.getProprietario(1)
+        ).rejects.toMatchObject({
+            statusCode: 404,
+            message: expect.stringContaining("proprietario não encontrado: id=1"),
+        });
     })
 })

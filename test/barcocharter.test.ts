@@ -5,7 +5,7 @@ import axios, { AxiosRequestConfig } from 'axios'
 import { TestDatabase } from "../infra/TestDatabase.ts";
 import barcoCharterOutput from "./mocks/barcoCharterOutput.ts";
 import barcoCharterInput from "./mocks/barcoCharterInput.ts"
-import barcoCharterOutputUpdate from "./mocks/barcoCharterInputUpdate.ts";
+import barcoCharterOutputUpdate from "./mocks/barcoCharterUpdate.ts";
 import { barcoCharterDashboardList } from "./mocks/barcoCharterDashboardList.ts";
 import { BarcoCharterService } from "../service/BarcoCharterService.ts";
 import { BarcoCharterRepository } from "../repository/charter/BarcoCharterRepository.ts";
@@ -15,6 +15,9 @@ import { PrecoRepository } from "../repository/PrecoRepository.ts";
 import { ConsumoCombustivelRepo } from "../repository/charter/ConsumoCombustivelRepo.ts";
 import { TaxaChurrascoRepository } from "../repository/charter/TaxaChurrascoRepo.ts";
 import { RoteiroRepository } from "../repository/charter/RoteiroRepository.ts";
+import barcoCharterOutputDashboard from "./mocks/barcoCharterOutputDashboard.ts";
+import { ProprietarioRepository } from "../repository/ProprietarioRepository.ts";
+import db from "../infra/database.ts";
 
 const barcoCharterRepository = new BarcoCharterRepository()
 const itensCharterRepo = new ItensCharterRepository()
@@ -24,6 +27,7 @@ const consumoCombustivelRepository = new ConsumoCombustivelRepo()
 const taxaChurrascoRepo = new TaxaChurrascoRepository()
 const passageirosRepo = new TaxaChurrascoRepository()
 const roteiroRepository = new RoteiroRepository()
+const proprietarioRepository = new ProprietarioRepository()
 
 
 
@@ -83,6 +87,10 @@ describe("Barco charter and resources tests", () => {
         const response = await request("http://localhost:5000/barco/charter/1", "get")
         expect(response.data).toEqual(barcoCharterOutput)
     })
+    test.skip("Should get full barco charter dashboard version", async () => {
+        const response = await request("http://localhost:5000/barco/charter/dashboard/1", "get")
+        expect(response.data).toEqual(barcoCharterOutputDashboard)
+    })
     test("Should post full barco charter", async () => {
         await request("http://localhost:5000/barco/charter", "POST", barcoCharterInput)
         delay(2000)
@@ -103,20 +111,22 @@ describe("Barco charter and resources tests", () => {
         barcoCharterUpdate.passageiros.passageiros = 12
         barcoCharterUpdate.consumoCombustivel.litrosHora = 40
         barcoCharterUpdate.cidade = "Rio de Janeiro"
+        barcoCharterUpdate.proprietario.nome = "João Gabriel"
+        barcoCharterUpdate.proprietario.id = 2
+        await db.query("INSERT INTO proprietario (id, nome, email, telefone) VALUES($1,$2,$3, $4)", [barcoCharterUpdate.proprietario.id, barcoCharterUpdate.proprietario.nome, barcoCharterUpdate.proprietario.email, barcoCharterUpdate.proprietario.telefone])
         await request("http://localhost:5000/barco/charter", "PATCH", barcoCharterUpdate)
         delay(2000)
-        const response = await request("http://localhost:5000/barco/charter/1", "get")
+        const response = await request("http://localhost:5000/barco/charter/dashboard/1", "get")
         expect(response.data).toEqual(barcoCharterUpdate)
     })
     test("Should delete barcoCharter successfully", async () => {
         const barcoSeminovoService = new BarcoCharterService()
         await barcoSeminovoService.deleteBarcoCharter(1, firebaseModelMock)
 
-
         await expect(barcoCharterRepository.getBarcoCharter(1)).rejects.toThrow("barco não existe: id=1");
         await expect(precoRepository.getPrecoById(1)).rejects.toThrow("Não há preco com o id 1")
         await expect(imagemRepository.getImagensByIdSeminovo(1)).rejects.toThrow("Não há imagens associadas a este seminovo")
-        // await expect(itensCharterRepo.getItensCharterByIdCharter(1)).rejects.toThrow("Não foram encontrados itens associados a este charter idCharter=1")
-
+         await expect(itensCharterRepo.getItensCharterByIdCharter(1)).rejects.toThrow("Não foram encontrados itens associados a este barco idCharter=1")
+         
     })
 })

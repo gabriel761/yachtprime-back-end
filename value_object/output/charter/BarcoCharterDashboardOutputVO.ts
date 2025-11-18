@@ -143,7 +143,7 @@ export class BarcoCharterOutputVO {
             itensDisponiveis: this.itensDisponiveis,
             imagens: this.imagens,
             consumoCombustivel: this.consumoCombustivel,
-            proprietario: this.proprietario,
+            proprietario:this.proprietario,
             tipoPasseio: this.tipoPasseio,
             tripulacaoSkipper: this.tripulacaoSkpper,
             horaExtra: this.horaExtra,

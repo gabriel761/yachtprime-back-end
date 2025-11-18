@@ -1,3 +1,6 @@
+
+ INSERT INTO app_user (email, user_firebase_id, id_user_type) VALUES 
+('Gabriel', 'firebase_id', 1);
 --preco
 INSERT INTO
     preco(valor, id_moeda)
@@ -22,12 +25,18 @@ VALUES
 INSERT INTO 
     motorizacao(quantidade, potencia, horas, ano, observacoes, id_motor)
     VALUES
-    (2,1400,150,2016,null,36);
+    (2,1400,150,2016,null,34);
+
+-- Inserindo um proprietário
+INSERT INTO proprietario (nome, email, telefone ) 
+VALUES
+    ('Alice Almeida', 'alice.almeida@gmail.com', '+55 21 98391-7378');
+
 -- seminovo
 INSERT INTO 
-    barco_seminovo (id_modelo, nome, ano, tamanho, id_motorizacao, potencia_total, id_combustivel, id_propulsao, id_cabine, procedencia, destaque, id_preco, video, oportunidade)
+    barco_seminovo (id_modelo, nome, ano, tamanho, id_motorizacao, potencia_total, id_combustivel, id_propulsao, id_cabine, procedencia, destaque, id_preco, video, oportunidade, id_proprietario)
 VALUES
-    (3,'Sea View',2016,50,1,2800,1,3,1,'Brasil','Guardado no seco por 212 horas',1,null,true);
+    (3,'Sea View',2016,50,1,2800,1,3,1,'Brasil','Guardado no seco por 212 horas',1,null,true, 1);
 -- imagem barco seminovo
 INSERT INTO
     imagem_barco_seminovo (id_imagem, id_barco_seminovo)
@@ -51,3 +60,7 @@ VALUES
     (1,12,2),
     (1,14,3),
     (1,15,2);
+
+    
+INSERT INTO app_user_proprietario (id_app_user, id_proprietario) VALUES
+(1, 1)

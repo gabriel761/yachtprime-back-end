@@ -10,6 +10,7 @@ export type RoteiroInput = {
 } 
 
 export type RoteiroOutput = {
+    id?: number;
     nome: string;
     descricao: string;
     preco: PrecoOutput;

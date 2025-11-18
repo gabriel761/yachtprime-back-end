@@ -21,6 +21,15 @@ export class FirebaseModel{
         }
     }
 
+    async setUserRole(firebaseId: string, role: string){
+        try {
+            admin.auth().setCustomUserClaims(firebaseId, {role})
+        } catch (error:any) {
+            const errorMessage = verifyFirebaseErrorCode(error.code)
+            throw new CustomError("Firebase auth error: " + errorMessage, 500)
+        }
+    }
+
     async updateUser(firebaseId: string, email: string) {
         try {
             await admin.auth().updateUser(firebaseId, {email})

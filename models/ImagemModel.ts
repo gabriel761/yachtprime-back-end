@@ -14,10 +14,10 @@ interface imagemDatabase {
 }
 
 export class ImagemModel {
-    
-    async getImagesByIdSeminovo(idSeminovo:number, imagemRepository: ImagemRepository){
+
+    async getImagesByIdSeminovo(idSeminovo: number, imagemRepository: ImagemRepository) {
         const imagens = await imagemRepository.getImagensByIdSeminovo(idSeminovo)
-        const imagensDto = imagens.map((img:imagemDatabase) => {
+        const imagensDto = imagens.map((img: imagemDatabase) => {
             const imagemOutputValueObject = new ImagemOutputVO()
             imagemOutputValueObject.setLink(img.link_imagem)
             imagemOutputValueObject.setFileName(img.imagem_file_name)
@@ -36,12 +36,12 @@ export class ImagemModel {
         })
         return imagensDto
     }
-   
-    async insertImagensForSeminovo(imagens: Imagem[], idSeminovo: number, imagemRepository: ImagemRepository,){
+
+    async insertImagensForSeminovo(imagens: Imagem[], idSeminovo: number, imagemRepository: ImagemRepository,) {
         for (let i = 0; i < imagens.length; i++) {
             const imagem = imagens[i];
             const idImagem = await imagemRepository.insertImagem(imagem.link, imagem.fileName)
-            imagemRepository.associateImagemWhithSeminovo(idSeminovo, idImagem)     
+            imagemRepository.associateImagemWhithSeminovo(idSeminovo, idImagem)
         }
     }
 
@@ -53,9 +53,9 @@ export class ImagemModel {
         }
     }
 
-    async deleteAllImagesFromSeminovo(idSeminovo: number, imagemRepository: ImagemRepository){
+    async deleteAllImagesFromSeminovo(idSeminovo: number, imagemRepository: ImagemRepository) {
         const imagensSeminovo = await imagemRepository.getImagensByIdSeminovo(idSeminovo)
-        const imagensSeminovoPromises = imagensSeminovo.map(async (imagem:imagemDatabase) => {
+        const imagensSeminovoPromises = imagensSeminovo.map(async (imagem: imagemDatabase) => {
             await imagemRepository.deleteAssociationImagemSeminovo(imagem.id_imagem)
             await imagemRepository.deleteImagem(imagem.id_imagem)
         })
@@ -71,30 +71,33 @@ export class ImagemModel {
         await Promise.all(imagensCharterPromises);
     }
 
-    validateImages(imagens: Imagem[], imagemVO: ImagemInputVO):Imagem[]{
+    validateImages(imagens: Imagem[], imagemVO: ImagemInputVO): Imagem[] {
         try {
             const validatedImages = imagens.map((imagem) => {
                 imagemVO.setLink(imagem.link)
                 imagemVO.setFileName(imagem.fileName)
                 return imagemVO.extractData()
             })
-            return validatedImages 
+            return validatedImages
         } catch (error: any) {
-            throw new CustomError("Model level error: Imagem: "+error.message, 500)
+            throw new CustomError("Model level error: Imagem: " + error.message, 500)
         }
-        
+
     }
 
     async deleteImagesFromFirebase(images: Imagem[], firebaseModel: FirebaseModel, pasta: string) {
-        const deletePromises = images.map(async (item) => {
-            try {
-                await firebaseModel.deleteImage(pasta, item.fileName)
-            } catch (error) {
-                throw error
-            }
-        })
-
-        await Promise.all(deletePromises); 
+        try {
+            const deletePromises = images.map(async (item) => {
+                try {
+                    await firebaseModel.deleteImage(pasta, item.fileName)
+                } catch (error) {
+                    throw error
+                }
+            })
+            await Promise.all(deletePromises);
+        } catch (error) {
+            throw error
+        }
     }
 
 }

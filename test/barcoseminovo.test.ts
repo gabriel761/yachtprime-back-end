@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, expect, test, describe, vi } from "vitest";
 import { NextFunction, Request, Response } from 'express';
 import barcoSeminovoOutput from "./mocks/barcoSeminovoOutput.ts";
-import barcoSeminovoInput from "./mocks/barcoSeminovoOutput.ts";
+import barcoSeminovoInput from "./mocks/barcoSeminovoInput.ts";
 import axios, { AxiosRequestConfig } from 'axios'
 import { TestDatabase } from "../infra/TestDatabase.ts";
 import { tipoCombustivelList } from "./mocks/tipoCombustivelList.ts";
@@ -23,6 +23,9 @@ import { PrecoRepository } from "../repository/PrecoRepository.ts";
 import { ItemSeminovoRepository } from "../repository/seminovo/ItemSeminovoRepository.ts";
 import barcoSeminovoFrontEndList from "./mocks/barcoSeminovoFrontEndList.ts";
 import barcoSeminovoDashboardList from "./mocks/barcoSeminovoDashboardList.ts";
+import barcoSeminovoDashboard from "./mocks/barcoSeminovoOutputDashboard.ts";
+import { ProprietarioRepository } from "../repository/ProprietarioRepository.ts";
+import db from "../infra/database.ts";
 
 const barcoSeminovoRepository = new BarcoSeminovoRepository()
 const cabineRepository = new CabineRepository()
@@ -30,6 +33,7 @@ const imagemRepository = new ImagemRepository()
 const precoRepository = new PrecoRepository()
 const motorizacaoRepository = new MotorizacaoRepository()
 const itemSeminovoRepository = new ItemSeminovoRepository()
+const proprietarioRepository = new ProprietarioRepository()
 
 const deleteImageMock = vi.fn();
 const firebaseModelMock = new FirebaseModel();
@@ -95,18 +99,25 @@ describe("Barco seminovo and resources tests", () => {
     test("Should post barcoSeminovo into database", async () => {
         await request("http://localhost:5000/barco/seminovo", "post", barcoSeminovoInput)
         delay(1000)
-        const response = await request("http://localhost:5000/barco/seminovo/1", "get")
-        expect(response.data).toEqual(barcoSeminovoOutput)
+        const response = await request("http://localhost:5000/barco/seminovo/dashboard/1", "get")
+        expect(response.data).toEqual(barcoSeminovoDashboard)
+    })
+    test("Should get full barcoSeminovo object in dashboard version with data from database", async () => {
+        const response = await request("http://localhost:5000/barco/seminovo/dashboard/1", "get")
+        expect(response.data).toEqual(barcoSeminovoDashboard)
     })
     test("Should update barcoSeminovo ", async () => {
-        const barcoSeminovoUpdate = { ...barcoSeminovoOutput }
+        const barcoSeminovoUpdate = { ...barcoSeminovoDashboard }
         barcoSeminovoUpdate.nome = "Updated test"
         barcoSeminovoUpdate.preco.valor = "2.000,00"
         barcoSeminovoUpdate.cabines.passageiros = 1
         barcoSeminovoUpdate.motorizacao.ano = 2024
+        barcoSeminovoUpdate.proprietario.nome = "João Gabriel"
+        barcoSeminovoUpdate.proprietario.id = 2
+        await db.query("INSERT INTO proprietario (id, nome, email, telefone) VALUES($1,$2,$3, $4)", [barcoSeminovoUpdate.proprietario.id ,barcoSeminovoUpdate.proprietario.nome, barcoSeminovoUpdate.proprietario.email, barcoSeminovoUpdate.proprietario.telefone])
         await request("http://localhost:5000/barco/seminovo", "PATCH", barcoSeminovoUpdate)
         delay(1000)
-        const response = await request("http://localhost:5000/barco/seminovo/1", "get")
+        const response = await request("http://localhost:5000/barco/seminovo/dashboard/1", "get")
         expect(response.data).toEqual(barcoSeminovoUpdate)
     })
     test("Should get seminovos list for front-end website", async () => {
@@ -159,6 +170,8 @@ describe("Barco seminovo and resources tests", () => {
         await expect(imagemRepository.getImagensByIdSeminovo(1)).rejects.toThrow("Não há imagens associadas a este seminovo")
         await expect(cabineRepository.getCabineById(1)).rejects.toThrow("Cabine não encontrada idCabine=1")
         await expect(itemSeminovoRepository.getItensSeminovoByIdSeminovo(1)).rejects.toThrow("Não foram encontrados itens associados a este seminovo idSeminovo=1")
+        await expect(proprietarioRepository.getProprietarioById(2)).rejects.toThrow("proprietario não encontrado: id=2")
+
 
     })
     test("Should get tipo combustível list", async () => {

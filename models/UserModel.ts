@@ -1,5 +1,5 @@
 import { UserRepository } from "../repository/UserRepository.js";
-import { User, UserInput, UserInputUpdate, UserInputUpdateValidated, UserInputValidated } from "../types/User.js";
+import { User, UserInput, UserInputUpdate, UserInputUpdateValidated, UserInputValidated, UserOutput } from "../types/User.js";
 import { UserType } from "../types/UserType.js";
 import { UserInputUpdateVO } from "../value_object/input/UserInputUpdateVO.js";
 import { UserInputVO } from "../value_object/input/UserInputVO.js";
@@ -10,10 +10,28 @@ export class UserModel {
     constructor() {
 
     }
-    async getUsers(userRepository: UserRepository){
-        const userTypes = await userRepository.getUsers()
-        return userTypes
+    async getUsers(userRepository: UserRepository): Promise<UserOutput[]>{
+        const users = await userRepository.getUsers()
+        const formatedUsers: UserOutput[] = users.map((user) => {
+            return {
+                id: user.id,
+                email: user.email,
+                userType: user.user_type
+            }
+        })
+        return formatedUsers
     }
+
+    async getUserTypeByIdFirebase(idFirebase: string, userRepository: UserRepository){
+        const userType = await userRepository.getUserTypeByIdFirebase(idFirebase)
+        return userType
+    }
+
+    async getUserIdByIdFirebase(idFirebase: string, userRepository: UserRepository) {
+        const userType = await userRepository.getUserIdByIdFirebase(idFirebase)
+        return userType
+    }
+
     async getUserTypes(userRepository: UserRepository) {
         const userTypes = await userRepository.getUserTypes()
         return userTypes
@@ -29,6 +47,15 @@ export class UserModel {
         return idFirebase
     }
 
+    async getUserById(id:number, userRepository: UserRepository): Promise<UserOutput>{
+       const user = await userRepository.getUserById(id)
+       return {
+        id: user.id,
+        email: user.email,
+        userType: user.user_type
+       }
+    }
+
     async insertUser(user: UserInputValidated, firebaseId: string, userRepository: UserRepository){
         await userRepository.insertUser(user, firebaseId, user.userType.id)
     }
@@ -39,7 +66,7 @@ export class UserModel {
 
     async deleteUser(idUser: number, userRepository: UserRepository, firebaseModel: FirebaseModel){
         const idFirebase = await userRepository.getFirebaseIdByIdUser(idUser)
-        firebaseModel.deleteUser(idFirebase)
+         await firebaseModel.deleteUser(idFirebase)
         await userRepository.deleteUser(idUser)
     }
 
@@ -59,6 +86,7 @@ export class UserModel {
     }
 
     validateUserInputUpdate(userInput: UserInputUpdate, userType: UserType, userInputVo: UserInputUpdateVO) {
+        console.log(userInput)
         userInputVo.setId(userInput.id)
         userInputVo.setEmail(userInput.email)
         userInputVo.setUserType(userType)

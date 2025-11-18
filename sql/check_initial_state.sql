@@ -7,6 +7,7 @@ SELECT
     (SELECT COUNT(*) FROM imagem) AS imagem,
     (SELECT COUNT(*) FROM imagem_barco_seminovo) AS imagem_barco_seminovo,
     (SELECT COUNT(*) FROM item_seminovo_barco_seminovo) AS item_seminovo_barco_seminovo,
+    (SELECT COUNT(*) FROM proprietario) AS proprietario,
     
     -- CHARTER
 	

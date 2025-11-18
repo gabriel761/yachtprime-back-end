@@ -82,7 +82,7 @@ export class ImagemRepository {
         try {
             await db.query("DELETE FROM imagem_barco_seminovo WHERE id_imagem = $1", [idImagem])
         } catch (error: any) {
-            throw new CustomError(`Repository lever Error: ImagemRepository deleteAssociationImagemSeminovo: ${error}`, 500)
+            throw new CustomError(`Repository level Error: ImagemRepository deleteAssociationImagemSeminovo: ${error}`, 500)
         }
     }
 
@@ -90,7 +90,7 @@ export class ImagemRepository {
         try {
             await db.query("DELETE FROM imagem_barco_charter WHERE id_imagem = $1", [idImagem])
         } catch (error: any) {
-            throw new CustomError(`Repository lever Error: ImagemRepository deleteAssociationImagemCharter: ${error}`, 500)
+            throw new CustomError(`Repository level Error: ImagemRepository deleteAssociationImagemCharter: ${error}`, 500)
         }
     }
 
@@ -98,7 +98,7 @@ export class ImagemRepository {
         try {
             await db.query("DELETE FROM imagem WHERE id = $1", [idImagem])
         } catch (error: any) {
-            throw new CustomError(`Repository lever Error: ImagemRepository deleteImagem: ${error}`, 500)
+            throw new CustomError(`Repository level Error: ImagemRepository deleteImagem: ${error}`, 500)
         }
     }
 }

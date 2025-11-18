@@ -3,6 +3,7 @@ import { BarcoSeminovoController } from '../controller/BarcoSeminovoController.j
 import BarcoSeminovoService from '../service/BarcoSeminovoService.js';
 import BarcoSeminovoRepository from '../repository/seminovo/BarcoSeminovoRepository.js';
 import { decodeToken } from '../infra/middlewares/decodeToken.js';
+import { mainMiddleware } from '../infra/middlewares/mainMiddleware.js';
 
 const router = express.Router();
 const barcoSeminovoController = new BarcoSeminovoController(new BarcoSeminovoService)
@@ -10,7 +11,10 @@ const barcoSeminovoController = new BarcoSeminovoController(new BarcoSeminovoSer
 router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
         await barcoSeminovoController.getBarcoSeminovoById(req, res, next)
 })
-router.get('/list/dashboard', decodeToken, async (req:Request, res: Response, next) => {
+router.get('/dashboard/:id', async (req: Request, res: Response, next: NextFunction) => {
+        await barcoSeminovoController.getBarcoSeminovoDashboardById(req, res, next)
+})
+router.get('/list/dashboard', mainMiddleware, async (req:Request, res: Response, next) => {
         await barcoSeminovoController.listBarcoSeminovoDashboard(req, res, next)
 })
 router.get('/list/front-end', async (req: Request, res: Response, next) => {
@@ -19,15 +23,15 @@ router.get('/list/front-end', async (req: Request, res: Response, next) => {
 router.get('/related/:id', async (req: Request, res: Response, next: NextFunction) => {
         await barcoSeminovoController.getRelatedSeminovos(req, res, next)
 })
-router.post('/', decodeToken, async (req: Request, res: Response, next: NextFunction) => {
+router.post('/', mainMiddleware, async (req: Request, res: Response, next: NextFunction) => {
         await barcoSeminovoController.postBarcoSeminovo(req, res, next)
 })
 
-router.patch('/', decodeToken, async (req: Request, res: Response, next: NextFunction) => {
+router.patch('/', mainMiddleware, async (req: Request, res: Response, next: NextFunction) => {
         await barcoSeminovoController.updateBarcoSeminovo(req, res, next)
 })
 
-router.delete('/', decodeToken, async (req: Request, res: Response, next: NextFunction) => {
+router.delete('/', mainMiddleware, async (req: Request, res: Response, next: NextFunction) => {
         await barcoSeminovoController.deleteBarcoSeminovo(req, res, next);
 })
 

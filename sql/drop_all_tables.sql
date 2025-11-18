@@ -29,7 +29,12 @@ DROP TABLE IF EXISTS
     preco,
     moeda,
     motorizacao,
-    motor_cadastrado
+    motor_cadastrado,
+    proprietario, 
+    user_type,
+    app_user,
+    proprietario,
+    app_user_proprietario
 CASCADE;
 
 

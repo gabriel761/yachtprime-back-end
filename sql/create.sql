@@ -34,6 +34,36 @@ CREATE TABLE preco(
      CONSTRAINT fk_moeda FOREIGN KEY (id_moeda) REFERENCES moeda(id)
 );
 
+CREATE TABLE user_type(
+    id SERIAL PRIMARY KEY NOT NULL,
+    opcao VARCHAR(100)
+);
+
+CREATE TABLE app_user(
+    id SERIAL PRIMARY KEY NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    user_firebase_id VARCHAR(100),
+    id_user_type INTEGER NOT NULL,
+
+    CONSTRAINT fk_user_type FOREIGN KEY (id_user_type) REFERENCES user_type(id)
+);
+
+CREATE TABLE proprietario(
+     id SERIAL PRIMARY KEY, 
+     nome VARCHAR(100),
+     email VARCHAR(100),
+     telefone VARCHAR(30)
+);
+
+CREATE TABLE app_user_proprietario(
+     id SERIAL PRIMARY KEY,
+     id_app_user INTEGER NOT NULL,
+     id_proprietario INTEGER NOT NULL,
+
+     CONSTRAINT fk_app_user FOREIGN KEY (id_app_user) REFERENCES app_user(id),
+     CONSTRAINT fk_proprietario FOREIGN KEY (id_proprietario) REFERENCES proprietario(id)
+);
+
 CREATE TABLE item_seminovo(
      id SERIAL PRIMARY KEY NOT NULL,
      item VARCHAR(100) NOT NULL
@@ -78,13 +108,15 @@ CREATE TABLE barco_seminovo(
      id_preco INTEGER NOT NULL,
      video VARCHAR(1000),
      oportunidade BOOLEAN DEFAULT false,
+     id_proprietario INTEGER NOT NULL,
 
      CONSTRAINT fk_modelo FOREIGN KEY (id_modelo) REFERENCES modelo_barco(id),
      CONSTRAINT fk_motorizacao FOREIGN KEY (id_motorizacao) REFERENCES motorizacao(id),
      CONSTRAINT fk_combustivel FOREIGN KEY (id_combustivel) REFERENCES tipo_combustivel(id),
      CONSTRAINT fk_propulsao FOREIGN KEY (id_propulsao) REFERENCES propulsao(id),
      CONSTRAINT fk_cabine FOREIGN KEY (id_cabine) REFERENCES cabine(id),
-     CONSTRAINT fk_preco FOREIGN KEY (id_preco) REFERENCES preco(id)
+     CONSTRAINT fk_preco FOREIGN KEY (id_preco) REFERENCES preco(id),
+     CONSTRAINT fk_proprietario FOREIGN KEY (id_proprietario) REFERENCES proprietario(id)
 );
 
 
@@ -164,7 +196,7 @@ CREATE TABLE consumo_combustivel (
     CONSTRAINT fk_tipo_combustivel FOREIGN KEY (id_tipo_combustivel) REFERENCES tipo_combustivel(id)
 );
    
-   CREATE TABLE cidade (
+CREATE TABLE cidade (
      id SERIAL PRIMARY KEY,
      opcao VARCHAR(100)
 );
@@ -187,6 +219,7 @@ CREATE TABLE barco_charter (
     id_tripulacao_skipper INTEGER NOT NULL,
     id_taxa_churrasco INTEGER NOT NULL,
     video_promocional VARCHAR(500),
+    id_proprietario INTEGER NOT NULL,
 
      CONSTRAINT fk_cidade FOREIGN KEY (id_cidade) REFERENCES cidade(id),
     CONSTRAINT fk_preco FOREIGN KEY (id_preco) REFERENCES preco(id),
@@ -197,7 +230,8 @@ CREATE TABLE barco_charter (
     CONSTRAINT fk_preco_aluguel_lancha FOREIGN KEY (id_preco_aluguel_lancha) REFERENCES preco(id),
     CONSTRAINT fk_tripulacao_skipper FOREIGN KEY (id_tripulacao_skipper) REFERENCES tripulacao_skipper(id),
     CONSTRAINT fk_tipo_passeio FOREIGN KEY (id_tipo_passeio) REFERENCES tipo_passeio(id),
-    CONSTRAINT fk_taxa_churrasco FOREIGN KEY (id_taxa_churrasco) REFERENCES taxa_churrasco(id)
+    CONSTRAINT fk_taxa_churrasco FOREIGN KEY (id_taxa_churrasco) REFERENCES taxa_churrasco(id),
+    CONSTRAINT fk_proprietario FOREIGN KEY (id_proprietario) REFERENCES proprietario(id)
 );
 
 CREATE TABLE roteiro (

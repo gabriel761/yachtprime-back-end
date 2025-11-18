@@ -3,6 +3,9 @@ import { ResourcesService } from "../service/ResourcesService.js"
 import { Form } from '../types/Form.js';
 import { Modelo } from '../types/Modelo.js';
 import { Motor } from '../types/seminovo/Motor.js';
+import { Proprietario } from '../types/Proprietario.js';
+import { CustomError } from '../infra/CustoError.js';
+import { validateIntegerPositiveNumber } from '../util/validationUtil.js';
 
 const resourcesService = new ResourcesService()
 export class ResourcesController {
@@ -26,11 +29,11 @@ export class ResourcesController {
     }
 
     async insertModelo(req: Request, res: Response, next: NextFunction) {
-        try{
+        try {
             const modeloInput: Modelo = req.body
             await resourcesService.insertModelo(modeloInput)
             res.sendStatus(200)
-        } catch(error){
+        } catch (error) {
             next(error)
         }
     }
@@ -44,6 +47,65 @@ export class ResourcesController {
             next(error)
         }
     }
+
+    async searchProprietario(req: Request, res: Response, next: NextFunction) {
+        try {
+           const nome = req.params.nome
+           const firebaseId = req.user?.uid
+           if(!firebaseId) throw new CustomError("Firebase id indefinido", 403)
+            const proprietarioResult = await resourcesService.searchProprietario(nome, firebaseId)
+            res.json(proprietarioResult)
+        } catch (error) {
+            next(error)
+        }
+    }
+    async listProprietariosDashboard(req: Request, res: Response, next: NextFunction) {
+        try {
+            const proprietariosResult = await resourcesService.listProprietariosDashboard()
+            res.json(proprietariosResult)
+        } catch (error) {
+            next(error)
+        }
+    }
+    async insertProprietario(req: Request, res: Response, next: NextFunction) {
+        try {
+            const proprietario: Proprietario = req.body
+            await resourcesService.insertProprietario(proprietario)
+            res.sendStatus(200)
+        } catch (error) {
+            next(error)
+        }
+    }
+    async getProprietario(req: Request, res: Response, next: NextFunction) {
+        try {
+            const id: number = parseInt(req.params.id)
+            const proprietarioResult = await resourcesService.getProprietario(id)
+            res.json(proprietarioResult)
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async updateProprietario(req: Request, res: Response, next: NextFunction) {
+        try {
+            const body = req.body
+            await resourcesService.updateProprietario(body)
+            res.sendStatus(200)
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async deleteProprietario(req: Request, res: Response, next: NextFunction) {
+        try {
+            const body = req.body
+            if (!body) throw new CustomError("Empty body delete", 400)
+            validateIntegerPositiveNumber(body.id, "id", "Proprietário")
+            await resourcesService.deleteProprietario(body.id)
+            res.sendStatus(200)
+        } catch (error) {
+            next(error)
+        }
+    }
 }
 
- 

@@ -24,7 +24,7 @@ WHERE
     icb.id_barco_charter = $1;
             `, [id])
             .catch((error) => {
-                throw new CustomError(`Repository lever Error: ItemCharterRepository getItensCharterByIdCharter: ${error}`, 500)
+                throw new CustomError(`Repository level Error: ItemCharterRepository getItensCharterByIdCharter: ${error}`, 500)
             });
         if (result.length == 0) {
             throw new CustomError("Não foram encontrados itens associados a este barco idCharter=" + id, 404)
@@ -40,7 +40,7 @@ WHERE
 INSERT INTO item_charter_barco_charter (id_barco_charter, id_item_charter, quantidade) VALUES ($1, $2, $3);
             `, [idCharter, itemCharter.id, itemCharter.quantidade])
             .catch((error) => {
-                throw new CustomError(`Repository lever Error: ItemCharterRepository associateItemWithCharter: ${error}`, 500)
+                throw new CustomError(`Repository level Error: ItemCharterRepository associateItemWithCharter: ${error}`, 500)
             });
 
     }
@@ -49,7 +49,7 @@ INSERT INTO item_charter_barco_charter (id_barco_charter, id_item_charter, quant
                 DELETE FROM item_charter_barco_charter WHERE id_barco_charter = $1;
             `, [idCharter])
             .catch((error) => {
-                throw new CustomError(`Repository lever Error: ItemCharterRepository deleteAssiciationOfItemWithCharter: ${error}`, 500)
+                throw new CustomError(`Repository level Error: ItemCharterRepository deleteAssiciationOfItemWithCharter: ${error}`, 500)
             });
 
     }
@@ -58,7 +58,7 @@ INSERT INTO item_charter_barco_charter (id_barco_charter, id_item_charter, quant
         try {
             await db.query(`INSERT INTO item_charter (item, item_lazer) VALUES ($1, $2);`, [itemCharter.item, itemCharter.itemLazer])
         } catch (error: any) {
-            throw new CustomError(`Repository lever Error: ItemCharterRepository insertItemCharter: ${error}`, 500)
+            throw new CustomError(`Repository level Error: ItemCharterRepository insertItemCharter: ${error}`, 500)
         }
     }
 

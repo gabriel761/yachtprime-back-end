@@ -1,6 +1,7 @@
-import { BarcoSeminovoInput } from '../../types/seminovo/BarcoSeminovo.ts'
-
-const barcoSeminovoInput: BarcoSeminovoInput= {
+import { BarcoSeminovoOutput, BarcoSeminovoOutputDashboard } from '../../types/seminovo/BarcoSeminovo.ts'
+ 
+const barcoSeminovoDashboard: BarcoSeminovoOutputDashboard = {
+    id: 1,
     modelo: "Altamar 50",
     nome: "Sea View",
     ano: 2016,
@@ -23,6 +24,7 @@ const barcoSeminovoInput: BarcoSeminovoInput= {
         opcao: "Rabeta"
     },
     proprietario: {
+        id: 1,
         nome: "Alice Almeida",
         email: "alice.almeida@gmail.com",
         telefone: "+55 21 98391-7378"
@@ -35,7 +37,7 @@ const barcoSeminovoInput: BarcoSeminovoInput= {
     destaque: "Guardado no seco por 212 horas",
     preco: {
         moeda: "$",
-        valor: 5000000.00
+        valor: '5.000.000,00'
     },
     imagens: [
         {
@@ -70,8 +72,8 @@ const barcoSeminovoInput: BarcoSeminovoInput= {
         { id: 14, item: "Balsa de sobrevivência", quantidade: 3 },
         { id: 15, item: "Baterias de serviço", quantidade: 2 },
     ],
-    videoPromocional: undefined,
+    videoPromocional: null,
     oportunidade: true
 }
 
-export default barcoSeminovoInput
+export default barcoSeminovoDashboard

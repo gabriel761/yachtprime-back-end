@@ -7,9 +7,20 @@ import { validateIntegerPositiveNumber } from '../util/validationUtil.js';
 const userService = new UserService()
 
 export class UserController {
+
     async listUserTypes(req: Request, res: Response, next: NextFunction) {
         try {
             const userTypes = await userService.getUserTypes()
+            res.json(userTypes)
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async getUserById(req: Request, res: Response, next: NextFunction) {
+        try {
+            const id = parseInt(req.params.id)
+            const userTypes = await userService.getUserById(id)
             res.json(userTypes)
         } catch (error) {
             next(error)

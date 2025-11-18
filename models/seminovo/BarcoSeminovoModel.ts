@@ -1,6 +1,6 @@
 
 import BarcoSeminovoRepository from "../../repository/seminovo/BarcoSeminovoRepository.js";
-import { BarcoSeminovoDatabase, BarcoSeminovoFilters, BarcoSeminovoFrontEndList, BarcoSeminovoInput, BarcoSeminovoInputWithId, BarcoSeminovoRelated } from "../../types/seminovo/BarcoSeminovo.js";
+import { BarcoSeminovoDatabase, BarcoSeminovoDatabaseDashboard, BarcoSeminovoFilters, BarcoSeminovoFrontEndList, BarcoSeminovoInput, BarcoSeminovoInputWithId, BarcoSeminovoRelated } from "../../types/seminovo/BarcoSeminovo.js";
 import { BarcoSeminovoOutput } from "../../types/seminovo/BarcoSeminovo.js";
 import { Imagem } from "../../types/Imagem.js";
 import { ItemSeminovo } from "../../types/seminovo/ItemSeminovo.js";
@@ -23,11 +23,19 @@ import { modelos } from "../../test/mocks/modelos.js";
 import { converterPrecoBrasilParaEUA, converterPrecoEUAParaBrasil } from "../../util/transformationUtil.js";
 import { ModeloModel } from "../ModeloModel.js";
 import { ModeloRepository } from "../../repository/ModeloRepository.js";
+import { ProprietarioInputVO } from "../../value_object/input/ProprietarioInputVO.js";
+import { BarcoSeminovoDashboardOutputVO } from "../../value_object/output/seminovo/BarcoSeminovoDashboardOutputVO.js";
+import { ProprietarioOutputVO } from "../../value_object/output/ProprietarioOutputVO.js";
 
 export class BarcoSeminovoModel {
 
     async getBarcoSeminovo(idBarcoSeminovo: number, barcoSeminovoRepository: BarcoSeminovoRepository): Promise<BarcoSeminovoDatabase> {
         const barcoSeminovoDB = await barcoSeminovoRepository.getBarcoSeminovo(idBarcoSeminovo)
+        return barcoSeminovoDB
+    }
+
+    async getBarcoSeminovoDashboard(idBarcoSeminovo: number, barcoSeminovoRepository: BarcoSeminovoRepository): Promise<BarcoSeminovoDatabaseDashboard> {
+        const barcoSeminovoDB = await barcoSeminovoRepository.getBarcoSeminovoDashboard(idBarcoSeminovo)
         return barcoSeminovoDB
     }
 
@@ -87,9 +95,9 @@ export class BarcoSeminovoModel {
         }
         return structuredResult
     }
-    async saveBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoInput, idMotorizacao: number, idCabine: number, idPreco: number, barcoSeminovoRepository: BarcoSeminovoRepository, modeloModel: ModeloModel) {
+    async saveBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoInput, idMotorizacao: number, idCabine: number, idPreco: number, barcoSeminovoRepository: BarcoSeminovoRepository, modeloModel: ModeloModel, idProprietario: number) {
          const idModel = await modeloModel.getIdModeloByName(barcoSeminovoDTO.modelo, new ModeloRepository())
-        const barcoSeminovoId = await barcoSeminovoRepository.insertBarcoSeminovo(barcoSeminovoDTO, idMotorizacao, idCabine, idPreco, idModel)
+        const barcoSeminovoId = await barcoSeminovoRepository.insertBarcoSeminovo(barcoSeminovoDTO, idMotorizacao, idCabine, idPreco, idModel, idProprietario)
         return barcoSeminovoId
     }
 
@@ -142,6 +150,53 @@ export class BarcoSeminovoModel {
 
         return barcoseminovoOutputVO.extractData()
     }
+
+    buildBarcoSeminovoDashboardOutputObject(barcoSeminovoDB: BarcoSeminovoDatabaseDashboard, barcoseminovoOutputVO: BarcoSeminovoDashboardOutputVO, imagens: Imagem[], itens: ItemSeminovo[], modeloVO: ModeloOutputVO, motorizacaoVO: MotorizacaoOutputVO, combustivelVO: CombustivelOutputVO, propulsaoVO: PropulsaoOutputVO, proprietario: ProprietarioOutputVO, cabinesVO: CabinesOutputVO, precoVO: PrecoOutputVO): BarcoSeminovoOutput {
+
+        barcoSeminovoDB.preco = converterPrecoEUAParaBrasil(barcoSeminovoDB.preco)
+        modeloVO.setModelo(barcoSeminovoDB.modelo_modelo)
+        modeloVO.setMarca(barcoSeminovoDB.marca_modelo)
+        modeloVO.setId(barcoSeminovoDB.id_modelo)
+        motorizacaoVO.setModelo(barcoSeminovoDB.modelo_motor)
+        motorizacaoVO.setQuantidade(barcoSeminovoDB.quantidade_motorizacao)
+        motorizacaoVO.setPotencia(barcoSeminovoDB.potencia_motorizacao)
+        motorizacaoVO.setHoras(barcoSeminovoDB.horas_motorizacao)
+        motorizacaoVO.setAno(barcoSeminovoDB.ano_motorizacao)
+        motorizacaoVO.setObservacoes(barcoSeminovoDB.observacoes_motorizacao)
+        combustivelVO.setId(barcoSeminovoDB.id_combustivel)
+        combustivelVO.setOpcao(barcoSeminovoDB.tipo_combustivel)
+        propulsaoVO.setId(barcoSeminovoDB.id_propulsao)
+        propulsaoVO.setOpcao(barcoSeminovoDB.tipo_propulsao)
+        proprietario.setId(barcoSeminovoDB.proprietario_id)
+        proprietario.setNome(barcoSeminovoDB.proprietario_nome)
+        proprietario.setEmail(barcoSeminovoDB.proprietario_email)
+        proprietario.setTelefone(barcoSeminovoDB.proprietario_telefone)
+        cabinesVO.setPassageiros(barcoSeminovoDB.capacidade_passageiro)
+        cabinesVO.setTripulacao(barcoSeminovoDB.capacidade_tripulacao)
+        precoVO.setMoeda(barcoSeminovoDB.moeda_simbolo)
+        precoVO.setValor(barcoSeminovoDB.preco)
+        barcoseminovoOutputVO.setId(barcoSeminovoDB.barco_id);
+        barcoseminovoOutputVO.setModelo(barcoSeminovoDB.modelo_modelo);
+        barcoseminovoOutputVO.setNome(barcoSeminovoDB.nome_barco);
+        barcoseminovoOutputVO.setAno(barcoSeminovoDB.ano_barco);
+        barcoseminovoOutputVO.setTamanho(barcoSeminovoDB.tamanho_barco);
+        barcoseminovoOutputVO.setMotorizacao(motorizacaoVO.extractData());
+        barcoseminovoOutputVO.setPotenciaTotal(barcoSeminovoDB.potencia_total);
+        barcoseminovoOutputVO.setCombustivel(combustivelVO.extractData());
+        barcoseminovoOutputVO.setPropulsao(propulsaoVO.extractData());
+        barcoseminovoOutputVO.setProprietario(proprietario.extractDataWithId())
+        barcoseminovoOutputVO.setCabine(cabinesVO.extractData());
+        barcoseminovoOutputVO.setProcedencia(barcoSeminovoDB.procedencia);
+        barcoseminovoOutputVO.setDestaque(barcoSeminovoDB.destaque);
+        barcoseminovoOutputVO.setPreco(precoVO.extractData());
+        barcoseminovoOutputVO.setImagens(imagens);
+        barcoseminovoOutputVO.setItens(itens);
+        barcoseminovoOutputVO.setVideoPromocional(barcoSeminovoDB.video_barco);
+        barcoseminovoOutputVO.setOportunidade(barcoSeminovoDB.oportunidade)
+
+        return barcoseminovoOutputVO.extractData()
+    }
+
     buildBarcoSeminovoInputObject(barcoSeminovoInput: BarcoSeminovoInput, barcoseminovoInputVO: BarcoSeminovoInputVO, imagens: Imagem[], itens: ItemSeminovo[], modeloVO: ModeloInputVO, motorizacaoVO: MotorizacaoInputVO, combustivelVO: CombustivelInputVO, propulsaoVO: PropulsaoInputVO, cabinesVO: CabinesInputVO, precoVO: PrecoInputVO, modeloModel: ModeloModel): BarcoSeminovoInput {
         barcoSeminovoInput.preco.valor = converterPrecoBrasilParaEUA(barcoSeminovoInput.preco.valor)
         motorizacaoVO.setModelo(barcoSeminovoInput.motorizacao.modelo)
@@ -177,7 +232,7 @@ export class BarcoSeminovoModel {
 
         return barcoseminovoInputVO.extractData()
     }
-    buildBarcoSeminovoInputObjectWithId(barcoSeminovoInput: BarcoSeminovoInputWithId, barcoseminovoInputVO: BarcoSeminovoInputVO, imagens: Imagem[], itens: ItemSeminovo[], modeloVO: ModeloInputVO, motorizacaoVO: MotorizacaoInputVO, combustivelVO: CombustivelInputVO, propulsaoVO: PropulsaoInputVO, cabinesVO: CabinesInputVO, precoVO: PrecoInputVO, idSeminovo: number): BarcoSeminovoInputWithId {
+    buildBarcoSeminovoInputObjectWithId(barcoSeminovoInput: BarcoSeminovoInputWithId, barcoseminovoInputVO: BarcoSeminovoInputVO, imagens: Imagem[], itens: ItemSeminovo[], modeloVO: ModeloInputVO, motorizacaoVO: MotorizacaoInputVO, combustivelVO: CombustivelInputVO, propulsaoVO: PropulsaoInputVO, cabinesVO: CabinesInputVO, ProprietarioInputVO: ProprietarioInputVO, precoVO: PrecoInputVO, idSeminovo: number ): BarcoSeminovoInputWithId {
         barcoSeminovoInput.preco.valor = converterPrecoBrasilParaEUA(barcoSeminovoInput.preco.valor)
         
         motorizacaoVO.setModelo(barcoSeminovoInput.motorizacao.modelo)
@@ -191,9 +246,14 @@ export class BarcoSeminovoModel {
         propulsaoVO.setId(barcoSeminovoInput.propulsao.id)
         propulsaoVO.setOpcao(barcoSeminovoInput.propulsao.opcao)
         cabinesVO.setPassageiros(barcoSeminovoInput.cabines.passageiros)
+        ProprietarioInputVO.setId(barcoSeminovoInput.proprietario.id)
+        ProprietarioInputVO.setNome(barcoSeminovoInput.proprietario.nome)
+        ProprietarioInputVO.setEmail(barcoSeminovoInput.proprietario.email)
+        ProprietarioInputVO.setTelefone(barcoSeminovoInput.proprietario.telefone)
         cabinesVO.setTripulacao(barcoSeminovoInput.cabines.tripulacao)
         precoVO.setMoeda(barcoSeminovoInput.preco.moeda)
         precoVO.setValor(barcoSeminovoInput.preco.valor)
+        
         barcoseminovoInputVO.setId(idSeminovo)
         barcoseminovoInputVO.setModelo(barcoSeminovoInput.modelo);
         barcoseminovoInputVO.setNome(barcoSeminovoInput.nome);
@@ -204,6 +264,7 @@ export class BarcoSeminovoModel {
         barcoseminovoInputVO.setCombustivel(combustivelVO.extractData());
         barcoseminovoInputVO.setPropulsao(propulsaoVO.extractData());
         barcoseminovoInputVO.setCabine(cabinesVO.extractData());
+        barcoseminovoInputVO.setProprietario(ProprietarioInputVO.extractDataWithId())
         barcoseminovoInputVO.setProcedencia(barcoSeminovoInput.procedencia);
         barcoseminovoInputVO.setDestaque(barcoSeminovoInput.destaque);
         barcoseminovoInputVO.setPreco(precoVO.extractData())
@@ -211,7 +272,6 @@ export class BarcoSeminovoModel {
         barcoseminovoInputVO.setItens(itens);
         barcoseminovoInputVO.setVideoPromocional(barcoSeminovoInput.videoPromocional);
         barcoseminovoInputVO.setOportunidade(barcoSeminovoInput.oportunidade)
-
         return barcoseminovoInputVO.extractDataWithId()
     }
 }

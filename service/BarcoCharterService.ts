@@ -10,6 +10,7 @@ import { FirebaseModel } from "../models/external/FirebaseModel.js"
 import { ImagemModel } from "../models/ImagemModel.js"
 import { ModeloModel } from "../models/ModeloModel.js"
 import { PrecoModel } from "../models/PrecoModel.js"
+import { ProprietarioModel } from "../models/ProprietarioModel.js"
 import { CombustivelModel } from "../models/seminovo/CombustivelModel.js"
 import { BarcoCharterRepository } from "../repository/charter/BarcoCharterRepository.js"
 import { CidadeRepository } from "../repository/charter/CidadeRepository.js"
@@ -22,6 +23,7 @@ import { TaxaChurrascoRepository } from "../repository/charter/TaxaChurrascoRepo
 import { ImagemRepository } from "../repository/ImagemRepository.js"
 import { MoedaRepository } from "../repository/MoedaRepository.js"
 import { PrecoRepository } from "../repository/PrecoRepository.js"
+import { ProprietarioRepository } from "../repository/ProprietarioRepository.js"
 import { BarcoCharterFilters, BarcoCharterInput, BarcoCharterInputWithId } from "../types/charter/BarcoCharter.js"
 import { BarcoCharterInputVO } from "../value_object/input/charter/BarcoCharterInputVO.js"
 import { ItemCharterInputVO } from "../value_object/input/charter/ItemCharterInputVO.js"
@@ -38,6 +40,10 @@ import { RoteiroOutputVO } from "../value_object/output/charter/RoteiroOutputVO.
 import { TaxaChurrascoOutputVO } from "../value_object/output/charter/TaxaChurrascoOutputVO.js"
 import { ModeloOutputVO } from "../value_object/output/ModeloOutputVO.js"
 import { PrecoOutputVO } from "../value_object/output/PrecoOutputVO.js"
+import { ProprietarioInputVO } from "../value_object/input/ProprietarioInputVO.js"
+import { ProprietarioOutputVO } from "../value_object/output/ProprietarioOutputVO.js"
+import { UserModel } from "../models/UserModel.js"
+import { UserRepository } from "../repository/UserRepository.js"
 
 
 const barcoCharterModel = new BarcoCharterModel()
@@ -50,6 +56,8 @@ const passageirosModel = new PassageirosModel()
 const roteiroModel = new RoteiroModel()
 const cidadeModel = new CidadeModel()
 const condicoesModel = new CondicoesModel()
+const proprietarioModel = new ProprietarioModel()
+const userModel = new UserModel()
 
 export class BarcoCharterService {
 
@@ -63,24 +71,34 @@ export class BarcoCharterService {
       return barcoCharterResult
    }
 
+   async getBarcoCharterDashboardById(id: number) {
+      const barcoCharterDatabase = await barcoCharterModel.getBarcoCharterDashboard(id, new BarcoCharterRepository())
+      const itensCharterArray = await itensCharterModel.getItensCharter(id, new ItensCharterRepository())
+      const imagensArray = await imagemModel.getImagesByIdCharter(id, new ImagemRepository())
+      const roteirosArray = await roteiroModel.getRoteirosByIdCharter(id, new RoteiroRepository(), new RoteiroOutputVO(), new PrecoOutputVO())
+      const condicoesArray = await condicoesModel.getAllCondicoes(new CondicoesRepository())
+      const barcoCharterResult = barcoCharterModel.buildBarcoCharterDashboardOutputObject(barcoCharterDatabase, new BarcoCharterOutputVO(), new PrecoOutputVO(), new PassageirosOutputVO(), new ConsumoCombustivelOutputVO, new ProprietarioOutputVO, new TaxaChurrascoOutputVO(), itensCharterArray, imagensArray, roteirosArray, condicoesArray)
+      return barcoCharterResult
+   }
+
    async listBarcoCharterDashboard() {
       const barcoCharterDashboardList = await barcoCharterModel.listBarcoCharterDashboard(new BarcoCharterRepository())
       return barcoCharterDashboardList
    }
 
    async listBarcoCharterFrontEnd(filters: any) {
-      const barcoCharterDashboardList = await barcoCharterModel.listBarcoCharterFrontEnd(filters,new BarcoCharterRepository())
+      const barcoCharterDashboardList = await barcoCharterModel.listBarcoCharterFrontEnd(filters, new BarcoCharterRepository())
       return barcoCharterDashboardList
    }
 
-   async getRelatedCharters(idCharter: number){
+   async getRelatedCharters(idCharter: number) {
       const relatedCharters = await barcoCharterModel.getRelatedCharters(idCharter, new BarcoCharterRepository())
-      return relatedCharters      
+      return relatedCharters
    }
 
-   async postBarcoCharter(barcoCharter: BarcoCharterInput) {
+   async postBarcoCharter(barcoCharter: BarcoCharterInput, firebaseId: string) {
       const barcoCharterValidated = barcoCharterModel.validateBarcoCharter(barcoCharter, new BarcoCharterInputVO(), new PrecoInputVO
-         (), new PassageirosInputVO(), new ModeloInputVO(), new TaxaChurrascoInputVO())
+         (), new PassageirosInputVO(), new ProprietarioInputVO(), new TaxaChurrascoInputVO())
       const validatedImages = imagemModel.validateImages(barcoCharter.imagens, new ImagemInputVO())
       const validatedItensCharter = itensCharterModel.validateItensCharter(barcoCharter.itensDisponiveis, new ItemCharterInputVO())
       const validatedRoteiros = roteiroModel.validateRoteiro(barcoCharter.roteiros, new RoteiroInputVO())
@@ -89,19 +107,28 @@ export class BarcoCharterService {
       const idPassageiros = await passageirosModel.savePassageiros(barcoCharterValidated.passageiros, new PassageirosRepository())
       const idCidade = await cidadeModel.getIdCidadeByString(barcoCharter.cidade, new CidadeRepository())
       const idConsumo = await consumoCombustivelModel.postConsumoCombustivel(barcoCharterValidated.consumoCombustivel, new ConsumoCombustivelRepo(), new PrecoModel(), new CombustivelModel())
+      let idProprietario
+      if (!barcoCharter.proprietario.id) {
+         const idUser = await userModel.getUserIdByIdFirebase(firebaseId, new UserRepository())
+         idProprietario = await proprietarioModel.saveProprietario(barcoCharter.proprietario, new ProprietarioRepository())
+         await proprietarioModel.associateProprietarioWithUser(idUser, idProprietario, new ProprietarioRepository())
+      } else {
+         idProprietario = barcoCharter.proprietario.id
+      }
       const idPrecoHoraExtra = await precoModel.savePreco(barcoCharterValidated.horaExtra, new PrecoRepository(), new MoedaRepository())
       const idPrecoAluguelLancha = await precoModel.savePreco(barcoCharterValidated.aluguelLancha, new PrecoRepository(), new MoedaRepository())
       const idTaxaChurrasco = await taxaChurrascoModel.saveTaxaChurrasco(barcoCharterValidated.taxaChurrasco, new TaxaChurrascoRepository(), new PrecoModel())
 
-      
-      const idBarcoCharter = await barcoCharterModel.saveBarcoCharter(barcoCharterValidated, new BarcoCharterRepository(), new ModeloModel(), idPrecoBarco, idPassageiros, idCidade, barcoCharter.petFriendly.id, idConsumo, barcoCharter.tipoPasseio.id, barcoCharter.tripulacaoSkipper.id, idPrecoHoraExtra, idPrecoAluguelLancha, idTaxaChurrasco);
+
+      const idBarcoCharter = await barcoCharterModel.saveBarcoCharter(barcoCharterValidated, new BarcoCharterRepository(), new ModeloModel(), idPrecoBarco, idPassageiros, idCidade, barcoCharter.petFriendly.id, idConsumo, idProprietario, barcoCharter.tipoPasseio.id, barcoCharter.tripulacaoSkipper.id, idPrecoHoraExtra, idPrecoAluguelLancha, idTaxaChurrasco);
 
       await roteiroModel.saveRoteiro(idBarcoCharter, validatedRoteiros, new RoteiroRepository(), new PrecoModel())
       await imagemModel.insertImagensForCharter(validatedImages, idBarcoCharter, new ImagemRepository())
       await itensCharterModel.associateItemWithSeminovo(idBarcoCharter, validatedItensCharter, new ItensCharterRepository())
    }
 
-   async updateBarcoCharter(barcoCharter: BarcoCharterInputWithId) {
+   async updateBarcoCharter(barcoCharter: BarcoCharterInputWithId, firebaseId: string) {
+      
       const { barcoCharterValidated, idConsumo } = await barcoCharterModel.validateBarcoCharterWithId(barcoCharter, new BarcoCharterInputVO(), new PrecoInputVO
          (), new PassageirosInputVO(), new ModeloInputVO(), new TaxaChurrascoInputVO())
       const validatedImages = imagemModel.validateImages(barcoCharter.imagens, new ImagemInputVO())
@@ -116,7 +143,16 @@ export class BarcoCharterService {
 
       consumoCombustivelModel.updateConsumoCombustivel(barcoCharterValidated.consumoCombustivel, new ConsumoCombustivelRepo(), new PrecoModel(), new CombustivelModel(), idConsumo)
 
-      await barcoCharterModel.updateBarcoCharter(barcoCharterValidated, new BarcoCharterRepository(), new ModeloModel(), new CidadeModel(), idConsumo);
+      let idProprietario
+      if (!barcoCharter.proprietario.id) {
+         const idUser = await userModel.getUserIdByIdFirebase(firebaseId, new UserRepository())
+         idProprietario = await proprietarioModel.saveProprietario(barcoCharter.proprietario, new ProprietarioRepository())
+         await proprietarioModel.associateProprietarioWithUser(idUser, idProprietario, new ProprietarioRepository())
+      } else {
+         idProprietario = barcoCharter.proprietario.id
+      }
+
+      await barcoCharterModel.updateBarcoCharter(barcoCharterValidated, new BarcoCharterRepository(), new ModeloModel(), new CidadeModel(), idProprietario)
 
       await imagemModel.deleteAllImagesFromCharter(barcoCharterValidated.id, new ImagemRepository())
       await itensCharterModel.deleteAllAssotiationsItemCharter(barcoCharterValidated.id, new ItensCharterRepository())
@@ -127,11 +163,11 @@ export class BarcoCharterService {
    }
 
    async rollbackPost(barcoSeminovoClient: BarcoCharterInput) {
-           imagemModel.deleteImagesFromFirebase(barcoSeminovoClient.imagens, new FirebaseModel, "chartes")
-       }
+      imagemModel.deleteImagesFromFirebase(barcoSeminovoClient.imagens, new FirebaseModel, "chartes")
+   }
 
    async deleteBarcoCharter(idCharter: number, firebaseModel: FirebaseModel) {
-      const barcoCharter = await barcoCharterModel.getBarcoCharter(idCharter, new BarcoCharterRepository())
+      const barcoCharter = await barcoCharterModel.getBarcoCharterDashboard(idCharter, new BarcoCharterRepository())
       const imagesFromCharter = await imagemModel.getImagesByIdCharter(idCharter, new ImagemRepository())
       await imagemModel.deleteAllImagesFromCharter(idCharter, new ImagemRepository())
       await itensCharterModel.deleteAllAssotiationsItemCharter(idCharter, new ItensCharterRepository())

@@ -18,7 +18,7 @@ WHERE
 
             `, [id])
             .catch((error) => {
-                throw new CustomError(`Repository lever Error: ItemSeminovoRepository getItensSeminovoByIdSeminovo: ${error}`, 500)
+                throw new CustomError(`Repository level Error: ItemSeminovoRepository getItensSeminovoByIdSeminovo: ${error}`, 500)
             });
         if (result.length == 0) {
             throw new CustomError("Não foram encontrados itens associados a este seminovo idSeminovo=" + id, 404)
@@ -34,14 +34,14 @@ WHERE
         try {
             await db.query("INSERT INTO item_seminovo_barco_seminovo(id_barco_seminovo, id_item_seminovo, quantidade)VALUES($1,$2,$3)", [idBarcoSeminovo, item.id, item.quantidade])
         } catch (error) {
-            throw new CustomError(`Repository lever Error: ItemSeminovoRepository associateItemWithSeminovo: ${error}`, 500)
+            throw new CustomError(`Repository level Error: ItemSeminovoRepository associateItemWithSeminovo: ${error}`, 500)
         }
     }
     async deleteAllAssociationItemSeminovo(idBarcoSeminovo: number) {
         try {
             await db.query("DELETE FROM item_seminovo_barco_seminovo WHERE id_barco_seminovo = $1", [idBarcoSeminovo])
         } catch (error: any) {
-            throw new CustomError(`Repository lever Error: ItemSeminovoRepository deleteAssociationWithSeminovo: ${error}`, 500)
+            throw new CustomError(`Repository level Error: ItemSeminovoRepository deleteAssociationWithSeminovo: ${error}`, 500)
         }
     }
 
@@ -49,7 +49,7 @@ WHERE
         try {
             await db.query(`INSERT INTO item_seminovo (item) VALUES ($1);`, [itemSeminovo.item])
         } catch (error: any) {
-            throw new CustomError(`Repository lever Error: ItemSeminovoRepository insertItemSeminovo: ${error}`, 500)
+            throw new CustomError(`Repository level Error: ItemSeminovoRepository insertItemSeminovo: ${error}`, 500)
         }
     }
 }

@@ -1225,6 +1225,12 @@ VALUES
 ('Real', 'R$', 'BRL'),
 ('Dólar', '$', 'USD');
 
+-- user type
+INSERT INTO user_type (opcao) VALUES 
+('Dono'),
+('Administrador'), 
+('Editor');
+
 -- cidade 
 INSERT INTO cidade (opcao)
 VALUES
@@ -1285,3 +1291,9 @@ VALUES
     ('Mondrive'),
     ('Motor de popa'),
     ('Turbina a jato');
+
+INSERT INTO app_user (email, user_firebase_id, id_user_type) VALUES 
+('jg.7651@gmail.com', 'ls6ZJeBDqfgftdH16ynMTgar7P93', 1);
+ INSERT INTO app_user (email, user_firebase_id, id_user_type) VALUES 
+('paulo2228@gmail.com', 'firebase_id', 2);
+

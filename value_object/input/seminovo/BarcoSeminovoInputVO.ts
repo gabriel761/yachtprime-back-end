@@ -9,6 +9,7 @@ import { Motorizacao } from "../../../types/seminovo/Motorizacao.js";
 import { PrecoInput } from "../../../types/Preco.js";
 import { Propulsao } from "../../../types/seminovo/Propulsao.js";
 import { characterLimit, validateIntegerPositiveNumber, validateString, validateYear } from "../../../util/validationUtil.js";
+import { Proprietario } from "../../../types/Proprietario.js";
 
 export class BarcoSeminovoInputVO {
     private id!: number
@@ -21,6 +22,7 @@ export class BarcoSeminovoInputVO {
     private combustivel!: Combustivel;
     private propulsao!: Propulsao;
     private cabines!: Cabine;
+    private proprietario!: Proprietario;
     private procedencia!: string;
     private destaque!: string | null;
     private preco!: PrecoInput;
@@ -72,6 +74,10 @@ export class BarcoSeminovoInputVO {
         if (!cabine) throw new CustomError("Cabine em barco seminovo é inválido", 400)
         this.cabines = cabine
     }
+    setProprietario(proprietario: Proprietario){
+        if (!proprietario) throw new CustomError("Proprietario em barco seminovo é inválido", 400)
+        this.proprietario = proprietario
+    }
     setProcedencia(procedencia: string) {
         if (!procedencia || typeof procedencia != "string") throw new CustomError("Procedência de barco seminovo é inválido", 400)
         characterLimit(procedencia, "procedência", 50, "barco seminovo")
@@ -117,6 +123,7 @@ export class BarcoSeminovoInputVO {
             combustivel: this.combustivel,
             propulsao: this.propulsao,
             cabines: this.cabines,
+            proprietario: this.proprietario,
             procedencia: this.procedencia,
             destaque: this.destaque,
             preco: this.preco,
@@ -138,6 +145,7 @@ export class BarcoSeminovoInputVO {
             combustivel: this.combustivel,
             propulsao: this.propulsao,
             cabines: this.cabines,
+            proprietario: this.proprietario,
             procedencia: this.procedencia,
             destaque: this.destaque,
             preco: this.preco,

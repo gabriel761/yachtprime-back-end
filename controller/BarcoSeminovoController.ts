@@ -25,6 +25,16 @@ export class BarcoSeminovoController {
         }
     }
 
+    async getBarcoSeminovoDashboardById(req: Request, res: Response, next: NextFunction) {
+        try {
+            const id = parseInt(req.params.id)
+            const barcoSeminovoResult = await this.barcoSeminovoService.getBarcoSeminovoDashboardById(id)
+            res.json(barcoSeminovoResult)
+        } catch (error) {
+            next(error)
+        }
+    }
+
     async listBarcoSeminovoDashboard(req: Request, res: Response, next: NextFunction) {
         try {
             const result = await this.barcoSeminovoService.listBarcoSeminovoDashboard()
@@ -61,8 +71,10 @@ export class BarcoSeminovoController {
     async postBarcoSeminovo(req: Request, res: Response, next: NextFunction) {
         const body: BarcoSeminovoInput = req.body
         try {
+            const firebaseId = req.user?.uid
+            if (!firebaseId) throw new CustomError("Firebase id indefinido", 403)
             if (!body) throw new CustomError("Empty body post", 400)
-            await this.barcoSeminovoService.postBarcoSeminovo(body)
+            await this.barcoSeminovoService.postBarcoSeminovo(body, firebaseId)
             res.sendStatus(200).end();
         } catch (error: any) {
             try {
@@ -78,8 +90,10 @@ export class BarcoSeminovoController {
     async updateBarcoSeminovo(req: Request, res: Response, next: NextFunction) {
         const body: BarcoSeminovoInputWithId = req.body
         try {
+            const firebaseId = req.user?.uid
+            if (!firebaseId) throw new CustomError("Firebase id indefinido", 403)
             if (!body) throw new CustomError("Empty body patch", 400)
-            await this.barcoSeminovoService.updateBarcoSeminovo(body)
+            await this.barcoSeminovoService.updateBarcoSeminovo(body, firebaseId)
             res.sendStatus(200).end();
         } catch (error: any) {
             next(error)

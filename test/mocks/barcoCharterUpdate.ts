@@ -1,6 +1,6 @@
-import { BarcoCharterOutput } from '../../types/charter/BarcoCharter.js'
+import { BarcoCharterDashboardOutput } from '../../types/charter/BarcoCharter.js'
 
-const barcoCharterOutputUpdate: BarcoCharterOutput = {
+const barcoCharterOutputUpdate: BarcoCharterDashboardOutput = {
     id: 1,
     modelo: "Ferretti 760",
     nome: "Barco Premium",
@@ -53,6 +53,11 @@ const barcoCharterOutputUpdate: BarcoCharterOutput = {
         litrosHora: 70,
         precoHora: { moeda: "R$", valor: "150,00" },
         tipoCombustivel: { id: 2, opcao: "Diesel" }
+    },
+    proprietario: {
+        nome: "Alice Almeida",
+        email: "alice.almeida@gmail.com",
+        telefone: "+55 21 98391-7378"
     },
     tipoPasseio: { id: 2, opcao: "Day use e pernoite" },
     tripulacaoSkipper: {id:1,opcao:"Tripulação inclusa"},

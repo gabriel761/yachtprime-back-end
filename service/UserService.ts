@@ -14,6 +14,11 @@ export class UserService {
         return userTypes
     }
 
+    async getUserById (id: number){
+       const user = userModel.getUserById(id, new UserRepository())
+       return user
+    }
+
     async getUsers() {
         const userTypes = await userModel.getUsers(new UserRepository)
         return userTypes
@@ -29,6 +34,7 @@ export class UserService {
         const validatedUser = userModel.validateUserInputUpdate(user, validatedUserType ,new UserInputUpdateVO())
         const firebaseId = await userModel.getFirebaseIdUser(validatedUser.id, new UserRepository())
         await firebaseModel.updateUser(firebaseId,validatedUser.email)
+        await firebaseModel.setUserRole(firebaseId, validatedUser.userType.opcao)
         userModel.updateUser(validatedUser, new UserRepository())
     }
 
@@ -42,6 +48,7 @@ export class UserService {
         const validatedUserType = userModel.validateUserType(userTypeId, user.userType, new UserTypeVO())
          const validatedUser = userModel.validateUserInput(user, validatedUserType, new UserInputVO())
          const firebaseId = await firebaseModel.createUser(validatedUser.email, validatedUser.senha)
+         await firebaseModel.setUserRole(firebaseId, validatedUser.userType.opcao)
          await userModel.insertUser(validatedUser, firebaseId, new UserRepository())
     }
 } 

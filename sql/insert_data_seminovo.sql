@@ -29,11 +29,15 @@ INSERT INTO
     motorizacao(quantidade, potencia, horas, ano, observacoes, id_motor)
     VALUES
     (2,1400,150,2016,null,36);
+
+INSERT INTO proprietario (nome, email, telefone ) 
+VALUES
+    ('João Gabriel', 'jg.7651@gmail.com', '(21) 96018-3131');
 -- seminovo
 INSERT INTO 
-    barco_seminovo (id_modelo, nome, ano, tamanho, id_motorizacao, potencia_total, id_combustivel, id_propulsao, id_cabine, procedencia, destaque, id_preco)
+    barco_seminovo (id_modelo, nome, ano, tamanho, id_motorizacao, potencia_total, id_combustivel, id_propulsao, id_cabine, procedencia, destaque, id_preco, id_proprietario)
 VALUES
-    (3,'Sea View',2016,50,1,2800,1,3,1,'Brasil','Guardado no seco por 212 horas',1);
+    (3,'Sea View',2016,50,1,2800,1,3,1,'Brasil','Guardado no seco por 212 horas',1, 1);
 -- imagem barco seminovo
 INSERT INTO
     imagem_barco_seminovo (id_imagem, id_barco_seminovo)
@@ -57,6 +61,9 @@ VALUES
     (1,12,2),
     (1,14,3),
     (1,15,2);
+
+
+
 
 -- ========== Novo seminovo -==========
 
@@ -86,11 +93,16 @@ INSERT INTO
     motorizacao(quantidade, potencia, horas, ano, observacoes, id_motor)
     VALUES
     (1,1200,600,2018,null,32);
+
+INSERT INTO proprietario (nome, email, telefone ) 
+VALUES
+    ('Paulo André', 'broder2208@gmail.com', '+55 21 98238-6051');
+
 -- seminovo
 INSERT INTO 
-    barco_seminovo (id_modelo, nome, ano, tamanho, id_motorizacao, potencia_total, id_combustivel, id_propulsao, id_cabine, procedencia, destaque, id_preco)
+    barco_seminovo (id_modelo, nome, ano, tamanho, id_motorizacao, potencia_total, id_combustivel, id_propulsao, id_cabine, procedencia, destaque, id_preco, id_proprietario)
 VALUES
-    (1,'Peace of Mind',2018,30,2,1200,1,2,2,'Brasil','Guardado no seco por 112 horas',2);
+    (1,'Peace of Mind',2018,30,2,1200,1,2,2,'Brasil','Guardado no seco por 112 horas',2, 2);
 -- imagem barco seminovo
 INSERT INTO
     imagem_barco_seminovo (id_imagem, id_barco_seminovo)
@@ -146,11 +158,15 @@ INSERT INTO
 VALUES
     (2, 1000, 200, 2019, null, 35);
 
+INSERT INTO proprietario (nome, email, telefone ) 
+VALUES
+    ('Eduardo Omar', 'eduardo7777@gmail.com', '+55 21 96015-3337');
+
 -- Seminovo
 INSERT INTO 
-    barco_seminovo (id_modelo, nome, ano, tamanho, id_motorizacao, potencia_total, id_combustivel, id_propulsao, id_cabine, procedencia, destaque, id_preco)
+    barco_seminovo (id_modelo, nome, ano, tamanho, id_motorizacao, potencia_total, id_combustivel, id_propulsao, id_cabine, procedencia, destaque, id_preco, id_proprietario)
 VALUES
-    (4, 'Blue Horizon', 2019, 45, 3, 2000, 1, 2, 3, 'Brasil', 'Barco impecável', 3);
+    (4, 'Blue Horizon', 2019, 45, 3, 2000, 1, 2, 3, 'Brasil', 'Barco impecável', 3, 3);
 
 -- Imagem Barco Seminovo
 INSERT INTO
@@ -203,11 +219,15 @@ INSERT INTO
 VALUES
     (3, 1500, 300, 2020, null, 37);
 
+INSERT INTO proprietario (nome, email, telefone ) 
+VALUES
+    ('Ana Broder', 'anabroder@gmail.com', '+55 21 99629-1858');
+
 -- Seminovo
 INSERT INTO 
-    barco_seminovo (id_modelo, nome, ano, tamanho, id_motorizacao, potencia_total, id_combustivel, id_propulsao, id_cabine, procedencia, destaque, id_preco)
+    barco_seminovo (id_modelo, nome, ano, tamanho, id_motorizacao, potencia_total, id_combustivel, id_propulsao, id_cabine, procedencia, destaque, id_preco, id_proprietario)
 VALUES
-    (5, 'Ocean Breeze', 2020, 60, 4, 4500, 1, 1, 4, 'Itália', 'Barco com excelente potência', 4);
+    (5, 'Ocean Breeze', 2020, 60, 4, 4500, 1, 1, 4, 'Itália', 'Barco com excelente potência', 4, 4);
 
 -- Imagem Barco Seminovo
 INSERT INTO
@@ -261,11 +281,15 @@ INSERT INTO
 VALUES
     (2, 2000, 400, 2021, null, 38);
 
+INSERT INTO proprietario (nome, email, telefone ) 
+VALUES
+    ('Alice Almeida', 'alice.almeida@gmail.com', '+55 21 98391-7378');
+
 -- Seminovo
 INSERT INTO 
-    barco_seminovo (id_modelo, nome, ano, tamanho, id_motorizacao, potencia_total, id_combustivel, id_propulsao, id_cabine, procedencia, destaque, id_preco)
+    barco_seminovo (id_modelo, nome, ano, tamanho, id_motorizacao, potencia_total, id_combustivel, id_propulsao, id_cabine, procedencia, destaque, id_preco, id_proprietario)
 VALUES
-    (6, 'Dream Catcher', 2021, 70, 5, 4000, 2, 3, 5, 'Estados Unidos', 'Barco com design único', 5);
+    (6, 'Dream Catcher', 2021, 70, 5, 4000, 2, 3, 5, 'Estados Unidos', 'Barco com design único', 5, 5);
 
 -- Imagem Barco Seminovo
 INSERT INTO

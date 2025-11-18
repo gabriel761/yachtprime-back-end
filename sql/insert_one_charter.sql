@@ -1,5 +1,8 @@
 SET client_encoding TO 'UTF8';
 -- Inserindo um preço de exemplo
+
+ INSERT INTO app_user (email, user_firebase_id, id_user_type) VALUES 
+('Gabriel', 'firebase_id', 1);
 INSERT INTO preco (valor, id_moeda) VALUES 
 (100, 1),
 (600, 1),
@@ -31,9 +34,14 @@ VALUES (10, 4, 2);
 INSERT INTO consumo_combustivel (litros_hora, id_preco_hora, id_tipo_combustivel)
 VALUES (50, 1, 2);
 
+-- Inserindo um proprietário
+INSERT INTO proprietario (nome, email, telefone ) 
+VALUES
+    ('Alice Almeida', 'alice.almeida@gmail.com', '+55 21 98391-7378');
+
 -- Inserindo um barco charter
-INSERT INTO barco_charter (modelo, nome, ano, tamanho, id_cidade, id_preco, id_passageiros, id_pet_friendly, id_consumo, id_preco_hora_extra, id_preco_aluguel_lancha, id_tipo_passeio, id_tripulacao_skipper, id_taxa_churrasco, video_promocional)
-VALUES (35, 'Lancha Luxo', 2022, 50, 1, 9, 1, 1, 1, 2, 3, 1, 2, 1, 'https://www.youtube.com/watch?v=EZJ-S9RODF0');
+INSERT INTO barco_charter (modelo, nome, ano, tamanho, id_cidade, id_preco, id_passageiros, id_pet_friendly, id_consumo, id_preco_hora_extra, id_preco_aluguel_lancha, id_tipo_passeio, id_tripulacao_skipper, id_taxa_churrasco, video_promocional, id_proprietario)
+VALUES (35, 'Lancha Luxo', 2022, 50, 1, 9, 1, 1, 1, 2, 3, 1, 2, 1,'https://www.youtube.com/watch?v=EZJ-S9RODF0', 1);
 
 
 -- Inserir roteiros 
@@ -56,3 +64,8 @@ INSERT INTO imagem_barco_charter (id_barco_charter, id_imagem) VALUES
 (1,3),
 (1,4),
 (1,5);
+
+
+INSERT INTO app_user_proprietario (id_app_user, id_proprietario) VALUES
+(1, 1)
+

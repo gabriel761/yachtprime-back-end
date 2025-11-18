@@ -7,6 +7,12 @@ export type UserInput = {
     userType: string
 }
 
+export type UserOutput = {
+    id: number,
+    email: string,
+    userType: string
+}
+
 export type UserInputValidated = {
     email: string,
     senha: string,
@@ -36,4 +42,10 @@ export type User = {
     email: string,
     userFirebasId: string,
     userType: UserType
+}
+
+export type UserDb = {
+    id: number,
+    email: string,
+    user_type: string
 }

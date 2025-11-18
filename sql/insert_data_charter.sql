@@ -1,5 +1,10 @@
  -- === CHARTER 1 ===
 
+ INSERT INTO app_user (email, user_firebase_id, id_user_type) VALUES 
+('jg.7651@gmail.com', 'firebase_id', 1);
+ INSERT INTO app_user (email, user_firebase_id, id_user_type) VALUES 
+('paulo2228@gmail.com', 'firebase_id', 2);
+
 SET client_encoding TO 'UTF8';
 -- Inserindo um preço de exemplo
 INSERT INTO preco (valor, id_moeda) VALUES 
@@ -33,9 +38,14 @@ VALUES (10, 4, 2);
 INSERT INTO consumo_combustivel (litros_hora, id_preco_hora, id_tipo_combustivel)
 VALUES (50, 1, 2);
 
+-- Inserindo um proprietário
+INSERT INTO proprietario (nome, email, telefone ) 
+VALUES
+    ('João Gabriel', 'jg.7651@gmail.com', '(21) 96018-3131');
+
 -- Inserindo um barco charter
-INSERT INTO barco_charter (modelo, nome, ano, tamanho, id_cidade, id_preco, id_passageiros, id_pet_friendly, id_consumo, id_preco_hora_extra, id_preco_aluguel_lancha, id_tipo_passeio, id_tripulacao_skipper, id_taxa_churrasco, video_promocional)
-VALUES (35, 'Lancha Luxo', 2022, 50, 1, 9, 1, 1, 1, 2, 3, 1, 2, 1, 'https://www.youtube.com/watch?v=EZJ-S9RODF0');
+INSERT INTO barco_charter (modelo, nome, ano, tamanho, id_cidade, id_preco, id_passageiros, id_pet_friendly, id_consumo, id_preco_hora_extra, id_preco_aluguel_lancha, id_tipo_passeio, id_tripulacao_skipper, id_taxa_churrasco, video_promocional, id_proprietario)
+VALUES (35, 'Lancha Luxo', 2022, 50, 1, 9, 1, 1, 1, 2, 3, 1, 2, 1,'https://www.youtube.com/watch?v=EZJ-S9RODF0', 1);
 
 
 -- Inserir roteiros 
@@ -95,9 +105,14 @@ VALUES (10, 4, 2);
 INSERT INTO consumo_combustivel (litros_hora, id_preco_hora, id_tipo_combustivel)
 VALUES (50, 10, 2);
 
+-- Inserindo um proprietário
+INSERT INTO proprietario (nome, email, telefone ) 
+VALUES
+    ('Paulo André', 'broder2208@gmail.com', '+55 21 98238-6051');
+
 -- Inserindo um barco charter
-INSERT INTO barco_charter (modelo, nome, ano, tamanho, id_cidade, id_preco, id_passageiros, id_pet_friendly, id_consumo, id_preco_hora_extra, id_preco_aluguel_lancha, id_tipo_passeio, id_tripulacao_skipper, id_taxa_churrasco, video_promocional)
-VALUES (223, 'Black Pearl', 2020, 40, 1, 18, 2, 1, 2, 11, 12, 1, 2, 2, 'https://www.youtube.com/watch?v=FyQivMjb3_8');
+INSERT INTO barco_charter (modelo, nome, ano, tamanho, id_cidade, id_preco, id_passageiros, id_pet_friendly, id_consumo, id_preco_hora_extra, id_preco_aluguel_lancha, id_tipo_passeio, id_tripulacao_skipper, id_taxa_churrasco, video_promocional, id_proprietario)
+VALUES (223, 'Black Pearl', 2020, 40, 1, 18, 2, 1, 2, 11, 12, 1, 2, 2, 'https://www.youtube.com/watch?v=FyQivMjb3_8', 2);
 
 
 -- Inserir roteiros 
@@ -123,7 +138,10 @@ INSERT INTO imagem_barco_charter (id_barco_charter, id_imagem) VALUES
 (2,10);
 
 
+
+
 -- === CHARTER 3 ===
+
 
 -- Inserindo um preço de exemplo
 INSERT INTO preco (valor, id_moeda) VALUES 
@@ -157,9 +175,14 @@ VALUES (24, 16, 4);
 INSERT INTO consumo_combustivel (litros_hora, id_preco_hora, id_tipo_combustivel)
 VALUES (40, 19, 1);
 
+-- Inserindo um proprietário
+INSERT INTO proprietario (nome, email, telefone ) 
+VALUES
+    ('Eduardo Omar', 'eduardo7777@gmail.com', '+55 21 96015-3337');
+
 -- Inserindo um barco charter
-INSERT INTO barco_charter (modelo, nome, ano, tamanho, id_cidade, id_preco, id_passageiros, id_pet_friendly, id_consumo, id_preco_hora_extra, id_preco_aluguel_lancha, id_tipo_passeio, id_tripulacao_skipper, id_taxa_churrasco, video_promocional)
-VALUES (224, 'Wave Beat', 2023, 70, 1, 27, 3, 1, 3, 20, 21, 1, 2, 3, 'https://www.youtube.com/watch?v=ndqX4vbR7Rc');
+INSERT INTO barco_charter (modelo, nome, ano, tamanho, id_cidade, id_preco, id_passageiros, id_pet_friendly, id_consumo, id_preco_hora_extra, id_preco_aluguel_lancha, id_tipo_passeio, id_tripulacao_skipper, id_taxa_churrasco, video_promocional, id_proprietario)
+VALUES (224, 'Wave Beat', 2023, 70, 1, 27, 3, 1, 3, 20, 21, 1, 2, 3,'https://www.youtube.com/watch?v=ndqX4vbR7Rc', 3);
 
 
 -- Inserir roteiros 
@@ -185,6 +208,7 @@ INSERT INTO imagem_barco_charter (id_barco_charter, id_imagem) VALUES
 
 
 -- === CHARTER 4 ===
+
 
 -- Inserindo preços para charter 4
 INSERT INTO preco (valor, id_moeda) VALUES 
@@ -218,15 +242,20 @@ VALUES (12, 4, 2);
 INSERT INTO consumo_combustivel (litros_hora, id_preco_hora, id_tipo_combustivel)
 VALUES (45, 29, 1);
 
+-- Inserindo um proprietário
+INSERT INTO proprietario (nome, email, telefone ) 
+VALUES
+    ('Ana Broder', 'anabroder@gmail.com', '+55 21 99629-1858');
+
 -- Inserindo barco charter 4
 INSERT INTO barco_charter (
   id, modelo, nome, ano, tamanho, id_cidade, id_preco, id_passageiros, id_pet_friendly, 
   id_consumo, id_preco_hora_extra, id_preco_aluguel_lancha, id_tipo_passeio, 
-  id_tripulacao_skipper, id_taxa_churrasco, video_promocional
+  id_tripulacao_skipper, id_taxa_churrasco, video_promocional, id_proprietario
 ) VALUES (
   4, 389, 'Princess 42 Fly', 2022, 42, 1, 32, 4, 1,
   4, 30, 31, 1,
-  2, 4, 'https://www.youtube.com/watch?v=tbqKlcConIY'
+  2, 4, 'https://www.youtube.com/watch?v=tbqKlcConIY', 4
 );
 
 -- Roteiros do charter 4
@@ -287,15 +316,20 @@ VALUES (10, 0, 2);
 INSERT INTO consumo_combustivel (litros_hora, id_preco_hora, id_tipo_combustivel)
 VALUES (38, 38, 1);
 
+-- Inserindo um proprietário
+INSERT INTO proprietario (nome, email, telefone ) 
+VALUES
+    ('Alice Almeida', 'alice.almeida@gmail.com', '+55 21 98391-7378');
+
 -- Inserindo barco charter 5
 INSERT INTO barco_charter (
   id, modelo, nome, ano, tamanho, id_cidade, id_preco, id_passageiros, id_pet_friendly, 
   id_consumo, id_preco_hora_extra, id_preco_aluguel_lancha, id_tipo_passeio, 
-  id_tripulacao_skipper, id_taxa_churrasco, video_promocional
+  id_tripulacao_skipper, id_taxa_churrasco, video_promocional, id_proprietario
 ) VALUES (
   5, 499, 'Phantom 360', 2021, 36, 1, 41, 5, 1,
   5, 39, 40, 1,
-  2, 5, 'https://www.youtube.com/watch?v=miTpJmMt7uo'
+  2, 5, 'https://www.youtube.com/watch?v=miTpJmMt7uo', 5
 );
 
 -- Roteiros do charter 5
@@ -318,3 +352,13 @@ INSERT INTO imagem_barco_charter (id_barco_charter, id_imagem) VALUES
 (5,28),
 (5,29),
 (5,30);
+
+
+-- === USUARIO PROPRIETARIO ===
+
+INSERT INTO app_user_proprietario (id_app_user, id_proprietario) VALUES
+(2, 1),
+(2, 2),
+(2, 3),
+(1, 4),
+(1, 5);

@@ -1,5 +1,5 @@
 import { CustomError } from "../../../infra/CustoError.js";
-import { BarcoCharterInputWithId } from "../../../types/charter/BarcoCharter.js";
+import { BarcoCharterInput, BarcoCharterInputWithId } from "../../../types/charter/BarcoCharter.js";
 import { PrecoInput } from "../../../types/Preco.js";
 import { Passageiros } from "../../../types/charter/Passageiros.js";
 import { ItemCharter } from "../../../types/charter/ItemCharter.js";
@@ -12,6 +12,7 @@ import { PetFriendly } from "../../../types/charter/PetFriendly.js";
 import { TipoPasseio } from "../../../types/charter/TipoPasseio.js";
 import { TripulacaoSkipper } from "../../../types/charter/TripulacaoSkipper.js";
 import { Modelo } from "../../../types/Modelo.js";
+import { ProprietarioInput } from "../../../types/Proprietario.js";
 
 export class BarcoCharterInputVO {
     private id!: number;
@@ -27,6 +28,7 @@ export class BarcoCharterInputVO {
     private itensDisponiveis!: ItemCharter[];
     private imagens!: Imagem[];
     private consumoCombustivel!: ConsumoCombustivelInput;
+    private proprietario!: ProprietarioInput;
     private roteiros!: RoteiroInput[]
     private horaExtra!: PrecoInput;
     private tipoPasseio!: TipoPasseio;
@@ -109,6 +111,11 @@ export class BarcoCharterInputVO {
         this.consumoCombustivel = consumo;
     }
 
+    setProprietario(proprietario: ProprietarioInput){
+        if (!proprietario) throw new CustomError("Proprietário em barco charter é inválido", 400);
+        this.proprietario = proprietario
+    }
+
     setHoraExtra(horaExtra: PrecoInput) {
         if (!horaExtra) throw new CustomError("Hora extra em barco charter é inválida", 400);
         this.horaExtra = horaExtra;
@@ -139,7 +146,33 @@ export class BarcoCharterInputVO {
         validateString(video, "videoPromocional", "BarcoCharter");
         this.videoPromocional = video;
     }
-    extractData(): BarcoCharterInputWithId {
+
+    extractData(): BarcoCharterInput {
+        return {
+            modelo: this.modelo,
+            nome: this.nome,
+            ano: this.ano,
+            tamanho: this.tamanho,
+            cidade: this.cidade,
+            preco: this.preco,
+            passageiros: this.passageiros,
+            pernoite: this.pernoite,
+            petFriendly: this.petFriendly,
+            itensDisponiveis: this.itensDisponiveis,
+            proprietario: this.proprietario,
+            imagens: this.imagens,
+            roteiros: this.roteiros,
+            consumoCombustivel: this.consumoCombustivel,
+            horaExtra: this.horaExtra,
+            tipoPasseio: this.tipoPasseio,
+            tripulacaoSkipper: this.tripulacaoSkipper,
+            aluguelLancha: this.aluguelLancha,
+            taxaChurrasco: this.taxaChurrasco,
+            videoPromocional: this.videoPromocional
+        };
+    }
+
+    extractDataWhithId(): BarcoCharterInputWithId {
         return {
             id: this.id,
             modelo: this.modelo,

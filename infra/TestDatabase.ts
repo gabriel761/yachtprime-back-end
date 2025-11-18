@@ -10,6 +10,7 @@ export class TestDatabase {
     item_charter_barco_charter,
     barco_charter_condicoes,
     roteiro,
+    proprietario,
     barco_seminovo,
     barco_charter,
     motorizacao,

@@ -12,11 +12,20 @@ export class BarcoCharterController {
     ) {
 
     }
-
-    async getBarcoCharterById(req: Request, res: Response, next: NextFunction){
+    async getBarcoCharterById(req: Request, res: Response, next: NextFunction) {
         try {
             const id = parseInt(req.params.id)
             const barcoCharterResult = await this.barcoCharterService.getBarcoCharterById(id)
+            res.json(barcoCharterResult);
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async getBarcoCharterDashboardById(req: Request, res: Response, next: NextFunction){
+        try {
+            const id = parseInt(req.params.id)
+            const barcoCharterResult = await this.barcoCharterService.getBarcoCharterDashboardById(id)
             res.json(barcoCharterResult);
         } catch (error) {
             next(error)
@@ -60,8 +69,10 @@ export class BarcoCharterController {
 
     async postBarcoCharter(req: Request, res: Response, next: NextFunction) {
         try {
+            const firebaseId = req.user?.uid
+            if (!firebaseId) throw new CustomError("Firebase id indefinido", 403)
             const barcoCharterInput: BarcoCharterInput = req.body
-            await this.barcoCharterService.postBarcoCharter(barcoCharterInput)
+            await this.barcoCharterService.postBarcoCharter(barcoCharterInput, firebaseId)
             res.sendStatus(200)
         } catch (error) {
             next(error)
@@ -70,8 +81,10 @@ export class BarcoCharterController {
 
     async updateBarcoCharterById(req: Request, res: Response, next: NextFunction) {
         try {
+            const firebaseId = req.user?.uid
+            if (!firebaseId) throw new CustomError("Firebase id indefinido", 403)
             const barcoCharterInput: BarcoCharterInputWithId = req.body
-            await this.barcoCharterService.updateBarcoCharter(barcoCharterInput)
+            await this.barcoCharterService.updateBarcoCharter(barcoCharterInput, firebaseId)
             res.sendStatus(200)
         } catch (error) {
             next(error)

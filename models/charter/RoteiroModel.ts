@@ -19,6 +19,7 @@ export class RoteiroModel {
       precoOutputVO.setMoeda(roteiro.preco_moeda)
       const precoTratado = precoOutputVO.extractData()
 
+      roteiroOutputVO.setId(roteiro.id)
       roteiroOutputVO.setNome(roteiro.nome)
       roteiroOutputVO.setDescricao(roteiro.descricao)
       roteiroOutputVO.setPreco(precoTratado)

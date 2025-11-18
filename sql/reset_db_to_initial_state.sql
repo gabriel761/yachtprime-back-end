@@ -6,6 +6,7 @@ TRUNCATE TABLE
     item_charter_barco_charter,
     barco_charter_condicoes,
     roteiro,
+    proprietario,
 
     -- tabelas principais
     barco_seminovo,

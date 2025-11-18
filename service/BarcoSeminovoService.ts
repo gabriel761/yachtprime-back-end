@@ -31,6 +31,13 @@ import { ImagemInputVO } from "../value_object/input/ImagemInputVO.js";
 import { ItemSeminovoInputVO } from "../value_object/input/seminovo/ItemSeminovoInputVO.js";
 import { FirebaseModel } from "../models/external/FirebaseModel.js";
 import { ModeloModel } from "../models/ModeloModel.js";
+import { ProprietarioInputVO } from "../value_object/input/ProprietarioInputVO.js";
+import { BarcoSeminovoDashboardOutputVO } from "../value_object/output/seminovo/BarcoSeminovoDashboardOutputVO.js";
+import { ProprietarioModel } from "../models/ProprietarioModel.js";
+import { ProprietarioRepository } from "../repository/ProprietarioRepository.js";
+import { ProprietarioOutputVO } from "../value_object/output/ProprietarioOutputVO.js";
+import { UserModel } from "../models/UserModel.js";
+import { UserRepository } from "../repository/UserRepository.js";
 
 
 const cabineModel = new CabineModel()
@@ -40,7 +47,8 @@ const imagemModel = new ImagemModel()
 const itemSeminovoModel = new ItemSeminovoModel()
 const barcoSeminovoModel = new BarcoSeminovoModel()
 const itensSeminovoModel = new ItemSeminovoModel()
-
+const proprietarioModel = new ProprietarioModel()
+const userModel = new UserModel()
 
 
 
@@ -50,6 +58,14 @@ class BarcoSeminovoService {
         const imagemSeminovoDtoCollection = await imagemModel.getImagesByIdSeminovo(id, new ImagemRepository)
         const itemSeminovoDtoCollection = await itemSeminovoModel.getItensByIdSeminovo(id, new ItemSeminovoRepository)
         const barcoSeminovoResult = barcoSeminovoModel.buildBarcoSeminovoOutputObject(barcoSeminovoDatabase, new BarcoSeminovoOutputVO(), imagemSeminovoDtoCollection, itemSeminovoDtoCollection, new ModeloOutputVO(), new MotorizacaoOutputVO(), new CombustivelOutputVO(), new PropulsaoOutputVO(), new CabinesOutputVO(), new PrecoOutputVO())
+        return barcoSeminovoResult
+    }
+
+    async getBarcoSeminovoDashboardById(id: number) {
+        const barcoSeminovoDatabase = await barcoSeminovoModel.getBarcoSeminovoDashboard(id, new BarcoSeminovoRepository)
+        const imagemSeminovoDtoCollection = await imagemModel.getImagesByIdSeminovo(id, new ImagemRepository)
+        const itemSeminovoDtoCollection = await itemSeminovoModel.getItensByIdSeminovo(id, new ItemSeminovoRepository)
+        const barcoSeminovoResult = barcoSeminovoModel.buildBarcoSeminovoDashboardOutputObject(barcoSeminovoDatabase, new BarcoSeminovoDashboardOutputVO(), imagemSeminovoDtoCollection, itemSeminovoDtoCollection, new ModeloOutputVO(), new MotorizacaoOutputVO(), new CombustivelOutputVO(), new PropulsaoOutputVO(), new ProprietarioOutputVO(), new CabinesOutputVO(), new PrecoOutputVO())
         return barcoSeminovoResult
     }
 
@@ -67,7 +83,7 @@ class BarcoSeminovoService {
         return result
     }
 
-    async postBarcoSeminovo(barcoSeminovoClient: BarcoSeminovoInput) {
+    async postBarcoSeminovo(barcoSeminovoClient: BarcoSeminovoInput, firebaseId: string) {
             
             const validatedImages = imagemModel.validateImages(barcoSeminovoClient.imagens, new ImagemInputVO())
             const validatedItems = itensSeminovoModel.validateItensSeminovo(barcoSeminovoClient.equipadoCom, new ItemSeminovoInputVO())
@@ -76,21 +92,37 @@ class BarcoSeminovoService {
             const idPreco = await precoModel.savePreco(barcoSeminovoValidated.preco, new PrecoRepository(), new MoedaRepository())
             const idMotorizacao = await motorizacaoModel.saveMotorizacao(barcoSeminovoValidated.motorizacao, new ModeloMotorRepository(), new MotorizacaoRepository())
             const idCabine = await cabineModel.saveCabine(barcoSeminovoValidated.cabines, new CabineRepository())
-            const idBarco = await barcoSeminovoModel.saveBarcoSeminovo(barcoSeminovoValidated, idMotorizacao, idCabine, idPreco, new BarcoSeminovoRepository(), new ModeloModel())
+            let idProprietario 
+            if(!barcoSeminovoClient.proprietario.id){
+                const idUser = await userModel.getUserIdByIdFirebase(firebaseId, new UserRepository())
+                idProprietario = await proprietarioModel.saveProprietario(barcoSeminovoClient.proprietario, new ProprietarioRepository())
+                await proprietarioModel.associateProprietarioWithUser(idUser,idProprietario, new ProprietarioRepository())
+            }else{
+                idProprietario = barcoSeminovoClient.proprietario.id
+            }
+            const idBarco = await barcoSeminovoModel.saveBarcoSeminovo(barcoSeminovoValidated, idMotorizacao, idCabine, idPreco, new BarcoSeminovoRepository(), new ModeloModel(), idProprietario)
             await imagemModel.insertImagensForSeminovo(barcoSeminovoValidated.imagens, idBarco, new ImagemRepository())
             await itensSeminovoModel.associateItemWithSeminovo(idBarco, barcoSeminovoValidated.equipadoCom, new ItemSeminovoRepository())
     
     }
-    async updateBarcoSeminovo(barcoSeminovoClient: BarcoSeminovoInputWithId) {
+    async updateBarcoSeminovo(barcoSeminovoClient: BarcoSeminovoInputWithId, firebaseId: string) {
+        let idProprietario
+        if (!barcoSeminovoClient.proprietario.id) {
+            const idUser = await userModel.getUserIdByIdFirebase(firebaseId, new UserRepository())
+            idProprietario = await proprietarioModel.saveProprietario(barcoSeminovoClient.proprietario, new ProprietarioRepository())
+            await proprietarioModel.associateProprietarioWithUser(idUser, idProprietario, new ProprietarioRepository())
+            barcoSeminovoClient.proprietario.id = idProprietario
+        } 
 
         const validatedImages = imagemModel.validateImages(barcoSeminovoClient.imagens, new ImagemInputVO())
         const validatedItems = itensSeminovoModel.validateItensSeminovo(barcoSeminovoClient.equipadoCom, new ItemSeminovoInputVO())
-        const barcoSeminovoValidated = barcoSeminovoModel.buildBarcoSeminovoInputObjectWithId(barcoSeminovoClient, new BarcoSeminovoInputVO, validatedImages, validatedItems, new ModeloInputVO(), new MotorizacaoInputVO(), new CombustivelInputVO(), new PropulsaoInputVO(), new CabinesInputVO(), new PrecoInputVO(), barcoSeminovoClient.id)
+        const barcoSeminovoValidated = barcoSeminovoModel.buildBarcoSeminovoInputObjectWithId(barcoSeminovoClient, new BarcoSeminovoInputVO, validatedImages, validatedItems, new ModeloInputVO(), new MotorizacaoInputVO(), new CombustivelInputVO(), new PropulsaoInputVO(), new CabinesInputVO(), new ProprietarioInputVO(), new PrecoInputVO(), barcoSeminovoClient.id)
 
         const {idPreco, idMotorizacao, idCabine} = await barcoSeminovoModel.getIdsByIdSeminovo(barcoSeminovoValidated.id, new BarcoSeminovoRepository())
         await precoModel.updatePreco(barcoSeminovoValidated.preco, idPreco, new PrecoRepository(), new MoedaRepository())
         await motorizacaoModel.updateMotorizacao(barcoSeminovoValidated.motorizacao, idMotorizacao, new MotorizacaoRepository())
         await cabineModel.updateCabine(barcoSeminovoValidated.cabines, idCabine, new CabineRepository())
+        
         await barcoSeminovoModel.updateBarcoSeminovo(barcoSeminovoValidated, new BarcoSeminovoRepository(), new ModeloModel())
         await imagemModel.deleteAllImagesFromSeminovo(barcoSeminovoValidated.id, new ImagemRepository())
         await itemSeminovoModel.deleteAllAssotiationsItemSeminovo(barcoSeminovoValidated.id, new ItemSeminovoRepository())
@@ -104,7 +136,7 @@ class BarcoSeminovoService {
     }
 
     async deleteBarcoSeminovo(idBarcoSeminovo: number, firebaseModel: FirebaseModel) {
-        const barcoSeminovoData = await barcoSeminovoModel.getBarcoSeminovo(idBarcoSeminovo, new BarcoSeminovoRepository())
+        const barcoSeminovoData = await barcoSeminovoModel.getBarcoSeminovoDashboard(idBarcoSeminovo, new BarcoSeminovoRepository())
         const imagensFromSeminovo = await imagemModel.getImagesByIdSeminovo(idBarcoSeminovo, new ImagemRepository())
         await imagemModel.deleteAllImagesFromSeminovo(idBarcoSeminovo, new ImagemRepository())
         await itemSeminovoModel.deleteAllAssotiationsItemSeminovo(idBarcoSeminovo, new ItemSeminovoRepository())

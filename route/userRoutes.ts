@@ -1,11 +1,13 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { decodeToken } from "../infra/middlewares/decodeToken.js"
 import { UserController } from '../controller/UserController.js';
+import { mainMiddleware } from '../infra/middlewares/mainMiddleware.js';
+import { verifyUserRole } from '../infra/middlewares/VerifyUserType.js';
 
 const router = express.Router();
 const userController = new UserController()
 
-router.get('/', decodeToken, (req, res, next) => {
+router.get('/', mainMiddleware, (req, res, next) => {
     try {
         res.status(200).end()
     } catch (error) {
@@ -13,7 +15,10 @@ router.get('/', decodeToken, (req, res, next) => {
     }
 })
 
-router.get('/all-users', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/user/:id', async (req: Request, res: Response, next: NextFunction) => {
+    await userController.getUserById(req, res, next)
+})
+router.get('/all-users', mainMiddleware, verifyUserRole(["Dono"]), async (req: Request, res: Response, next: NextFunction) => {
     await userController.listUsers(req, res, next)
 })
 

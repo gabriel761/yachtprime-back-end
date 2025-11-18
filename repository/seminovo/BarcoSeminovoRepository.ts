@@ -1,6 +1,6 @@
 import { CustomError } from "../../infra/CustoError.js";
 import db from "../../infra/database.js";
-import { BarcoSeminovoDashboardList, BarcoSeminovoDatabase, BarcoSeminovoFilters, BarcoSeminovoInput, BarcoSeminovoInputWithId, BarcoSeminovoRelated } from "../../types/seminovo/BarcoSeminovo.js";
+import { BarcoSeminovoDashboardList, BarcoSeminovoDatabase, BarcoSeminovoDatabaseDashboard, BarcoSeminovoFilters, BarcoSeminovoInput, BarcoSeminovoInputWithId, BarcoSeminovoRelated } from "../../types/seminovo/BarcoSeminovo.js";
 import config from "../../config.js";
 
 type ListBarcoSeminovoFrontEndDB = {
@@ -60,6 +60,68 @@ FROM
     JOIN motor_cadastrado mc_motor ON m.id_motor = mc_motor.id
     JOIN tipo_combustivel tc ON bs.id_combustivel = tc.id
     JOIN propulsao p ON bs.id_propulsao = p.id
+    JOIN cabine c ON bs.id_cabine = c.id
+    JOIN preco pr ON bs.id_preco = pr.id
+    JOIN moeda mo ON pr.id_moeda = mo.id
+WHERE
+    bs.id = $1;
+
+
+`, [id])
+            .catch((error) => {
+                throw new CustomError(`Repository level error: BarcoSeminovoRepository:getBarcoSeminovo: ${error.message}`, 500)
+            });
+        if (!result) {
+            throw new CustomError("barco não existe: id=" + id, 404);
+        }
+        return result
+    }
+    async getBarcoSeminovoDashboard(id: number): Promise<BarcoSeminovoDatabaseDashboard> {
+        const result = await db.oneOrNone(`
+SELECT
+    bs.id AS barco_id,
+    bs.nome AS nome_barco,
+    bs.ano AS ano_barco,
+    bs.tamanho AS tamanho_barco,
+	mc.id AS id_modelo,
+    mc.marca AS marca_modelo,
+    mc.modelo AS modelo_modelo,
+    m.quantidade AS quantidade_motorizacao,
+    m.potencia AS potencia_motorizacao,
+    bs.potencia_total AS potencia_total,
+    m.horas AS horas_motorizacao,
+    m.ano AS ano_motorizacao,
+    m.observacoes AS observacoes_motorizacao,
+	m.id AS motorizacao_id,
+    mc_motor.marca AS marca_motor,
+    mc_motor.modelo AS modelo_motor,
+	tc.id AS id_combustivel,
+    tc.opcao AS tipo_combustivel,
+	p.id AS id_propulsao,
+    p.opcao AS tipo_propulsao,
+	prp.id AS proprietario_id,
+	prp.nome AS proprietario_nome,
+	prp.email AS proprietario_email,
+	prp.telefone AS proprietario_telefone,
+	c.id AS capacidade_id,
+    c.passageiro AS capacidade_passageiro,
+    c.tripulacao AS capacidade_tripulacao,
+    bs.procedencia,
+    bs.destaque,
+	pr.id AS preco_id,
+    pr.valor AS preco,
+    mo.nome AS moeda_nome,
+    mo.simbolo AS moeda_simbolo,
+    bs.video AS video_barco,
+    bs.oportunidade
+FROM
+    barco_seminovo bs
+    JOIN modelo_barco mc ON bs.id_modelo = mc.id
+    JOIN motorizacao m ON bs.id_motorizacao = m.id
+    JOIN motor_cadastrado mc_motor ON m.id_motor = mc_motor.id
+    JOIN tipo_combustivel tc ON bs.id_combustivel = tc.id
+    JOIN propulsao p ON bs.id_propulsao = p.id
+	JOIN proprietario prp ON bs.id_proprietario = prp.id
     JOIN cabine c ON bs.id_cabine = c.id
     JOIN preco pr ON bs.id_preco = pr.id
     JOIN moeda mo ON pr.id_moeda = mo.id
@@ -199,7 +261,7 @@ WHERE
     }
 
 
-    async getRelatedSeminovos(idSeminovo: number):Promise<BarcoSeminovoRelated[]> {
+    async getRelatedSeminovos(idSeminovo: number): Promise<BarcoSeminovoRelated[]> {
         try {
             const result = await db.query(`
             SELECT 
@@ -241,8 +303,9 @@ WHERE
     }
 
 
-    async insertBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoInput, idMotorizacao: number, idCabine: number, idPreco: number, idModel: number) {
-        const idBarco = await db.one(`
+    async insertBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoInput, idMotorizacao: number, idCabine: number, idPreco: number, idModel: number, idProprietario: number) {
+        try {
+            const idBarco = await db.one(`
             INSERT INTO barco_seminovo (
                 id_modelo,
                 nome,
@@ -257,31 +320,34 @@ WHERE
                 destaque,
                 id_preco,
                 video,
-                oportunidade
-                ) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, $13, $14) RETURNING id`,
-            [
-                idModel,
-                barcoSeminovoDTO.nome,
-                barcoSeminovoDTO.ano,
-                barcoSeminovoDTO.tamanho,
-                idMotorizacao,
-                barcoSeminovoDTO.potenciaTotal,
-                barcoSeminovoDTO.combustivel.id,
-                barcoSeminovoDTO.propulsao.id,
-                idCabine, barcoSeminovoDTO.procedencia,
-                barcoSeminovoDTO.destaque,
-                idPreco,
-                barcoSeminovoDTO.videoPromocional,
-                barcoSeminovoDTO.oportunidade
-            ])
-            .catch((error) => {
-                throw new CustomError(`Repository level error: BarcoSeminovoRepository:insertBarcoSeminovo: ${error.message}`, 500)
-            });
-        return idBarco.id
+                oportunidade,
+                id_proprietario
+                ) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, $13, $14, $15) RETURNING id`,
+                [
+                    idModel,
+                    barcoSeminovoDTO.nome,
+                    barcoSeminovoDTO.ano,
+                    barcoSeminovoDTO.tamanho,
+                    idMotorizacao,
+                    barcoSeminovoDTO.potenciaTotal,
+                    barcoSeminovoDTO.combustivel.id,
+                    barcoSeminovoDTO.propulsao.id,
+                    idCabine, barcoSeminovoDTO.procedencia,
+                    barcoSeminovoDTO.destaque,
+                    idPreco,
+                    barcoSeminovoDTO.videoPromocional,
+                    barcoSeminovoDTO.oportunidade,
+                    idProprietario
+                ])
+            return idBarco.id
+        } catch (error: any) {
+            throw new CustomError(`Repository level error: BarcoSeminovoRepository:insertBarcoSeminovo: ${error.message}`, 500)
+        }
     }
 
     async updateBarcoSeminovo(barcoSeminovoDTO: BarcoSeminovoInputWithId, idModelo: number) {
-        const idBarco = await db.query(`
+        try {
+            const idBarco = await db.query(`
             UPDATE 
                 barco_seminovo
             SET 
@@ -291,36 +357,40 @@ WHERE
                 tamanho = $4,
                 potencia_total = $5,
                 id_combustivel = $6,
-                id_propulsao = $7,
-                procedencia = $8,
-                destaque = $9,
-                video = $10,
-                oportunidade = $11
+                id_proprietario = $7,
+                id_propulsao = $8,
+                procedencia = $9,
+                destaque = $10,
+                video = $11,
+                oportunidade = $12
             WHERE
-                id = $12
+                id = $13
                 `,
-            [
-                idModelo,
-                barcoSeminovoDTO.nome,
-                barcoSeminovoDTO.ano,
-                barcoSeminovoDTO.tamanho,
-                barcoSeminovoDTO.potenciaTotal,
-                barcoSeminovoDTO.combustivel.id,
-                barcoSeminovoDTO.propulsao.id,
-                barcoSeminovoDTO.procedencia,
-                barcoSeminovoDTO.destaque,
-                barcoSeminovoDTO.videoPromocional,
-                barcoSeminovoDTO.oportunidade,
-                barcoSeminovoDTO.id
-            ])
-            .catch((error) => {
-                throw new CustomError(`Repository level error: BarcoSeminovoRepository:updateBarcoSeminovo: ${error.message}`, 500)
-            });
-        return idBarco.id
+                [
+                    idModelo,
+                    barcoSeminovoDTO.nome,
+                    barcoSeminovoDTO.ano,
+                    barcoSeminovoDTO.tamanho,
+                    barcoSeminovoDTO.potenciaTotal,
+                    barcoSeminovoDTO.combustivel.id,
+                    barcoSeminovoDTO.proprietario.id,
+                    barcoSeminovoDTO.propulsao.id,
+                    barcoSeminovoDTO.procedencia,
+                    barcoSeminovoDTO.destaque,
+                    barcoSeminovoDTO.videoPromocional,
+                    barcoSeminovoDTO.oportunidade,
+                    barcoSeminovoDTO.id
+                ])
+
+            return idBarco.id
+        } catch (error: any) {
+            throw new CustomError(`Repository level error: BarcoSeminovoRepository:updateBarcoSeminovo: ${error.message}`, 500)
+        }
     }
 
     async getIdsByIdSeminovo(idSeminovo: number) {
-        const result = await db.oneOrNone(`
+        try {
+            const result = await db.oneOrNone(`
             SELECT
                 id_motorizacao AS id_motorizacao,
                 id_preco AS id_preco,
@@ -330,20 +400,22 @@ WHERE
             WHERE 
                 id = $1
             `, [idSeminovo])
-            .catch((error) => {
-                throw new CustomError(`Repository level error: BarcoSeminovoRepository:getIdsByIdSeminovo: ${error.message}`, 500)
-            })
-        if (!result) {
-            throw new CustomError("Erro ao pegar id de preço. Barco não encontrado: id=" + result, 404);
+
+            if (!result) {
+                throw new CustomError("Erro ao pegar id de preço. Barco não encontrado: id=" + result, 404);
+            }
+            return result
+        } catch (error: any) {
+            throw new CustomError(`Repository level error: BarcoSeminovoRepository:getIdsByIdSeminovo: ${error.message}`, 500)
         }
-        return result
     }
 
     async deleteBarcoSeminovo(idBarcoSeminovo: number) {
-        await db.query("DELETE FROM barco_seminovo WHERE id = $1", [idBarcoSeminovo])
-            .catch((error) => {
-                throw new CustomError(`Repository level error: BarcoSeminovoRepository:deleteBarcoSeminovo: ${error.message}`, 500)
-            })
+        try {
+            await db.query("DELETE FROM barco_seminovo WHERE id = $1", [idBarcoSeminovo])
+        } catch (error:any) {
+            throw new CustomError(`Repository level error: BarcoSeminovoRepository:deleteBarcoSeminovo: ${error.message}`, 500)
+        }
     }
 }
 
