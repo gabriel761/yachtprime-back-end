@@ -22,7 +22,8 @@ import { PrecoOutputVO } from "../../value_object/output/PrecoOutputVO.js";
 import { ProprietarioInputVO } from "../../value_object/input/ProprietarioInputVO.js";
 import { ModeloModel } from "../ModeloModel.js";
 import { CidadeModel } from "./CidadeModel.js";
-import { ProprietarioOutputVO } from "../../value_object/output/proprietarioOutputVO.js";
+import { ProprietarioOutputVO } from "../../value_object/output/ProprietarioOutputVO.js";
+import { BarcoCharterDashboardOutputVO } from "../../value_object/output/charter/BarcoCharterDashboardOutputVO.js";
 
 export class BarcoCharterModel {
     getBarcoCharter(id: number, barcoCharterRepository: BarcoCharterRepository): Promise<BarcoCharterDatabase> {
@@ -54,6 +55,7 @@ export class BarcoCharterModel {
         const barcoCharterList = barcoCharterListDatabase.map((item) => {
             const barcoCharter: BarcoCharterListDashboard = {
                 id: item.id,
+                ativo: item.ativo,
                 imagem: item.imagem,
                 nome: item.nome,
                 modelo: item.modelo,
@@ -169,6 +171,7 @@ export class BarcoCharterModel {
         proprietarioVO.setTelefone(barcoCharter.proprietario.telefone)
         const proprietarioValidated = proprietarioVO.extractData()
 
+        barcoCharterVO.setAtivo(barcoCharter.ativo)
         barcoCharterVO.setModelo(barcoCharter.modelo)
         barcoCharterVO.setNome(barcoCharter.nome)
         barcoCharterVO.setAno(barcoCharter.ano)
@@ -233,6 +236,7 @@ export class BarcoCharterModel {
 
         
         barcoCharterVO.setId(barcoCharter.id)
+        barcoCharterVO.setAtivo(barcoCharter.ativo)
         barcoCharterVO.setModelo(barcoCharter.modelo)
         barcoCharterVO.setNome(barcoCharter.nome)
         barcoCharterVO.setAno(barcoCharter.ano)
@@ -322,7 +326,7 @@ export class BarcoCharterModel {
         return barcoCharter
     }
 
-    buildBarcoCharterDashboardOutputObject(barcoCharterDatabase: BarcoCharterDatabaseDashboard, barcoCharterVO: BarcoCharterOutputVO, precoVO: PrecoOutputVO, passageirosVO: PassageirosOutputVO, consumoCombustivelOutputVO: ConsumoCombustivelOutputVO, proprietarioOutputVO:ProprietarioOutputVO, taxaChurrascoVO: TaxaChurrascoOutputVO, itensCharterArray: ItemCharter[], imagensArray: Imagem[], roteirosArray: RoteiroOutput[], condicoesArray: Condicao[]): BarcoCharterOutput {
+    buildBarcoCharterDashboardOutputObject(barcoCharterDatabase: BarcoCharterDatabaseDashboard, barcoCharterVO: BarcoCharterDashboardOutputVO, precoVO: PrecoOutputVO, passageirosVO: PassageirosOutputVO, consumoCombustivelOutputVO: ConsumoCombustivelOutputVO, proprietarioOutputVO:ProprietarioOutputVO, taxaChurrascoVO: TaxaChurrascoOutputVO, itensCharterArray: ItemCharter[], imagensArray: Imagem[], roteirosArray: RoteiroOutput[], condicoesArray: Condicao[]): BarcoCharterOutput {
         const precoBarcoValor = converterPrecoEUAParaBrasil(barcoCharterDatabase.preco_valor)
         precoVO.setValor(precoBarcoValor)
         precoVO.setMoeda(barcoCharterDatabase.preco_moeda)
@@ -369,6 +373,7 @@ export class BarcoCharterModel {
         const proprietario = proprietarioOutputVO.extractDataWithId()
 
         barcoCharterVO.setId(barcoCharterDatabase.id)
+        barcoCharterVO.setAtivo(barcoCharterDatabase.ativo)
         barcoCharterVO.setModelo(barcoCharterDatabase.modelo_modelo)
         barcoCharterVO.setNome(barcoCharterDatabase.nome)
         barcoCharterVO.setAno(barcoCharterDatabase.ano)

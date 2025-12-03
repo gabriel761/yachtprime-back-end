@@ -27,7 +27,7 @@ export class TaxaChurrascoRepository {
     }
 
     async deleteTaxaChurrasco(idTaxaChurrasco: number){
-        db.query("DELETE FROM taxa_churrasco WHERE id=$1", [idTaxaChurrasco]).catch((error) => {
+        await db.query("DELETE FROM taxa_churrasco WHERE id=$1", [idTaxaChurrasco]).catch((error) => {
             throw new CustomError(`Repository level Error: TaxaChurrascoRepository deleteTaxaChurrasco: ${error}`, 500)
         });
     }

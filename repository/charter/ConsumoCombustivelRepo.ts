@@ -29,6 +29,6 @@ export class ConsumoCombustivelRepo {
     }
 
     async deleteConsumoCombustivelById(idConsumo: number){
-        db.query("DELETE FROM consumo_combustivel WHERE id=$1",[idConsumo])
+      await   db.query("DELETE FROM consumo_combustivel WHERE id=$1",[idConsumo])
     }
 }

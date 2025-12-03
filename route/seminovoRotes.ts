@@ -14,7 +14,7 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
 router.get('/dashboard/:id', async (req: Request, res: Response, next: NextFunction) => {
         await barcoSeminovoController.getBarcoSeminovoDashboardById(req, res, next)
 })
-router.get('/list/dashboard', mainMiddleware, async (req:Request, res: Response, next) => {
+router.get('/list/dashboard', async (req:Request, res: Response, next) => {
         await barcoSeminovoController.listBarcoSeminovoDashboard(req, res, next)
 })
 router.get('/list/front-end', async (req: Request, res: Response, next) => {

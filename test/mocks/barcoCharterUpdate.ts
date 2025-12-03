@@ -2,6 +2,7 @@ import { BarcoCharterDashboardOutput } from '../../types/charter/BarcoCharter.js
 
 const barcoCharterOutputUpdate: BarcoCharterDashboardOutput = {
     id: 1,
+    ativo: true,
     modelo: "Ferretti 760",
     nome: "Barco Premium",
     ano: 2023,
@@ -11,24 +12,28 @@ const barcoCharterOutputUpdate: BarcoCharterDashboardOutput = {
     passageiros: { passageiros: 14, passageirosPernoite: 6, tripulacao: 3 },
     roteiros: [
         {
+            id: 5,
             nome: "Costa Azul Premium",
             descricao: "Praia Secreta, Enseada Azul, Ilha da Pescaria",
             preco: { moeda: 'R$', valor: "11.000,00" },
             detalhesPagamento: "ou 5x de R$2.300"
         },
         {
+            id: 6,
             nome: "Roteiro Luxo Sul",
             descricao: "Caxadaço, Lopes Mendes, Dois Rios",
             preco: { moeda: 'R$', valor: "12.000,00" },
             detalhesPagamento: "ou 5x de R$2.500"
         },
         {
+            id: 7,
             nome: "Roteiro Volta à Ilha",
             descricao: "Provetá, Araçatiba, Aventureiro, Parnaioca",
             preco: { moeda: 'R$', valor: "13.000,00" },
             detalhesPagamento: "ou 5x de R$2.700"
         },
         {
+            id: 8,
             nome: "Tour Ilhas Secretas",
             descricao: "Cataguases, Gipoia, Praia da Fazenda, Jurubaíba",
             preco: { moeda: 'R$', valor: "14.500,00" },

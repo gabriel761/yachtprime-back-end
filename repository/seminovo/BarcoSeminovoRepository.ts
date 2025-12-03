@@ -64,7 +64,7 @@ FROM
     JOIN preco pr ON bs.id_preco = pr.id
     JOIN moeda mo ON pr.id_moeda = mo.id
 WHERE
-    bs.id = $1;
+    bs.id = $1 AND bs.ativo = true;
 
 
 `, [id])
@@ -80,6 +80,7 @@ WHERE
         const result = await db.oneOrNone(`
 SELECT
     bs.id AS barco_id,
+    bs.ativo,
     bs.nome AS nome_barco,
     bs.ano AS ano_barco,
     bs.tamanho AS tamanho_barco,
@@ -142,6 +143,7 @@ WHERE
         const result = await db.query(`
         SELECT 
             bs.id AS id,
+            bs.ativo,
             mb.modelo AS modelo,
             bs.nome AS nome,
             bs.tamanho AS tamanho,
@@ -216,7 +218,7 @@ WHERE
             LEFT JOIN motor_cadastrado mt ON mtrz.id_motor = mt.id
             LEFT JOIN imagem_barco_seminovo ibs ON bs.id = ibs.id_barco_seminovo
             LEFT JOIN imagem im ON ibs.id_imagem = im.id
-        ${whereClause}
+        ${whereClause} AND bs.ativo = true
         LIMIT $${params.length + 1} OFFSET $${params.length + 2}
     `;
         params.push(limit, offset);
@@ -286,6 +288,7 @@ WHERE
                 WHERE ibs2.id_barco_seminovo = bs.id
             )
 			AND bs.id <> $1 -- exclui o barco base
+            AND bs.ativo = true
             ORDER BY 
                 ABS(p.valor - (
                     SELECT p2.valor
@@ -308,6 +311,7 @@ WHERE
             const idBarco = await db.one(`
             INSERT INTO barco_seminovo (
                 id_modelo,
+                ativo,
                 nome,
                 ano,
                 tamanho,
@@ -322,9 +326,10 @@ WHERE
                 video,
                 oportunidade,
                 id_proprietario
-                ) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, $13, $14, $15) RETURNING id`,
+                ) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, $13, $14, $15, $16) RETURNING id`,
                 [
                     idModel,
+                    barcoSeminovoDTO.ativo,
                     barcoSeminovoDTO.nome,
                     barcoSeminovoDTO.ano,
                     barcoSeminovoDTO.tamanho,
@@ -352,22 +357,24 @@ WHERE
                 barco_seminovo
             SET 
                 id_modelo = $1,
-                nome = $2,
-                ano = $3,
-                tamanho = $4,
-                potencia_total = $5,
-                id_combustivel = $6,
-                id_proprietario = $7,
-                id_propulsao = $8,
-                procedencia = $9,
-                destaque = $10,
-                video = $11,
-                oportunidade = $12
+                ativo = $2,
+                nome = $3,
+                ano = $4,
+                tamanho = $5,
+                potencia_total = $6,
+                id_combustivel = $7,
+                id_proprietario = $8,
+                id_propulsao = $9,
+                procedencia = $10,
+                destaque = $11,
+                video = $12,
+                oportunidade = $13
             WHERE
-                id = $13
+                id = $14
                 `,
                 [
                     idModelo,
+                    barcoSeminovoDTO.ativo,
                     barcoSeminovoDTO.nome,
                     barcoSeminovoDTO.ano,
                     barcoSeminovoDTO.tamanho,

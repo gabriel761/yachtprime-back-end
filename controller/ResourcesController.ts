@@ -6,6 +6,9 @@ import { Motor } from '../types/seminovo/Motor.js';
 import { Proprietario } from '../types/Proprietario.js';
 import { CustomError } from '../infra/CustoError.js';
 import { validateIntegerPositiveNumber } from '../util/validationUtil.js';
+import { BarcoCharterService } from '../service/BarcoCharterService.js';
+import BarcoSeminovoService from '../service/BarcoSeminovoService.js';
+import { FirebaseModel } from '../models/external/FirebaseModel.js';
 
 const resourcesService = new ResourcesService()
 export class ResourcesController {
@@ -67,6 +70,15 @@ export class ResourcesController {
             next(error)
         }
     }
+    async listAllBoatsFromProprietario(req: Request, res: Response, next: NextFunction) {
+        try {
+            const idProprietario = parseInt(req.params.id) 
+            const proprietariosResult = await resourcesService.listAllBoatsFromProprietario(idProprietario)
+            res.json(proprietariosResult)
+        } catch (error) {
+            next(error)
+        }
+    }
     async insertProprietario(req: Request, res: Response, next: NextFunction) {
         try {
             const proprietario: Proprietario = req.body
@@ -80,6 +92,15 @@ export class ResourcesController {
         try {
             const id: number = parseInt(req.params.id)
             const proprietarioResult = await resourcesService.getProprietario(id)
+            res.json(proprietarioResult)
+        } catch (error) {
+            next(error)
+        }
+    }
+    async getProprietarioDashboard(req: Request, res: Response, next: NextFunction) {
+        try {
+            const id: number = parseInt(req.params.id)
+            const proprietarioResult = await resourcesService.getProprietarioDashboard(id)
             res.json(proprietarioResult)
         } catch (error) {
             next(error)
@@ -101,7 +122,7 @@ export class ResourcesController {
             const body = req.body
             if (!body) throw new CustomError("Empty body delete", 400)
             validateIntegerPositiveNumber(body.id, "id", "Proprietário")
-            await resourcesService.deleteProprietario(body.id)
+            await resourcesService.deleteProprietarioAndAllAssociatedBoats(body.id, new BarcoCharterService(), new BarcoSeminovoService(), new FirebaseModel())
             res.sendStatus(200)
         } catch (error) {
             next(error)

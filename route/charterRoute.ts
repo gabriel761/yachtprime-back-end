@@ -16,7 +16,7 @@ router.get("/dashboard/:id", async (req: Request, res: Response, next) => {
     await barcoCharterController.getBarcoCharterDashboardById(req, res, next)
 })
 
-router.get("/list/dashboard", mainMiddleware, async (req:Request, res:Response, next)=>{
+router.get("/list/dashboard", /*mainMiddleware,*/ async (req:Request, res:Response, next)=>{
     await barcoCharterController.listBarcoCharterDashboard(req, res, next)
 })
 

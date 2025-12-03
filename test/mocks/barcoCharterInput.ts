@@ -3,6 +3,7 @@ import { BarcoCharterInput, BarcoCharterInputWithId } from '../../types/charter/
 const barcoCharterInput: BarcoCharterInput = {
     
     modelo: "Azimut 70",
+    ativo: true,
     nome: "Lancha Luxo",
     ano: 2022,
     tamanho: 50,

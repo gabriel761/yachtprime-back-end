@@ -1,4 +1,4 @@
-import { afterAll, beforeAll, expect } from "vitest"
+import { afterAll, beforeAll, expect, vi } from "vitest"
 import { TestDatabase } from "../infra/TestDatabase"
 import { describe, test } from "vitest"
 import axios, { AxiosRequestConfig } from "axios";
@@ -7,11 +7,20 @@ import db from "../infra/database";
 import { motorInput } from "./mocks/motorInput";
 import { itemCharter } from "./mocks/itemCharter";
 import { itemSeminovo } from "./mocks/itemSeminivo";
-import { proprietario, proprietarioWithId } from "./mocks/proprietario";
+import { proprietario, proprietarioWithId, proprietarioWithIdAndUsers } from "./mocks/proprietario";
 import { ResourcesService } from "../service/ResourcesService";
+import { FirebaseModel } from "../models/external/FirebaseModel";
+import { BarcoCharterModel } from "../models/charter/BarcoCharterModel";
+import { BarcoSeminovoModel } from "../models/seminovo/BarcoSeminovoModel";
+import { BarcoCharterService } from "../service/BarcoCharterService";
+import BarcoSeminovoService from "../service/BarcoSeminovoService";
 
 
 const resourcesService = new ResourcesService()
+
+const deleteImageMock = vi.fn();
+const firebaseModelMock = new FirebaseModel();
+firebaseModelMock.deleteImage = deleteImageMock;
 
 function delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -87,18 +96,18 @@ describe("Resources for both boat types or none of them", () => {
     })
 
     test("Should update proprietario", async () => {
-        const proprietarioUpdate = {...proprietarioWithId}
+        const proprietarioUpdate = {...proprietarioWithIdAndUsers}
         proprietarioUpdate.nome = "João Gabriel"
         proprietarioUpdate.email = "jg.7651@gmail.com"
         proprietarioUpdate.telefone = "21 960183131"
         request("http://localhost:5000/resources/proprietario", "PATCH", proprietarioUpdate)
         await delay(100)
-        const response = await request("http://localhost:5000/resources/proprietario/1", "GET")
+        const response = await request("http://localhost:5000/resources/proprietario-dashboard/1", "GET")
         expect(response.data).toEqual(proprietarioUpdate)
     })
 
     test("Should delete proprietario", async () => {
-        await request("http://localhost:5000/resources/proprietario", "DELETE", {id:1})
+        resourcesService.deleteProprietarioAndAllAssociatedBoats(1, new BarcoCharterService(), new BarcoSeminovoService(), firebaseModelMock)
         await delay(100)
         await expect(
            resourcesService.getProprietario(1)

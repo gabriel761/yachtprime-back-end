@@ -35,9 +35,9 @@ VALUES
     ('João Gabriel', 'jg.7651@gmail.com', '(21) 96018-3131');
 -- seminovo
 INSERT INTO 
-    barco_seminovo (id_modelo, nome, ano, tamanho, id_motorizacao, potencia_total, id_combustivel, id_propulsao, id_cabine, procedencia, destaque, id_preco, id_proprietario)
+    barco_seminovo (ativo, id_modelo, nome, ano, tamanho, id_motorizacao, potencia_total, id_combustivel, id_propulsao, id_cabine, procedencia, destaque, id_preco, id_proprietario)
 VALUES
-    (3,'Sea View',2016,50,1,2800,1,3,1,'Brasil','Guardado no seco por 212 horas',1, 1);
+    (false,3,'Sea View',2016,50,1,2800,1,3,1,'Brasil','Guardado no seco por 212 horas',1, 1);
 -- imagem barco seminovo
 INSERT INTO
     imagem_barco_seminovo (id_imagem, id_barco_seminovo)

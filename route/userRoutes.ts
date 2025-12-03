@@ -18,6 +18,9 @@ router.get('/', mainMiddleware, (req, res, next) => {
 router.get('/user/:id', async (req: Request, res: Response, next: NextFunction) => {
     await userController.getUserById(req, res, next)
 })
+router.get('/user-dashboard/:id', async (req: Request, res: Response, next: NextFunction) => {
+    await userController.getUserDashboardById(req, res, next)
+})
 router.get('/all-users', mainMiddleware, verifyUserRole(["Dono"]), async (req: Request, res: Response, next: NextFunction) => {
     await userController.listUsers(req, res, next)
 })

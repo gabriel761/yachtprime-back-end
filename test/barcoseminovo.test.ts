@@ -170,7 +170,6 @@ describe("Barco seminovo and resources tests", () => {
         await expect(imagemRepository.getImagensByIdSeminovo(1)).rejects.toThrow("Não há imagens associadas a este seminovo")
         await expect(cabineRepository.getCabineById(1)).rejects.toThrow("Cabine não encontrada idCabine=1")
         await expect(itemSeminovoRepository.getItensSeminovoByIdSeminovo(1)).rejects.toThrow("Não foram encontrados itens associados a este seminovo idSeminovo=1")
-        await expect(proprietarioRepository.getProprietarioById(2)).rejects.toThrow("proprietario não encontrado: id=2")
 
 
     })

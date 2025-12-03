@@ -41,6 +41,7 @@ CREATE TABLE user_type(
 
 CREATE TABLE app_user(
     id SERIAL PRIMARY KEY NOT NULL,
+    nome VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
     user_firebase_id VARCHAR(100),
     id_user_type INTEGER NOT NULL,
@@ -94,6 +95,7 @@ CREATE TABLE propulsao(
 
 CREATE TABLE barco_seminovo(
      id SERIAL PRIMARY KEY NOT NULL,
+     ativo BOOLEAN DEFAULT true,
      id_modelo INTEGER NOT NULL,
      nome VARCHAR (150) NOT NULL,
      ano INTEGER NOT NULL,
@@ -204,6 +206,7 @@ CREATE TABLE cidade (
 
 CREATE TABLE barco_charter (
     id SERIAL PRIMARY KEY,
+    ativo BOOLEAN NOT NULL DEFAULT true,
     modelo INTEGER NOT NULL,
     nome VARCHAR(100),
     ano INTEGER NOT NULL,

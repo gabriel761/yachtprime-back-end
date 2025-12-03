@@ -3,6 +3,7 @@ import { BarcoSeminovoInput } from '../../types/seminovo/BarcoSeminovo.ts'
 const barcoSeminovoInput: BarcoSeminovoInput= {
     modelo: "Altamar 50",
     nome: "Sea View",
+    ativo: true,
     ano: 2016,
     tamanho: 50,
     motorizacao: {

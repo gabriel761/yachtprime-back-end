@@ -44,6 +44,7 @@ import { ProprietarioInputVO } from "../value_object/input/ProprietarioInputVO.j
 import { ProprietarioOutputVO } from "../value_object/output/ProprietarioOutputVO.js"
 import { UserModel } from "../models/UserModel.js"
 import { UserRepository } from "../repository/UserRepository.js"
+import { BarcoCharterDashboardOutputVO } from "../value_object/output/charter/BarcoCharterDashboardOutputVO.js"
 
 
 const barcoCharterModel = new BarcoCharterModel()
@@ -77,7 +78,8 @@ export class BarcoCharterService {
       const imagensArray = await imagemModel.getImagesByIdCharter(id, new ImagemRepository())
       const roteirosArray = await roteiroModel.getRoteirosByIdCharter(id, new RoteiroRepository(), new RoteiroOutputVO(), new PrecoOutputVO())
       const condicoesArray = await condicoesModel.getAllCondicoes(new CondicoesRepository())
-      const barcoCharterResult = barcoCharterModel.buildBarcoCharterDashboardOutputObject(barcoCharterDatabase, new BarcoCharterOutputVO(), new PrecoOutputVO(), new PassageirosOutputVO(), new ConsumoCombustivelOutputVO, new ProprietarioOutputVO, new TaxaChurrascoOutputVO(), itensCharterArray, imagensArray, roteirosArray, condicoesArray)
+      const barcoCharterResult = barcoCharterModel.buildBarcoCharterDashboardOutputObject(barcoCharterDatabase, new BarcoCharterDashboardOutputVO(), new PrecoOutputVO(), new PassageirosOutputVO(), new ConsumoCombustivelOutputVO, new ProprietarioOutputVO, new TaxaChurrascoOutputVO(), itensCharterArray, imagensArray, roteirosArray, condicoesArray)
+      console.log(barcoCharterResult)
       return barcoCharterResult
    }
 
@@ -139,15 +141,14 @@ export class BarcoCharterService {
 
       await taxaChurrascoModel.updateTaxaChurrasco(barcoCharterValidated.taxaChurrasco, new TaxaChurrascoRepository(), new PrecoModel())
 
-      passageirosModel.updatePassageiros(barcoCharterValidated.passageiros, new PassageirosRepository())
+      await passageirosModel.updatePassageiros(barcoCharterValidated.passageiros, new PassageirosRepository())
 
-      consumoCombustivelModel.updateConsumoCombustivel(barcoCharterValidated.consumoCombustivel, new ConsumoCombustivelRepo(), new PrecoModel(), new CombustivelModel(), idConsumo)
+      await consumoCombustivelModel.updateConsumoCombustivel(barcoCharterValidated.consumoCombustivel, new ConsumoCombustivelRepo(), new PrecoModel(), new CombustivelModel(), idConsumo)
 
       let idProprietario
       if (!barcoCharter.proprietario.id) {
-         const idUser = await userModel.getUserIdByIdFirebase(firebaseId, new UserRepository())
          idProprietario = await proprietarioModel.saveProprietario(barcoCharter.proprietario, new ProprietarioRepository())
-         await proprietarioModel.associateProprietarioWithUser(idUser, idProprietario, new ProprietarioRepository())
+         await proprietarioModel.associateProprietarioWithUsers(barcoCharter.proprietario, new ProprietarioRepository())
       } else {
          idProprietario = barcoCharter.proprietario.id
       }
@@ -163,7 +164,7 @@ export class BarcoCharterService {
    }
 
    async rollbackPost(barcoSeminovoClient: BarcoCharterInput) {
-      imagemModel.deleteImagesFromFirebase(barcoSeminovoClient.imagens, new FirebaseModel, "chartes")
+      await imagemModel.deleteImagesFromFirebase(barcoSeminovoClient.imagens, new FirebaseModel, "chartes")
    }
 
    async deleteBarcoCharter(idCharter: number, firebaseModel: FirebaseModel) {
@@ -182,6 +183,7 @@ export class BarcoCharterService {
       await imagemModel.deleteImagesFromFirebase(imagesFromCharter, firebaseModel, "charters")
 
    }
+
 }
 
 

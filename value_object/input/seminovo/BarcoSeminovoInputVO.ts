@@ -13,6 +13,7 @@ import { Proprietario } from "../../../types/Proprietario.js";
 
 export class BarcoSeminovoInputVO {
     private id!: number
+    private ativo!: boolean
     private modelo!: string;
     private nome!: string;
     private ano!: number;
@@ -36,6 +37,10 @@ export class BarcoSeminovoInputVO {
     setId(id: number) {
         validateIntegerPositiveNumber(id, "id", "BarcoSeminovo")
         this.id = id
+    }
+    setAtivo(ativo: boolean) {
+        if (typeof ativo != "boolean") new CustomError("Ativo em BarcoCharterDashboard é inválido", 403)
+        this.ativo = ativo
     }
     setModelo(modelo: string) {
         if (!modelo) throw new CustomError("Modelo em barco seminovo é inválido", 400)
@@ -114,6 +119,7 @@ export class BarcoSeminovoInputVO {
     }
     extractData(): BarcoSeminovoInput {
         return {
+            ativo: this.ativo,
             modelo: this.modelo,
             nome: this.nome,
             ano: this.ano,
@@ -136,6 +142,7 @@ export class BarcoSeminovoInputVO {
     extractDataWithId(): BarcoSeminovoInputWithId {
         return {
             id: this.id,
+            ativo: this.ativo,
             modelo: this.modelo,
             nome: this.nome,
             ano: this.ano,

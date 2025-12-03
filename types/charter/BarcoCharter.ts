@@ -1,7 +1,7 @@
 import { Imagem } from "../Imagem.js";
 import { Modelo } from "../Modelo.js";
 import { PrecoInput, PrecoOutput } from "../Preco.js";
-import { Proprietario } from "../Proprietario.js";
+import { Proprietario, ProprietarioWithUsers } from "../Proprietario.js";
 import { Condicao } from "./Condicoes.js";
 import { ConsumoCombustivelInput, ConsumoCombustivelOutput } from "./ConsumoCombustivel.js";
 import {  ItemCharter } from "./ItemCharter.js";
@@ -40,6 +40,7 @@ export type BarcoCharterOutput = {
 
 export type BarcoCharterDashboardOutput = {
     id: number;
+    ativo: boolean;
     modelo: string;
     nome: string | null;
     ano: number;
@@ -64,6 +65,7 @@ export type BarcoCharterDashboardOutput = {
 }
 
 export type BarcoCharterInput = {
+    ativo: boolean;
     modelo: string;
     nome: string | null;
     ano: number;
@@ -88,6 +90,7 @@ export type BarcoCharterInput = {
 
 export type BarcoCharterInputWithId = {
     id: number,
+    ativo: boolean;
     modelo: string;
     nome: string | null;
     ano: number;
@@ -101,7 +104,7 @@ export type BarcoCharterInputWithId = {
     itensDisponiveis: ItemCharter[];
     imagens: Imagem[];
     consumoCombustivel: ConsumoCombustivelInput;
-    proprietario: Proprietario;
+    proprietario: ProprietarioWithUsers;
     tipoPasseio: TipoPasseio;
     tripulacaoSkipper: TripulacaoSkipper;
     horaExtra: PrecoInput;
@@ -113,6 +116,7 @@ export type BarcoCharterInputWithId = {
 
 export type BarcoCharterDatabaseDashboard = {
     id: number;
+    ativo: boolean;
     nome: string | null;
     modelo_id: number;
     modelo_modelo: string;
@@ -200,6 +204,7 @@ export type BarcoCharterDatabase = {
 
 export type BarcoCharterListDashboardDatabase = {
     id: number,
+    ativo: boolean,
     imagem: string,
     nome: string,
     modelo: string,
@@ -210,6 +215,7 @@ export type BarcoCharterListDashboardDatabase = {
 }
 export type BarcoCharterListDashboard = {
     id: number,
+    ativo: boolean,
     imagem: string,
     nome: string,
     modelo: string,

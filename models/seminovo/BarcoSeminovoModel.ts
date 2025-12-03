@@ -176,6 +176,7 @@ export class BarcoSeminovoModel {
         precoVO.setMoeda(barcoSeminovoDB.moeda_simbolo)
         precoVO.setValor(barcoSeminovoDB.preco)
         barcoseminovoOutputVO.setId(barcoSeminovoDB.barco_id);
+        barcoseminovoOutputVO.setAtivo(barcoSeminovoDB.ativo);
         barcoseminovoOutputVO.setModelo(barcoSeminovoDB.modelo_modelo);
         barcoseminovoOutputVO.setNome(barcoSeminovoDB.nome_barco);
         barcoseminovoOutputVO.setAno(barcoSeminovoDB.ano_barco);
@@ -213,6 +214,7 @@ export class BarcoSeminovoModel {
         cabinesVO.setTripulacao(barcoSeminovoInput.cabines.tripulacao)
         precoVO.setMoeda(barcoSeminovoInput.preco.moeda)
         precoVO.setValor(barcoSeminovoInput.preco.valor)
+        barcoseminovoInputVO.setAtivo(barcoSeminovoInput.ativo);
         barcoseminovoInputVO.setModelo(barcoSeminovoInput.modelo);
         barcoseminovoInputVO.setNome(barcoSeminovoInput.nome);
         barcoseminovoInputVO.setAno(barcoSeminovoInput.ano);
@@ -255,6 +257,7 @@ export class BarcoSeminovoModel {
         precoVO.setValor(barcoSeminovoInput.preco.valor)
         
         barcoseminovoInputVO.setId(idSeminovo)
+        barcoseminovoInputVO.setAtivo(barcoSeminovoInput.ativo);
         barcoseminovoInputVO.setModelo(barcoSeminovoInput.modelo);
         barcoseminovoInputVO.setNome(barcoSeminovoInput.nome);
         barcoseminovoInputVO.setAno(barcoSeminovoInput.ano);

@@ -45,7 +45,7 @@ export class RoteiroModel {
   async saveRoteiro(idCharter: number, roteiroArray: RoteiroInput[], roteiroRepository: RoteiroRepository, precoModel: PrecoModel) {
     for (let i = 0; i < roteiroArray.length; i++) {
       const idPreco = await precoModel.savePreco(roteiroArray[i].preco, new PrecoRepository(), new MoedaRepository())
-      roteiroRepository.insertRoteiro(roteiroArray[i].nome, roteiroArray[i].descricao, idPreco, roteiroArray[i].detalhesPagamento, idCharter)
+      await roteiroRepository.insertRoteiro(roteiroArray[i].nome, roteiroArray[i].descricao, idPreco, roteiroArray[i].detalhesPagamento, idCharter)
     }
   }
 

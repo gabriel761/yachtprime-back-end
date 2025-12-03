@@ -34,6 +34,7 @@ export type BarcoSeminovoOutput = {
 
 export type BarcoSeminovoOutputDashboard = {
     id?: number
+    ativo: boolean;
     modelo: string;
     nome: string;
     ano: number;
@@ -54,6 +55,7 @@ export type BarcoSeminovoOutputDashboard = {
 };
 
 export type BarcoSeminovoInput = {
+    ativo: boolean;
     modelo: string;
     nome: string;
     ano: number;
@@ -76,6 +78,7 @@ export type BarcoSeminovoInput = {
 
 export type BarcoSeminovoInputWithId = {
     id: number;
+    ativo: boolean;
     modelo: string;
     nome: string;
     ano: number;
@@ -132,6 +135,7 @@ export type BarcoSeminovoDatabase ={
 
 export type BarcoSeminovoDatabaseDashboard = {
     oportunidade: boolean;
+    ativo: boolean;
     barco_id?: number;
     nome_barco: string;
     ano_barco: number;
@@ -170,13 +174,15 @@ export type BarcoSeminovoDatabaseDashboard = {
 
 
 export type BarcoSeminovoDashboardList = {
-    id:number,
+    id: number,
+    ativo: boolean,
     modelo: string,
-    imagem: string,
     nome: string,
     tamanho: number,
+    imagem: string,
     ano: number,
-    preco: {moeda: string, valor: number}
+    moeda: string,
+    valor: string
 }
 
 export type BarcoSeminovoFrontEndList = {

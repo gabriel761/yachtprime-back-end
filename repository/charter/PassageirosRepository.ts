@@ -16,7 +16,7 @@ export class PassageirosRepository {
         })
     }
     async deletePassageirosById(idPassageiros: number){
-        db.query("DELETE FROM passageiros WHERE id=$1", [idPassageiros])
+       await  db.query("DELETE FROM passageiros WHERE id=$1", [idPassageiros])
     }
 }
 

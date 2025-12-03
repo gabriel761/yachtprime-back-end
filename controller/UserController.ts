@@ -27,6 +27,16 @@ export class UserController {
         }
     }
 
+    async getUserDashboardById(req: Request, res: Response, next: NextFunction) {
+        try {
+            const id = parseInt(req.params.id)
+            const userTypes = await userService.getUserDashboardById(id)
+            res.json(userTypes)
+        } catch (error) {
+            next(error)
+        }
+    }
+
     async listUsers(req: Request, res: Response, next: NextFunction) {
         try {
             const userTypes = await userService.getUsers()

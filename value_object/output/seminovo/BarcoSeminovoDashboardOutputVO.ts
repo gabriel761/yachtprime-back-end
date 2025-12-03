@@ -11,6 +11,7 @@ import { Proprietario } from "../../../types/Proprietario.js";
 
 export class BarcoSeminovoDashboardOutputVO {
     private id?: number
+    private ativo!: boolean;
     private modelo!: string;
     private nome!: string;
     private ano!: number;
@@ -33,6 +34,9 @@ export class BarcoSeminovoDashboardOutputVO {
     ) { }
     setId(id?: number) {
         this.id = id
+    }
+    setAtivo(ativo: boolean) {
+        this.ativo = ativo
     }
     setModelo(modelo: string) {
         this.modelo = modelo
@@ -92,6 +96,7 @@ export class BarcoSeminovoDashboardOutputVO {
     extractData():BarcoSeminovoOutputDashboard{
         return {
             id: this.id,
+            ativo: this.ativo,
             modelo: this.modelo,
             nome: this.nome,
             ano: this.ano,

@@ -69,7 +69,7 @@ JOIN moeda moeda_aluguel_lancha ON preco_aluguel_lancha.id_moeda = moeda_aluguel
 JOIN taxa_churrasco ON bc.id_taxa_churrasco = taxa_churrasco.id
 JOIN preco preco_churrasco ON taxa_churrasco.id_preco = preco_churrasco.id
 JOIN moeda moeda_churrasco ON preco_churrasco.id_moeda = moeda_churrasco.id
-WHERE bc.id = $1;
+WHERE bc.id = $1 AND ativo = true;
         `, [id]).catch((error) => {
             throw new CustomError(`Repository level error: BarcoCharterRepository:getBarcoCharter: ${error.message}`, 500)
         });
@@ -83,6 +83,7 @@ WHERE bc.id = $1;
         const result = await db.oneOrNone(`
 SELECT
 bc.id,
+bc.ativo,
 bc.nome,
 modelo.id AS modelo_id,
 modelo.modelo AS modelo_modelo,
@@ -162,6 +163,7 @@ WHERE bc.id = $1;
         const result = await db.query(`
             SELECT
                 bc.id,
+                bc.ativo,
 				im.link AS imagem,
                 bc.nome,
                 mb.modelo,
@@ -180,7 +182,7 @@ WHERE bc.id = $1;
             WHERE 
                 ibc.id = (SELECT MIN(ibc2.id) 
                 FROM imagem_barco_charter ibc2 
-                WHERE ibc2.id_barco_charter = bc.id)
+                WHERE ibc2.id_barco_charter = bc.id) 
             ORDER BY
                 mb.modelo;
             `)
@@ -253,7 +255,7 @@ WHERE bc.id = $1;
                 JOIN passageiros AS pa ON bc.id_passageiros = pa.id
                 LEFT JOIN imagem_barco_charter ibc ON bc.id = ibc.id_barco_charter
                 LEFT JOIN imagem im ON ibc.id_imagem = im.id
-            ${whereClause}
+            ${whereClause} AND bc.ativo = true
            LIMIT $${params.length + 1} OFFSET $${params.length + 2}
             `;
            
@@ -368,6 +370,7 @@ WHERE bc.id = $1;
                 WHERE ibc2.id_barco_charter = bc.id
             )
 			AND bc.id <> $1 -- exclui o barco base
+            AND bc.ativo = true
             ORDER BY 
                 ABS(p.valor - (
                     SELECT p2.valor
@@ -409,17 +412,18 @@ WHERE bc.id = $1;
         console.log("barco charter repository:", barcoCharter)
         await db.query(`
     UPDATE barco_charter SET
-    modelo=$1, 
-    nome=$2, 
-    ano=$3, 
-    tamanho=$4,
-    id_cidade=$5,
-    id_proprietario=$6, 
-    id_pet_friendly=$7, 
-    id_tipo_passeio=$8, 
-    id_tripulacao_skipper=$9,
-    video_promocional=$10 WHERE id=$11;
-    `, [idModel, barcoCharter.nome, barcoCharter.ano, barcoCharter.tamanho, idCidade, idProprietario, barcoCharter.petFriendly.id,barcoCharter.tipoPasseio.id, barcoCharter.tripulacaoSkipper.id, barcoCharter.videoPromocional, barcoCharter.id])
+    ativo=$1,
+    modelo=$2, 
+    nome=$3, 
+    ano=$4, 
+    tamanho=$5,
+    id_cidade=$6,
+    id_proprietario=$7, 
+    id_pet_friendly=$8, 
+    id_tipo_passeio=$9, 
+    id_tripulacao_skipper=$10,
+    video_promocional=$11 WHERE id=$12;
+    `, [barcoCharter.ativo ,idModel, barcoCharter.nome, barcoCharter.ano, barcoCharter.tamanho, idCidade, idProprietario, barcoCharter.petFriendly.id,barcoCharter.tipoPasseio.id, barcoCharter.tripulacaoSkipper.id, barcoCharter.videoPromocional, barcoCharter.id])
             .catch((error) => {
                 throw new CustomError(`Repository level error: BarcoCharterRepository:updateBarcoCharter: ${error.message}`, 500)
             })
@@ -427,7 +431,7 @@ WHERE bc.id = $1;
     }
 
     async deleteBarcoCharter(idBarcoCharter: number){
-        db.query("DELETE FROM barco_charter WHERE id=$1", [idBarcoCharter]).catch((error) => {
+        await db.query("DELETE FROM barco_charter WHERE id=$1", [idBarcoCharter]).catch((error) => {
             throw new CustomError(`Repository level error: BarcoCharterRepository:deleteBarcoCharter: ${error.message}`, 500)
         })
     }

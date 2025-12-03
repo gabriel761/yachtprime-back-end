@@ -35,10 +35,16 @@ router.get('/proprietario/:id', async (req: Request, res: Response, next: NextFu
     await resourcesController.getProprietario(req, res, next)
 })
 
+router.get('/proprietario-dashboard/:id', async (req: Request, res: Response, next: NextFunction) => {
+    await resourcesController.getProprietarioDashboard(req, res, next)
+})
+
 router.get('/proprietario-dashboard-list', async (req: Request, res: Response, next: NextFunction) => {
     await resourcesController.listProprietariosDashboard(req, res, next)
 })
-
+router.get('/proprietario/boats/:id', async (req: Request, res: Response, next: NextFunction) => {
+    await resourcesController.listAllBoatsFromProprietario(req, res, next)
+})
 router.delete('/proprietario', async (req: Request, res: Response, next: NextFunction) => {
     await resourcesController.deleteProprietario(req, res, next)
 })

@@ -2,6 +2,7 @@ import { BarcoSeminovoOutput, BarcoSeminovoOutputDashboard } from '../../types/s
  
 const barcoSeminovoDashboard: BarcoSeminovoOutputDashboard = {
     id: 1,
+    ativo: true,
     modelo: "Altamar 50",
     nome: "Sea View",
     ano: 2016,

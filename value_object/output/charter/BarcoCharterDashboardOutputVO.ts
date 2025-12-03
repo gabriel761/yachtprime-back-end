@@ -12,9 +12,11 @@ import { TripulacaoSkipper } from "../../../types/charter/TripulacaoSkipper.js";
 
 import { Condicao } from "../../../types/charter/Condicoes.js";
 import { Proprietario } from "../../../types/Proprietario.js";
+import { CustomError } from "../../../infra/CustoError.js";
 
-export class BarcoCharterOutputVO {
+export class BarcoCharterDashboardOutputVO {
     private id!:number;
+    private ativo!: boolean;
     private modelo!: string;
     private nome!: string | null;
     private ano!: number;
@@ -41,6 +43,10 @@ export class BarcoCharterOutputVO {
 
     setId(id:number){
         this.id = id
+    }
+
+    setAtivo(ativo: boolean){
+        this.ativo = ativo
     }
 
     setModelo(modelo: string) {
@@ -130,6 +136,7 @@ export class BarcoCharterOutputVO {
     extractData(): BarcoCharterDashboardOutput {
         return {
             id: this.id,
+            ativo: this.ativo,
             modelo: this.modelo,
             nome: this.nome,
             ano: this.ano,

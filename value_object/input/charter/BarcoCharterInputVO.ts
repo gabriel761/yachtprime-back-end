@@ -12,10 +12,11 @@ import { PetFriendly } from "../../../types/charter/PetFriendly.js";
 import { TipoPasseio } from "../../../types/charter/TipoPasseio.js";
 import { TripulacaoSkipper } from "../../../types/charter/TripulacaoSkipper.js";
 import { Modelo } from "../../../types/Modelo.js";
-import { ProprietarioInput } from "../../../types/Proprietario.js";
+import { Proprietario } from "../../../types/Proprietario.js";
 
 export class BarcoCharterInputVO {
     private id!: number;
+    private ativo!: boolean;
     private modelo!: string;
     private nome!: string;
     private ano!: number;
@@ -28,7 +29,7 @@ export class BarcoCharterInputVO {
     private itensDisponiveis!: ItemCharter[];
     private imagens!: Imagem[];
     private consumoCombustivel!: ConsumoCombustivelInput;
-    private proprietario!: ProprietarioInput;
+    private proprietario!: Proprietario;
     private roteiros!: RoteiroInput[]
     private horaExtra!: PrecoInput;
     private tipoPasseio!: TipoPasseio;
@@ -42,6 +43,11 @@ export class BarcoCharterInputVO {
     setId(id: number){
         validateIntegerPositiveNumber(id, "id", "barcoCharterVO")
         this.id = id
+    }
+
+    setAtivo(ativo: boolean){
+        if (typeof ativo != "boolean") new CustomError("Ativo em BarcoCharterDashboard é inválido", 403)
+        this.ativo = ativo
     }
 
     setModelo(modelo: string) {
@@ -111,7 +117,7 @@ export class BarcoCharterInputVO {
         this.consumoCombustivel = consumo;
     }
 
-    setProprietario(proprietario: ProprietarioInput){
+    setProprietario(proprietario: Proprietario){
         if (!proprietario) throw new CustomError("Proprietário em barco charter é inválido", 400);
         this.proprietario = proprietario
     }
@@ -149,6 +155,7 @@ export class BarcoCharterInputVO {
 
     extractData(): BarcoCharterInput {
         return {
+            ativo: this.ativo,
             modelo: this.modelo,
             nome: this.nome,
             ano: this.ano,
@@ -175,6 +182,7 @@ export class BarcoCharterInputVO {
     extractDataWhithId(): BarcoCharterInputWithId {
         return {
             id: this.id,
+            ativo: this.ativo,
             modelo: this.modelo,
             nome: this.nome,
             ano: this.ano,
@@ -188,6 +196,7 @@ export class BarcoCharterInputVO {
             imagens: this.imagens,
             roteiros: this.roteiros,
             consumoCombustivel: this.consumoCombustivel,
+            proprietario: this.proprietario,
             horaExtra: this.horaExtra,
             tipoPasseio: this.tipoPasseio,
             tripulacaoSkipper: this.tripulacaoSkipper,

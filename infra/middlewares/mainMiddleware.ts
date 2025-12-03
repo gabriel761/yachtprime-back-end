@@ -9,6 +9,7 @@ export const mainMiddleware = async (
     next: NextFunction
 ) => {
     if (process.env.NODE_ENV == "development" && req.headers.authorization == "test") {
+        req.user = {uid:"ls6ZJeBDqfgftdH16ynMTgar7P93"} 
         next()
     } else {
         try {

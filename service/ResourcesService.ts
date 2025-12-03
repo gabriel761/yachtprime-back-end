@@ -1,3 +1,5 @@
+import { BarcoCharterModel } from "../models/charter/BarcoCharterModel.js"
+import { FirebaseModel } from "../models/external/FirebaseModel.js"
 import { FormModel } from "../models/external/FormModel.js"
 import { ModeloModel } from "../models/ModeloModel.js"
 import { MotorModel } from "../models/MotorModel.js"
@@ -9,9 +11,11 @@ import { MoedaRepository } from "../repository/MoedaRepository.js"
 import { ProprietarioRepository } from "../repository/ProprietarioRepository.js"
 import { Form } from "../types/Form.js"
 import { Modelo } from "../types/Modelo.js"
-import { Proprietario } from "../types/Proprietario.js"
+import { Proprietario, ProprietarioWithUsers } from "../types/Proprietario.js"
 import { Motor } from "../types/seminovo/Motor.js"
 import { ProprietarioInputVO } from "../value_object/input/ProprietarioInputVO.js"
+import { BarcoCharterService } from "./BarcoCharterService.js"
+import BarcoSeminovoService from "./BarcoSeminovoService.js"
 
 const precoModel = new PrecoModel()
 const formModel = new FormModel()
@@ -48,22 +52,44 @@ export class ResourcesService {
         const result = await proprietarioModel.listProprietariosDashboard( new ProprietarioRepository())
         return result
     }
-
+    async listAllBoatsFromProprietario(idProprietario: number){
+      const result = await  proprietarioModel.listAllBoatsFromProprietario(idProprietario,new ProprietarioRepository)
+      return result
+    }
     async insertProprietario(proprietario:Proprietario){
         await proprietarioModel.saveProprietario(proprietario, new ProprietarioRepository())
     }
 
     async getProprietario(id: number) {
-      const result =  await proprietarioModel.getProprietarioById(id, new ProprietarioRepository())
+        const result = await proprietarioModel.getProprietarioById(id, new ProprietarioRepository())
+        return result
+    }
+
+    async getProprietarioDashboard(id: number) {
+        const result = await proprietarioModel.getProprietarioDashboardById(id, new ProprietarioRepository())
       return result
     }
 
-    async updateProprietario(proprietario: Proprietario) {
+    async updateProprietario(proprietario: ProprietarioWithUsers) {
+        console.log(proprietario)
         const validatedProprietario = proprietarioModel.validateProprietarioObject(proprietario, new ProprietarioInputVO)
+        await proprietarioModel.deleteAllAssotiationWithUser(new ProprietarioRepository(), proprietario.id)
+        await proprietarioModel.associateProprietarioWithUsers(proprietario, new ProprietarioRepository())
         await proprietarioModel.updateProprietario(validatedProprietario, new ProprietarioRepository())
     }
 
-    async deleteProprietario(id:number){
-       await proprietarioModel.deleteProprietario(id, new ProprietarioRepository())
+    async deleteProprietarioAndAllAssociatedBoats(idProprietario:number, charterService: BarcoCharterService, seminovoService: BarcoSeminovoService, firebaseModel: FirebaseModel){
+        const associatedBoatsList = await proprietarioModel.listAllBoatsFromProprietario(idProprietario, new ProprietarioRepository())
+        const deletePromises = associatedBoatsList.map(async (barco)=> {
+            if(barco.tipo == "charter"){
+                await charterService.deleteBarcoCharter(barco.id, firebaseModel)
+            }
+            if(barco.tipo == "seminovo"){
+              await  seminovoService.deleteBarcoSeminovo(barco.id, firebaseModel)
+            }
+        })
+        await Promise.all(deletePromises)
+        await proprietarioModel.deleteAllAssotiationWithUser(new ProprietarioRepository(), idProprietario)
+        await proprietarioModel.deleteProprietario(idProprietario, new ProprietarioRepository())
     }
 }

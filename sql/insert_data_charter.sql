@@ -1,9 +1,6 @@
  -- === CHARTER 1 ===
 
- INSERT INTO app_user (email, user_firebase_id, id_user_type) VALUES 
-('jg.7651@gmail.com', 'firebase_id', 1);
- INSERT INTO app_user (email, user_firebase_id, id_user_type) VALUES 
-('paulo2228@gmail.com', 'firebase_id', 2);
+
 
 SET client_encoding TO 'UTF8';
 -- Inserindo um preço de exemplo
@@ -44,8 +41,8 @@ VALUES
     ('João Gabriel', 'jg.7651@gmail.com', '(21) 96018-3131');
 
 -- Inserindo um barco charter
-INSERT INTO barco_charter (modelo, nome, ano, tamanho, id_cidade, id_preco, id_passageiros, id_pet_friendly, id_consumo, id_preco_hora_extra, id_preco_aluguel_lancha, id_tipo_passeio, id_tripulacao_skipper, id_taxa_churrasco, video_promocional, id_proprietario)
-VALUES (35, 'Lancha Luxo', 2022, 50, 1, 9, 1, 1, 1, 2, 3, 1, 2, 1,'https://www.youtube.com/watch?v=EZJ-S9RODF0', 1);
+INSERT INTO barco_charter (ativo, modelo, nome, ano, tamanho, id_cidade, id_preco, id_passageiros, id_pet_friendly, id_consumo, id_preco_hora_extra, id_preco_aluguel_lancha, id_tipo_passeio, id_tripulacao_skipper, id_taxa_churrasco, video_promocional, id_proprietario)
+VALUES (false, 35, 'Lancha Luxo', 2022, 50, 1, 9, 1, 1, 1, 2, 3, 1, 2, 1,'https://www.youtube.com/watch?v=EZJ-S9RODF0', 1);
 
 
 -- Inserir roteiros 
@@ -182,7 +179,7 @@ VALUES
 
 -- Inserindo um barco charter
 INSERT INTO barco_charter (modelo, nome, ano, tamanho, id_cidade, id_preco, id_passageiros, id_pet_friendly, id_consumo, id_preco_hora_extra, id_preco_aluguel_lancha, id_tipo_passeio, id_tripulacao_skipper, id_taxa_churrasco, video_promocional, id_proprietario)
-VALUES (224, 'Wave Beat', 2023, 70, 1, 27, 3, 1, 3, 20, 21, 1, 2, 3,'https://www.youtube.com/watch?v=ndqX4vbR7Rc', 3);
+VALUES (224, 'Wave Beat', 2023, 70, 1, 27, 3, 1, 3, 20, 21, 1, 2, 3,'https://www.youtube.com/watch?v=ndqX4vbR7Rc', 1);
 
 
 -- Inserir roteiros 
@@ -329,7 +326,7 @@ INSERT INTO barco_charter (
 ) VALUES (
   5, 499, 'Phantom 360', 2021, 36, 1, 41, 5, 1,
   5, 39, 40, 1,
-  2, 5, 'https://www.youtube.com/watch?v=miTpJmMt7uo', 5
+  2, 5, 'https://www.youtube.com/watch?v=miTpJmMt7uo', 1
 );
 
 -- Roteiros do charter 5
@@ -357,8 +354,5 @@ INSERT INTO imagem_barco_charter (id_barco_charter, id_imagem) VALUES
 -- === USUARIO PROPRIETARIO ===
 
 INSERT INTO app_user_proprietario (id_app_user, id_proprietario) VALUES
-(2, 1),
-(2, 2),
-(2, 3),
-(1, 4),
-(1, 5);
+(1, 1),
+(2,1)
