@@ -94,7 +94,29 @@ describe("Resources for both boat types or none of them", () => {
         await delay(100)
         expect(response.data).toEqual(proprietarioWithId)
     })
-
+    test("Should get proprietario dashboard", async () => {
+        const response = await request("http://localhost:5000/resources/proprietario-dashboard/1", "GET")
+        await delay(100)
+        expect(response.data).toHaveProperty("id")
+        expect(response.data).toHaveProperty("usuarios")
+        expect(Array.isArray(response.data.usuarios)).toBe(true)
+    })
+    test("Should list all proprietarios dashboard", async () => {
+        const response = await request("http://localhost:5000/resources/proprietario-dashboard-list", "GET")
+        await delay(100)
+        expect(Array.isArray(response.data)).toBe(true)
+        expect(response.data.length).toBeGreaterThan(0)
+    })
+    test("Should list all boats from proprietario", async () => {
+        const response = await request("http://localhost:5000/resources/proprietario/boats/1", "GET")
+        await delay(100)
+        expect(Array.isArray(response.data)).toBe(true)
+    })
+    test("Should get proprietarios by name", async () => {
+        const response = await request("http://localhost:5000/resources/search-proprietario/teste", "GET")
+        await delay(100)
+        expect(Array.isArray(response.data)).toBe(true)
+    })
     test("Should update proprietario", async () => {
         const proprietarioUpdate = {...proprietarioWithIdAndUsers}
         proprietarioUpdate.nome = "João Gabriel"
@@ -105,6 +127,7 @@ describe("Resources for both boat types or none of them", () => {
         const response = await request("http://localhost:5000/resources/proprietario-dashboard/1", "GET")
         expect(response.data).toEqual(proprietarioUpdate)
     })
+    
 
     test("Should delete proprietario", async () => {
         resourcesService.deleteProprietarioAndAllAssociatedBoats(1, new BarcoCharterService(), new BarcoSeminovoService(), firebaseModelMock)

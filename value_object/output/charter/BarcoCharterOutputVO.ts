@@ -127,7 +127,7 @@ export class BarcoCharterOutputVO {
         this.videoPromocional = video;
     }
 
-    extractData(): BarcoCharterDashboardOutput {
+    extractData(): BarcoCharterOutput {
         return {
             id: this.id,
             modelo: this.modelo,
@@ -143,7 +143,6 @@ export class BarcoCharterOutputVO {
             itensDisponiveis: this.itensDisponiveis,
             imagens: this.imagens,
             consumoCombustivel: this.consumoCombustivel,
-            proprietario: this.proprietario,
             tipoPasseio: this.tipoPasseio,
             tripulacaoSkipper: this.tripulacaoSkpper,
             horaExtra: this.horaExtra,
