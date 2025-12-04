@@ -15,29 +15,29 @@ router.get('/', mainMiddleware, (req, res, next) => {
     }
 })
 
-router.get('/user/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/user/:id', mainMiddleware, verifyUserRole(["Dono"]), async (req: Request, res: Response, next: NextFunction) => {
     await userController.getUserById(req, res, next)
 })
-router.get('/user-dashboard/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/user-dashboard/:id', mainMiddleware, verifyUserRole(["Dono"]), async (req: Request, res: Response, next: NextFunction) => {
     await userController.getUserDashboardById(req, res, next)
 })
 router.get('/all-users', mainMiddleware, verifyUserRole(["Dono"]), async (req: Request, res: Response, next: NextFunction) => {
     await userController.listUsers(req, res, next)
 })
 
-router.get('/user-types', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/user-types', mainMiddleware, verifyUserRole(["Dono"]), async (req: Request, res: Response, next: NextFunction) => {
     await userController.listUserTypes(req, res, next)
 })
 
-router.post('/user', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/user', mainMiddleware, verifyUserRole(["Dono"]), async (req: Request, res: Response, next: NextFunction) => {
     await userController.insertUser(req, res, next)
 })
 
-router.delete('/user', async (req: Request, res: Response, next: NextFunction) => {
+router.delete('/user', mainMiddleware, verifyUserRole(["Dono"]), async (req: Request, res: Response, next: NextFunction) => {
     await userController.deleteUser(req, res, next)
 })
 
-router.put('/user', async (req: Request, res: Response, next: NextFunction) => {
+router.put('/user', mainMiddleware, verifyUserRole(["Dono"]), async (req: Request, res: Response, next: NextFunction) => {
     await userController.updateUser(req, res, next)
 })
 

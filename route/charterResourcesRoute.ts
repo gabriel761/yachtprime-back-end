@@ -5,39 +5,40 @@ import { BarcoCharterResourcesService } from '../service/BarcoCharterResourcesSe
 import { BarcoCharterResourcesController } from '../controller/BarcoCharterResourcesController.js';
 import { decodeToken } from '../infra/middlewares/decodeToken.js';
 import { mainMiddleware } from '../infra/middlewares/mainMiddleware.js';
+import { verifyUserRole } from '../infra/middlewares/VerifyUserType.js';
 
 const router = express.Router();
 const barcoCharterResourcesController = new BarcoCharterResourcesController()
 
-router.get("/pet-friendly", mainMiddleware, async (req:Request, res: Response, next) => {
+router.get("/pet-friendly", mainMiddleware, verifyUserRole(["Dono", "Editor", "Administrador"]),async (req:Request, res: Response, next) => {
    await barcoCharterResourcesController.listPetFriendly(req, res, next)
 })
 
-router.get("/tipo-passeio", mainMiddleware, async (req: Request, res: Response, next) => {
+router.get("/tipo-passeio", mainMiddleware, verifyUserRole(["Dono", "Editor", "Administrador"]), async (req: Request, res: Response, next) => {
     await barcoCharterResourcesController.listTipoPasseio(req, res, next)
 })
 
-router.get("/tripulacao-skipper", mainMiddleware, async (req: Request, res: Response, next) => {
+router.get("/tripulacao-skipper", mainMiddleware, verifyUserRole(["Dono", "Editor", "Administrador"]), async (req: Request, res: Response, next) => {
     await barcoCharterResourcesController.listTripulacaoSkipper(req, res, next)
 })
 
-router.get("/itens-charter", mainMiddleware, async (req: Request, res: Response, next) => {
+router.get("/itens-charter", mainMiddleware, verifyUserRole(["Dono", "Editor", "Administrador"]), async (req: Request, res: Response, next) => {
     await barcoCharterResourcesController.listItensCharter(req, res, next)
 })
 
-router.get("/imagens-charter/:id", mainMiddleware, async (req: Request, res: Response, next) => {
+router.get("/imagens-charter/:id", mainMiddleware, verifyUserRole(["Dono", "Editor", "Administrador"]), async (req: Request, res: Response, next) => {
     await barcoCharterResourcesController.listImagensByIdCharter(req, res, next)
 })
 
-router.get("/cidades", mainMiddleware, async (req: Request, res: Response, next) => {
+router.get("/cidades", mainMiddleware, verifyUserRole(["Dono", "Editor", "Administrador"]), async (req: Request, res: Response, next) => {
     await barcoCharterResourcesController.listCidades(req, res, next)
 })
 
-router.get("/condicoes", mainMiddleware, async (req: Request, res: Response, next) => {
+router.get("/condicoes", mainMiddleware, verifyUserRole(["Dono", "Editor", "Administrador"]), async (req: Request, res: Response, next) => {
     await barcoCharterResourcesController.listCondicoes(req, res, next)
 })
 
-router.post("/item-charter", mainMiddleware, async (req: Request, res: Response, next) => {
+router.post("/item-charter", mainMiddleware, verifyUserRole(["Dono", "Administrador"]), async (req: Request, res: Response, next) => {
     await barcoCharterResourcesController.insertItemCharter(req, res, next)
 })
 

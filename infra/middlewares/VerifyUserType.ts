@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from "express"
 import { UserRepository } from "../../repository/UserRepository.js"
 
+type UserRole = "Dono" | "Administrador" | "Editor" 
 
-export const verifyUserRole = (roles: string[]) => {
+
+export const verifyUserRole = (roles: UserRole[]) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         const firebaseId = req.user?.uid
         const userRepository = new UserRepository()
