@@ -14,10 +14,7 @@ export const verifyUserRole = (roles: UserRole[]) => {
             if (!roles.includes(result)) res.status(403).json({ message: "Tipo de usuário não autorizado" })
         } catch (error) {
             res.status(500).json({ message: "Middleware level error"+error })
-        }
-        
-
-        
+        } 
         next()
     }
 }
