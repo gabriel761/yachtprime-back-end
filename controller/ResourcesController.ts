@@ -54,7 +54,7 @@ export class ResourcesController {
     async searchProprietario(req: Request, res: Response, next: NextFunction) {
         try {
            const nome = req.params.nome
-           const firebaseId = req.user?.uid
+           const firebaseId = req.firebaseUser?.uid
            if(!firebaseId) throw new CustomError("Firebase id indefinido", 403)
             const proprietarioResult = await resourcesService.searchProprietario(nome, firebaseId)
             res.json(proprietarioResult)

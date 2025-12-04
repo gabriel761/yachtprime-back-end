@@ -1,8 +1,9 @@
+import { DecodedIdToken } from "firebase-admin/auth";
 import { CustomError } from "../CustoError.js";
 import { admin } from "../firebase/firebase-config.js";
 import { Request, Response, NextFunction } from 'express';
 
-export const decodeToken = async (authorization?: string) => {
+export const decodeToken = async (authorization?: string):Promise<DecodedIdToken> => {
     if(!authorization) throw new CustomError("Requisição não autorizada", 401)
     let token = authorization
     token = token?.replace("Bearer ", '')

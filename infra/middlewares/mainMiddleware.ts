@@ -9,12 +9,12 @@ export const mainMiddleware = async (
     next: NextFunction
 ) => {
     if (process.env.NODE_ENV == "development" && req.headers.authorization == "test") {
-        req.user = {uid:"ls6ZJeBDqfgftdH16ynMTgar7P93"} 
+        req.firebaseUser = {uid:"ls6ZJeBDqfgftdH16ynMTgar7P93"} as any
         next()
     } else {
         try {
             const decodedToken = await decodeToken(req.headers.authorization)
-            req.user = decodedToken
+            req.firebaseUser = decodedToken
             next()    
         } catch (error:any) {
             res.status(error.statusCode).json({message: error.message})

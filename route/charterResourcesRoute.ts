@@ -10,31 +10,31 @@ import { verifyUserRole } from '../infra/middlewares/VerifyUserType.js';
 const router = express.Router();
 const barcoCharterResourcesController = new BarcoCharterResourcesController()
 
-router.get("/pet-friendly", mainMiddleware, verifyUserRole(["Dono", "Editor", "Administrador"]),async (req:Request, res: Response, next) => {
+router.get("/pet-friendly", mainMiddleware, verifyUserRole(["Dono",  "Administrador", "Editor"]),async (req:Request, res: Response, next) => {
    await barcoCharterResourcesController.listPetFriendly(req, res, next)
 })
 
-router.get("/tipo-passeio", mainMiddleware, verifyUserRole(["Dono", "Editor", "Administrador"]), async (req: Request, res: Response, next) => {
+router.get("/tipo-passeio", mainMiddleware, verifyUserRole(["Dono",  "Administrador", "Editor"]), async (req: Request, res: Response, next) => {
     await barcoCharterResourcesController.listTipoPasseio(req, res, next)
 })
 
-router.get("/tripulacao-skipper", mainMiddleware, verifyUserRole(["Dono", "Editor", "Administrador"]), async (req: Request, res: Response, next) => {
+router.get("/tripulacao-skipper", mainMiddleware, verifyUserRole(["Dono",  "Administrador", "Editor"]), async (req: Request, res: Response, next) => {
     await barcoCharterResourcesController.listTripulacaoSkipper(req, res, next)
 })
 
-router.get("/itens-charter", mainMiddleware, verifyUserRole(["Dono", "Editor", "Administrador"]), async (req: Request, res: Response, next) => {
+router.get("/itens-charter", mainMiddleware, verifyUserRole(["Dono",  "Administrador", "Editor"]), async (req: Request, res: Response, next) => {
     await barcoCharterResourcesController.listItensCharter(req, res, next)
 })
 
-router.get("/imagens-charter/:id", mainMiddleware, verifyUserRole(["Dono", "Editor", "Administrador"]), async (req: Request, res: Response, next) => {
+router.get("/imagens-charter/:id", mainMiddleware, verifyUserRole(["Dono",  "Administrador", "Editor"]), async (req: Request, res: Response, next) => {
     await barcoCharterResourcesController.listImagensByIdCharter(req, res, next)
 })
 
-router.get("/cidades", mainMiddleware, verifyUserRole(["Dono", "Editor", "Administrador"]), async (req: Request, res: Response, next) => {
+router.get("/cidades", mainMiddleware, verifyUserRole(["Dono",  "Administrador", "Editor"]), async (req: Request, res: Response, next) => {
     await barcoCharterResourcesController.listCidades(req, res, next)
 })
 
-router.get("/condicoes", mainMiddleware, verifyUserRole(["Dono", "Editor", "Administrador"]), async (req: Request, res: Response, next) => {
+router.get("/condicoes", mainMiddleware, verifyUserRole(["Dono",  "Administrador", "Editor"]), async (req: Request, res: Response, next) => {
     await barcoCharterResourcesController.listCondicoes(req, res, next)
 })
 

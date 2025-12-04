@@ -69,7 +69,7 @@ export class BarcoCharterController {
 
     async postBarcoCharter(req: Request, res: Response, next: NextFunction) {
         try {
-            const firebaseId = req.user?.uid
+            const firebaseId = req.firebaseUser?.uid
             if (!firebaseId) throw new CustomError("Firebase id indefinido", 403)
             const barcoCharterInput: BarcoCharterInput = req.body
             await this.barcoCharterService.postBarcoCharter(barcoCharterInput, firebaseId)
@@ -81,7 +81,7 @@ export class BarcoCharterController {
 
     async updateBarcoCharterById(req: Request, res: Response, next: NextFunction) {
         try {
-            const firebaseId = req.user?.uid
+            const firebaseId = req.firebaseUser?.uid
             if (!firebaseId) throw new CustomError("Firebase id indefinido", 403)
             const barcoCharterInput: BarcoCharterInputWithId = req.body
             await this.barcoCharterService.updateBarcoCharter(barcoCharterInput, firebaseId)

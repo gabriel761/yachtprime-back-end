@@ -71,7 +71,7 @@ export class BarcoSeminovoController {
     async postBarcoSeminovo(req: Request, res: Response, next: NextFunction) {
         const body: BarcoSeminovoInput = req.body
         try {
-            const firebaseId = req.user?.uid
+            const firebaseId = req.firebaseUser?.uid
             if (!firebaseId) throw new CustomError("Firebase id indefinido", 403)
             if (!body) throw new CustomError("Empty body post", 400)
             await this.barcoSeminovoService.postBarcoSeminovo(body, firebaseId)
@@ -90,7 +90,7 @@ export class BarcoSeminovoController {
     async updateBarcoSeminovo(req: Request, res: Response, next: NextFunction) {
         const body: BarcoSeminovoInputWithId = req.body
         try {
-            const firebaseId = req.user?.uid
+            const firebaseId = req.firebaseUser?.uid
             if (!firebaseId) throw new CustomError("Firebase id indefinido", 403)
             if (!body) throw new CustomError("Empty body patch", 400)
             await this.barcoSeminovoService.updateBarcoSeminovo(body, firebaseId)
