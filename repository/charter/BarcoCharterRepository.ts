@@ -198,8 +198,8 @@ WHERE bc.id = $1;
     
 
     async listBarcoCharterFrontEnd(filters: BarcoCharterFilters): Promise<BarcoCharterListFrontEndDatabase[]> {
-        const { cidade, pernoite, capacidade, page = 1 } = filters;
-
+        const { cidade, tipoPasseio, capacidade, page = 1 } = filters;
+     
         // Array para armazenar as condições
         const whereConditions: string[] = [];
         const params: any[] = []; // Valores para os placeholders do query
@@ -211,10 +211,10 @@ WHERE bc.id = $1;
         }
 
 
-        // Adiciona a condição para 'oportunidade', se existir
-        if (pernoite) {
-            whereConditions.push(`($${params.length + 1}::boolean = FALSE OR pa.passageiros_pernoite > 0)`)
-            params.push(pernoite);
+       
+        if (tipoPasseio) {
+            whereConditions.push(`tp.opcao = $${params.length + 1}`);
+            params.push(tipoPasseio);
         }
 
         if(capacidade){
@@ -244,7 +244,8 @@ WHERE bc.id = $1;
                 pr.valor AS preco_valor,
                 pa.passageiros,
 				pa.passageiros_pernoite AS passageiros_pernoite,
-				ts.opcao AS tripulacao_skipper
+				ts.opcao AS tripulacao_skipper,
+				tp.opcao AS tipo_passeio
 
                 FROM barco_charter AS bc
                 JOIN modelo_barco AS mb ON bc.modelo = mb.id
@@ -253,6 +254,7 @@ WHERE bc.id = $1;
                 JOIN preco AS pr ON bc.id_preco = pr.id
                 JOIN moeda AS md ON pr.id_moeda = md.id
                 JOIN passageiros AS pa ON bc.id_passageiros = pa.id
+				JOIN tipo_passeio AS tp ON bc.id_tipo_passeio = tp.id
                 LEFT JOIN imagem_barco_charter ibc ON bc.id = ibc.id_barco_charter
                 LEFT JOIN imagem im ON ibc.id_imagem = im.id
             ${whereClause} AND bc.ativo = true
@@ -261,6 +263,8 @@ WHERE bc.id = $1;
            
         params.push(limit, offset);
 
+        console.log('Final Query:', query);
+        console.log('Query Parameters:', params);
         const result = await db.query(query, params).catch((error) => {
             throw new CustomError(`Repository level error: BarcoChaterRepository:listBarcoCharterFrontEnd: ${error.message}`, 500)
         })
@@ -271,7 +275,7 @@ WHERE bc.id = $1;
 
     }
     async getTotalPagesForPagination(filters: BarcoCharterFilters): Promise<number> {
-        const { cidade, pernoite, capacidade } = filters;
+        const { cidade, tipoPasseio, capacidade } = filters;
 
         const whereConditions: string[] = [];
         const params: any[] = [];
@@ -281,9 +285,9 @@ WHERE bc.id = $1;
             params.push(cidade);
         }
 
-        if (pernoite) {
-            whereConditions.push(`($${params.length + 1}::boolean = FALSE OR pa.passageiros_pernoite > 0)`);
-            params.push(pernoite);
+        if (tipoPasseio) {
+            whereConditions.push(`tp.opcao = $${params.length + 1}`);
+            params.push(tipoPasseio);
         }
 
         if (capacidade) {
@@ -302,6 +306,7 @@ WHERE bc.id = $1;
         JOIN preco AS pr ON bc.id_preco = pr.id
         JOIN moeda AS md ON pr.id_moeda = md.id
         JOIN passageiros AS pa ON bc.id_passageiros = pa.id
+        JOIN tipo_passeio AS tp ON bc.id_tipo_passeio = tp.id
         ${whereClause}
     `;
 

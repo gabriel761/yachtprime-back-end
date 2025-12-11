@@ -42,7 +42,7 @@ VALUES
 
 -- Inserindo um barco charter
 INSERT INTO barco_charter (ativo, modelo, nome, ano, tamanho, id_cidade, id_preco, id_passageiros, id_pet_friendly, id_consumo, id_preco_hora_extra, id_preco_aluguel_lancha, id_tipo_passeio, id_tripulacao_skipper, id_taxa_churrasco, video_promocional, id_proprietario)
-VALUES (false, 35, 'Lancha Luxo', 2022, 50, 1, 9, 1, 1, 1, 2, 3, 1, 2, 1,'https://www.youtube.com/watch?v=EZJ-S9RODF0', 1);
+VALUES (true, 35, 'Lancha Luxo', 2022, 50, 1, 9, 1, 1, 1, 2, 3, 1, 2, 1,'https://www.youtube.com/watch?v=EZJ-S9RODF0', 1);
 
 
 -- Inserir roteiros 
@@ -251,7 +251,7 @@ INSERT INTO barco_charter (
   id_tripulacao_skipper, id_taxa_churrasco, video_promocional, id_proprietario
 ) VALUES (
   4, 389, 'Princess 42 Fly', 2022, 42, 1, 32, 4, 1,
-  4, 30, 31, 1,
+  4, 30, 31, 2,
   2, 4, 'https://www.youtube.com/watch?v=tbqKlcConIY', 4
 );
 
@@ -325,7 +325,7 @@ INSERT INTO barco_charter (
   id_tripulacao_skipper, id_taxa_churrasco, video_promocional, id_proprietario
 ) VALUES (
   5, 499, 'Phantom 360', 2021, 36, 1, 41, 5, 1,
-  5, 39, 40, 1,
+  5, 39, 40, 2,
   2, 5, 'https://www.youtube.com/watch?v=miTpJmMt7uo', 1
 );
 

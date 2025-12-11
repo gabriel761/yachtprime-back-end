@@ -80,7 +80,7 @@ export class BarcoCharterModel {
                 modelo: item.modelo,
                 tamanho: item.tamanho,
                 cidade: item.cidade,
-                pernoite: !!item.passageiros_pernoite,
+                pernoite: item.tipo_passeio.includes("pernoite"),
                 tripulacaoSkipper: item.tripulacao_skipper, 
                 preco: {
                     moeda: item.preco_moeda,

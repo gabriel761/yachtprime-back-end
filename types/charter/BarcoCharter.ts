@@ -234,7 +234,8 @@ export type BarcoCharterListFrontEndDatabase = {
     passageiros_pernoite: boolean,
     tripulacao_skipper: string,
     preco_moeda: string,
-    preco_valor: string
+    preco_valor: string,
+    tipo_passeio: string
 }
 
 export type BarcoCharterListFrontEnd = {
@@ -251,7 +252,7 @@ export type BarcoCharterListFrontEnd = {
 
 export type BarcoCharterFilters = {
     cidade: string,
-    pernoite: boolean,
+    tipoPasseio: string,
     capacidade: number,
     page: number,
     limit: number

@@ -57,7 +57,7 @@ export class BarcoCharterController {
              const filters = {
                             page: query.page,
                             cidade: query.cidade,
-                            pernoite: convertStringToBoolean(query.pernoite),
+                            tipoPasseio:query.tipoPasseio,
                             capacidade: query.capacidade
                         };
             const barcoCharterResult = await this.barcoCharterService.listBarcoCharterFrontEnd(filters)
