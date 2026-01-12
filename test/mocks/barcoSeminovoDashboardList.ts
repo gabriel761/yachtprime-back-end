@@ -2,7 +2,6 @@ import { BarcoSeminovoDashboardList } from "../../types/seminovo/BarcoSeminovo"
 
 const barcoSeminovoDashboardList: BarcoSeminovoDashboardList[] = [
     {
-        id: 1,
         ativo: true,
         modelo: "Altamar 50",
         nome: "Updated test",

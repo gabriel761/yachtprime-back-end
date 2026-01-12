@@ -4,7 +4,7 @@ import { BarcoSeminovoDashboardList, BarcoSeminovoDatabase, BarcoSeminovoDatabas
 import config from "../../config.js";
 
 type ListBarcoSeminovoFrontEndDB = {
-    id: number,
+    id: string,
     modelo: string,
     motor_quantidade: number,
     motor_modelo: string,
@@ -19,7 +19,7 @@ type ListBarcoSeminovoFrontEndDB = {
 const limit = config.limitQuery || 1
 
 class BarcoSeminovoRepository {
-    async getBarcoSeminovo(id: number): Promise<BarcoSeminovoDatabase> {
+    async getBarcoSeminovo(id: string): Promise<BarcoSeminovoDatabase> {
         const result = await db.oneOrNone(`
 SELECT
     bs.id AS barco_id,
@@ -64,7 +64,7 @@ FROM
     JOIN preco pr ON bs.id_preco = pr.id
     JOIN moeda mo ON pr.id_moeda = mo.id
 WHERE
-    bs.id = $1 AND bs.ativo = true;
+    bs.codigo = $1 AND bs.ativo = true;
 
 
 `, [id])
@@ -76,10 +76,11 @@ WHERE
         }
         return result
     }
-    async getBarcoSeminovoDashboard(id: number): Promise<BarcoSeminovoDatabaseDashboard> {
+    async getBarcoSeminovoDashboard(uuid: string): Promise<BarcoSeminovoDatabaseDashboard> {
         const result = await db.oneOrNone(`
 SELECT
     bs.id AS barco_id,
+    bs.codigo,
     bs.ativo,
     bs.nome AS nome_barco,
     bs.ano AS ano_barco,
@@ -127,22 +128,22 @@ FROM
     JOIN preco pr ON bs.id_preco = pr.id
     JOIN moeda mo ON pr.id_moeda = mo.id
 WHERE
-    bs.id = $1;
+    bs.codigo = $1;
 
 
-`, [id])
+`, [uuid])
             .catch((error) => {
                 throw new CustomError(`Repository level error: BarcoSeminovoRepository:getBarcoSeminovo: ${error.message}`, 500)
             });
         if (!result) {
-            throw new CustomError("barco não existe: id=" + id, 404);
+            throw new CustomError("barco não existe: id=" + uuid, 404);
         }
         return result
     }
     async listBarcoSeminovoDashboard(): Promise<any[]> {
         const result = await db.query(`
         SELECT 
-            bs.id AS id,
+            bs.codigo,
             bs.ativo,
             mb.modelo AS modelo,
             bs.nome AS nome,
@@ -201,7 +202,7 @@ WHERE
         // Query final
         const query = `
         SELECT 
-            bs.id AS id,
+            bs.codigo,
             mb.modelo AS modelo,
             mtrz.quantidade AS motor_quantidade,
             mt.modelo AS motor_modelo,
@@ -213,13 +214,14 @@ WHERE
         FROM 
             barco_seminovo bs
             LEFT JOIN modelo_barco mb ON bs.id_modelo = mb.id
+            JOIN preco pr ON bs.id_preco = pr.id
             LEFT JOIN motorizacao mtrz ON bs.id_motorizacao = mtrz.id
             LEFT JOIN tipo_combustivel cb ON bs.id_combustivel = cb.id
             LEFT JOIN motor_cadastrado mt ON mtrz.id_motor = mt.id
             LEFT JOIN imagem_barco_seminovo ibs ON bs.id = ibs.id_barco_seminovo
             LEFT JOIN imagem im ON ibs.id_imagem = im.id
         ${whereClause} AND bs.ativo = true
-        LIMIT $${params.length + 1} OFFSET $${params.length + 2}
+        LIMIT $${params.length + 1} OFFSET $${params.length + 2} 
     `;
         params.push(limit, offset);
 
@@ -263,7 +265,7 @@ WHERE
     }
 
 
-    async getRelatedSeminovos(idSeminovo: number): Promise<BarcoSeminovoRelated[]> {
+    async getRelatedSeminovos(idSeminovo: string): Promise<BarcoSeminovoRelated[]> {
         try {
             const result = await db.query(`
             SELECT 

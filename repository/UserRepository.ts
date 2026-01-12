@@ -50,7 +50,6 @@ export class UserRepository {
     }
 
     async getUserIdByIdFirebase(firebaseId: string) {
-        console.log("firebase id:", firebaseId)
         const result = await db.oneOrNone(
             `
         SELECT 

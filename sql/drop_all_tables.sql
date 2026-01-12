@@ -4,7 +4,7 @@ SET client_encoding TO 'UTF8';
 SET session_replication_role = 'replica';
 DROP TABLE IF EXISTS 
     item_charter_barco_charter,
-    barco_charter_condicoes,
+    barco_charter_condicoes_charter,
     imagem_barco_charter,
     barco_charter,
     consumo_combustivel,
@@ -14,7 +14,8 @@ DROP TABLE IF EXISTS
     tripulacao_skipper,
     tipo_passeio,
     passageiros,
-    condicao,
+    condicoes_charter,
+    condicoes_padrao,
     item_charter,
     pet_friendly,
     item_seminovo_barco_seminovo,

@@ -2,7 +2,7 @@ import { CustomError } from "../../infra/CustoError.js";
 import db from "../../infra/database.js"
 import { ItemSeminovo } from "../../types/seminovo/ItemSeminovo.js";
 export class ItemSeminovoRepository {
-    async getItensSeminovoByIdSeminovo(id: number) {
+    async getItensSeminovoByIdSeminovo(id:number) {
         const result = await db.query(`
 SELECT 
     isb.id_item_seminovo AS item_id,

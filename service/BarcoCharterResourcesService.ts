@@ -14,6 +14,7 @@ import { PetFriendlyRepository } from "../repository/charter/PetFriendly.js";
 import { TipoPasseioRepository } from "../repository/charter/TipoPasseioRepo.js";
 import { TripulacaoSkipperRepository } from "../repository/charter/TripulacaoSkipperRepo.js";
 import { ImagemRepository } from "../repository/ImagemRepository.js";
+import { Condicao } from "../types/charter/Condicoes.js";
 import { ItemCharter, ItemCharterInput } from "../types/charter/ItemCharter.js";
 
 const petFriendlyModel = new PetFriendlyModel()
@@ -54,8 +55,18 @@ export class BarcoCharterResourcesService {
         return cidades
     }
 
-    async listCondicoes() {
-        const condicoes = await condicoesModel.getAllCondicoes(new CondicoesRepository())
+    async listCondicoesPadrao() {
+        const condicoes = await condicoesModel.getCondicoesPadrao(new CondicoesRepository())
+        return condicoes
+    }
+
+    async postCondicaoPadrao(condicao: Condicao) {
+        const condicoes = await condicoesModel.postCondicaoPadrao(condicao,new CondicoesRepository())
+        return condicoes
+    }
+
+    async updateAllCondicoesPadrao(condicao: Condicao[]) {
+        const condicoes = await condicoesModel.updateAllCondicoesPadrao(condicao, new CondicoesRepository())
         return condicoes
     }
 

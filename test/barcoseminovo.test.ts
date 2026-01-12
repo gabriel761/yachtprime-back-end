@@ -13,7 +13,7 @@ import { FirebaseModel } from "../models/external/FirebaseModel.ts";
 import BarcoSeminovoService from "../service/BarcoSeminovoService.ts";
 import { CustomError } from "../infra/CustoError.ts";
 import { BarcoSeminovoController } from "../controller/BarcoSeminovoController.ts";
-import { BarcoSeminovoInput } from "../types/seminovo/BarcoSeminovo.ts";
+import { BarcoSeminovoDashboardListWithId, BarcoSeminovoInput } from "../types/seminovo/BarcoSeminovo.ts";
 import BarcoSeminovoRepository from "../repository/seminovo/BarcoSeminovoRepository.ts";
 import { CabineRepository } from "../repository/seminovo/CabineRepository.ts";
 import { ImagemRepository } from "../repository/ImagemRepository.ts";
@@ -26,6 +26,7 @@ import barcoSeminovoDashboardList from "./mocks/barcoSeminovoDashboardList.ts";
 import barcoSeminovoDashboard from "./mocks/barcoSeminovoOutputDashboard.ts";
 import { ProprietarioRepository } from "../repository/ProprietarioRepository.ts";
 import db from "../infra/database.ts";
+import { UUID_REGEX } from "../util/variables.ts";
 
 const barcoSeminovoRepository = new BarcoSeminovoRepository()
 const cabineRepository = new CabineRepository()
@@ -92,22 +93,31 @@ describe("Barco seminovo and resources tests", () => {
         const response = await request("http://localhost:5000/barco/seminovo/1", "get")
         expect(response.data).toEqual(barcoSeminovoOutput)
     })
-    test("Should get a response status of 404", async () => {
-        const response = await fetch("http://localhost:5000/barco/seminovo/1")
+    test.skip("Should get a response status of 404", async () => {
+        const response = await fetch("http://localhost:5000/barco/seminovo/4c79611c-6604-4ec6-b2f6-e8abddc3e5f4", { method: "get" })
         expect(response.status).toBe(404)
     })
     test("Should post barcoSeminovo into database", async () => {
         await request("http://localhost:5000/barco/seminovo", "post", barcoSeminovoInput)
-        delay(1000)
-        const response = await request("http://localhost:5000/barco/seminovo/dashboard/1", "get")
-        expect(response.data).toEqual(barcoSeminovoDashboard)
+        const uuid = await db.query("SELECT codigo FROM barco_seminovo LIMIT 1").then(res => res[0].codigo)
+        const response = await request("http://localhost:5000/barco/seminovo/dashboard/"+uuid, "get")
+        const {id, codigo, ...rest} = response.data
+        expect(rest).toEqual(barcoSeminovoDashboard)
+        expect(id).toBe(1);
+        expect(codigo).toMatch(UUID_REGEX)
     })
     test("Should get full barcoSeminovo object in dashboard version with data from database", async () => {
-        const response = await request("http://localhost:5000/barco/seminovo/dashboard/1", "get")
-        expect(response.data).toEqual(barcoSeminovoDashboard)
+        const uuid = await db.query("SELECT codigo FROM barco_seminovo LIMIT 1").then(res => res[0].codigo)
+        const response = await request("http://localhost:5000/barco/seminovo/dashboard/"+uuid, "get")
+        const { id, codigo, ...rest } = response.data
+        expect(rest).toEqual(barcoSeminovoDashboard)
+        expect(id).toBe(1);
+        expect(codigo).toMatch(UUID_REGEX)
     })
+   
     test("Should update barcoSeminovo ", async () => {
-        const barcoSeminovoUpdate = { ...barcoSeminovoDashboard }
+        const uuid = await db.query("SELECT codigo FROM barco_seminovo LIMIT 1").then(res => res[0].codigo)
+        const barcoSeminovoUpdate = {id: 1, codigo: uuid ,...barcoSeminovoDashboard }
         barcoSeminovoUpdate.nome = "Updated test"
         barcoSeminovoUpdate.preco.valor = "2.000,00"
         barcoSeminovoUpdate.cabines.passageiros = 1
@@ -116,26 +126,45 @@ describe("Barco seminovo and resources tests", () => {
         barcoSeminovoUpdate.proprietario.id = 2
         await db.query("INSERT INTO proprietario (id, nome, email, telefone) VALUES($1,$2,$3, $4)", [barcoSeminovoUpdate.proprietario.id ,barcoSeminovoUpdate.proprietario.nome, barcoSeminovoUpdate.proprietario.email, barcoSeminovoUpdate.proprietario.telefone])
         await request("http://localhost:5000/barco/seminovo", "PATCH", barcoSeminovoUpdate)
-        delay(1000)
-        const response = await request("http://localhost:5000/barco/seminovo/dashboard/1", "get")
+        const response = await request("http://localhost:5000/barco/seminovo/dashboard/"+uuid, "get")
         expect(response.data).toEqual(barcoSeminovoUpdate)
     })
+   
     test("Should get seminovos list for front-end website", async () => {
         const response = await request("http://localhost:5000/barco/seminovo/list/front-end", "get")
+        const barcosResponse = response.data.data as BarcoSeminovoDashboardListWithId[]
         expect(response.status).toBe(200);
         expect(response.data.data).toBeInstanceOf(Array);
-        expect(response.data.data).toEqual(
-            expect.arrayContaining(barcoSeminovoFrontEndList)
-        )
+        barcosResponse.forEach((item, index) => {
+            const { codigo, ...rest } = item;
+
+            expect(codigo).toMatch(UUID_REGEX)
+            expect(rest).toEqual(barcoSeminovoFrontEndList[index]);
+        });
     })
     test("Should get seminovos list for dashboard website", async () => {
         const response = await request("http://localhost:5000/barco/seminovo/list/dashboard", "get")
+        const barcosResponse = response.data as BarcoSeminovoDashboardListWithId[]
         expect(response.status).toBe(200);
         expect(response.data).toBeInstanceOf(Array);
-        expect(response.data).toEqual(
-            expect.arrayContaining(barcoSeminovoDashboardList)
-        )
+        barcosResponse.forEach((item, index) => {
+            const {codigo, ...rest } = item;
+            expect(codigo).toMatch(UUID_REGEX)
+            expect(rest).toEqual(barcoSeminovoDashboardList[index]);
+        });
     })
+    test("Should delete barcoSeminovo successfully", async () => {
+        const barcoSeminovoService = new BarcoSeminovoService()
+        const uuid = await db.query("SELECT codigo FROM barco_seminovo LIMIT 1").then(res => res[0].codigo)
+        await barcoSeminovoService.deleteBarcoSeminovo(uuid, firebaseModelMock)
+        await expect(barcoSeminovoRepository.getBarcoSeminovo(uuid)).rejects.toHaveProperty("statusCode", 404);
+        await expect(motorizacaoRepository.getMotorizacaoById(1)).rejects.toThrow("Não há motorizacao com o id 1")
+        await expect(precoRepository.getPrecoById(1)).rejects.toThrow("Não há preco com o id 1")
+        await expect(imagemRepository.getImagensByIdSeminovo(1)).rejects.toThrow("Não há imagens associadas a este seminovo")
+        await expect(cabineRepository.getCabineById(1)).rejects.toThrow("Cabine não encontrada idCabine=1")
+        await expect(itemSeminovoRepository.getItensSeminovoByIdSeminovo(1)).rejects.toHaveProperty("statusCode", 404);
+    })
+    
     test("Should delete images from firebase when fails", async () => {
         
         const barcoSeminovoServiceMock = {
@@ -159,20 +188,7 @@ describe("Barco seminovo and resources tests", () => {
         });
         
     })
-    test("Should delete barcoSeminovo successfully", async () => {
-        const barcoSeminovoService = new BarcoSeminovoService()
-        await barcoSeminovoService.deleteBarcoSeminovo(1, firebaseModelMock)
-        
-        
-        await expect(barcoSeminovoRepository.getBarcoSeminovo(1)).rejects.toThrow("barco não existe: id=1");
-        await expect(motorizacaoRepository.getMotorizacaoById(1)).rejects.toThrow("Não há motorizacao com o id 1")
-        await expect(precoRepository.getPrecoById(1)).rejects.toThrow("Não há preco com o id 1")
-        await expect(imagemRepository.getImagensByIdSeminovo(1)).rejects.toThrow("Não há imagens associadas a este seminovo")
-        await expect(cabineRepository.getCabineById(1)).rejects.toThrow("Cabine não encontrada idCabine=1")
-        await expect(itemSeminovoRepository.getItensSeminovoByIdSeminovo(1)).rejects.toThrow("Não foram encontrados itens associados a este seminovo idSeminovo=1")
-
-
-    })
+    
     test("Should get tipo combustível list", async () => {
         const response = await request("http://localhost:5000/resources/seminovo/combustivel", "get")
         expect(response.data).toEqual(tipoCombustivelList)

@@ -1,7 +1,6 @@
 import { BarcoCharterDashboardOutput } from '../../types/charter/BarcoCharter.js'
 
 const barcoCharterOutputUpdate: BarcoCharterDashboardOutput = {
-    id: 1,
     ativo: true,
     modelo: "Ferretti 760",
     nome: "Barco Premium",

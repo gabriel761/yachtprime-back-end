@@ -1,5 +1,5 @@
 import { CustomError } from "../../../infra/CustoError.js";
-import { BarcoSeminovoOutput, BarcoSeminovoOutputDashboard } from "../../../types/seminovo/BarcoSeminovo.js";
+import { BarcoSeminovoOutput, BarcoSeminovoOutputDashboard, BarcoSeminovoOutputDashboardWithId } from "../../../types/seminovo/BarcoSeminovo.js";
 import { Cabine } from "../../../types/seminovo/Cabine.js";
 import { Combustivel } from "../../../types/Combustivel.js";
 import { Imagem } from "../../../types/Imagem.js";
@@ -10,7 +10,8 @@ import { Propulsao } from "../../../types/seminovo/Propulsao.js";
 import { Proprietario } from "../../../types/Proprietario.js";
 
 export class BarcoSeminovoDashboardOutputVO {
-    private id?: number
+    private id!: number;
+    private codigo!: string;
     private ativo!: boolean;
     private modelo!: string;
     private nome!: string;
@@ -32,8 +33,11 @@ export class BarcoSeminovoDashboardOutputVO {
 
     constructor(
     ) { }
-    setId(id?: number) {
+    setId(id: number) {
         this.id = id
+    }
+    setCodigo(codigo: string){
+        this.codigo = codigo
     }
     setAtivo(ativo: boolean) {
         this.ativo = ativo
@@ -93,9 +97,10 @@ export class BarcoSeminovoDashboardOutputVO {
         this.oportunidade = oportunidade
     }
 
-    extractData():BarcoSeminovoOutputDashboard{
+    extractData():BarcoSeminovoOutputDashboardWithId{
         return {
             id: this.id,
+            codigo: this.codigo,
             ativo: this.ativo,
             modelo: this.modelo,
             nome: this.nome,

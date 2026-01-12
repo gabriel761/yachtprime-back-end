@@ -6,13 +6,14 @@ import { ItemCharter } from "../../../types/charter/ItemCharter.js";
 import { Imagem } from "../../../types/Imagem.js";
 import { ConsumoCombustivelInput } from "../../../types/charter/ConsumoCombustivel.js";
 import { TaxaChurrascoInput } from "../../../types/charter/TaxaChurrasco.js";
-import { characterLimit, validateIntegerPositiveNumber, validateString, validateYear } from "../../../util/validationUtil.js";
+import { characterLimit, validateIntegerPositiveNumber, validateString, validateYear, validateUUID } from "../../../util/validationUtil.js";
 import { RoteiroInput } from "../../../types/charter/Roteiro.js";
 import { PetFriendly } from "../../../types/charter/PetFriendly.js";
 import { TipoPasseio } from "../../../types/charter/TipoPasseio.js";
 import { TripulacaoSkipper } from "../../../types/charter/TripulacaoSkipper.js";
 import { Modelo } from "../../../types/Modelo.js";
 import { Proprietario } from "../../../types/Proprietario.js";
+import { Condicao } from "../../../types/charter/Condicoes.js";
 
 export class BarcoCharterInputVO {
     private id!: number;
@@ -35,13 +36,14 @@ export class BarcoCharterInputVO {
     private tipoPasseio!: TipoPasseio;
     private tripulacaoSkipper!: TripulacaoSkipper;
     private aluguelLancha!: PrecoInput;
+    private condicoes!: Condicao[]
     private taxaChurrasco!: TaxaChurrascoInput;
     private videoPromocional!: string | null;
 
     constructor() { }
 
     setId(id: number){
-        validateIntegerPositiveNumber(id, "id", "barcoCharterVO")
+        validateIntegerPositiveNumber(id, "id", "BarcoCharterVO")
         this.id = id
     }
 
@@ -175,6 +177,7 @@ export class BarcoCharterInputVO {
             tripulacaoSkipper: this.tripulacaoSkipper,
             aluguelLancha: this.aluguelLancha,
             taxaChurrasco: this.taxaChurrasco,
+            condicoes: this.condicoes,
             videoPromocional: this.videoPromocional
         };
     }
@@ -201,6 +204,7 @@ export class BarcoCharterInputVO {
             tipoPasseio: this.tipoPasseio,
             tripulacaoSkipper: this.tripulacaoSkipper,
             aluguelLancha: this.aluguelLancha,
+            condicoes: this.condicoes,
             taxaChurrasco: this.taxaChurrasco,
             videoPromocional: this.videoPromocional
         };

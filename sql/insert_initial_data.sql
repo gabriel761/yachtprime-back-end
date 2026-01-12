@@ -1259,7 +1259,7 @@ VALUES
 
 -- condições
 -- Inserção das condições na tabela condicoes
-INSERT INTO condicao (opcao)
+INSERT INTO condicoes_padrao (opcao)
 VALUES
 ('Os passeios são privativos, não vendemos ingressos.'),
 ('O tempo é medido desde a hora marcada, mesmo que o cliente atrase no embarque.'),

@@ -6,7 +6,7 @@ import { validateIntegerPositiveNumber, validateString } from "../../util/valida
 export class ProprietarioInputVO  {
     private id?: number;
     private nome!: string;
-    private email!: string;
+    private email?: string;
     private telefone!: string;
     private usuarios?: UserList[]
     constructor(){
@@ -21,8 +21,8 @@ export class ProprietarioInputVO  {
         validateString(nome, "nome", "ProprietarioOutputVO")
         this.nome = nome
     }
-    setEmail(email: string){
-        validateString(email, "email", "ProprietarioOutputVO")
+    setEmail(email?: string){
+        if (email) validateString(email, "email", "ProprietarioOutputVO")
         this.email = email
     }
     setTelefone(telefone: string){

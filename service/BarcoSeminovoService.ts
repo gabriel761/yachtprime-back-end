@@ -53,18 +53,19 @@ const userModel = new UserModel()
 
 
 class BarcoSeminovoService {
-    async getBarcoSeminovoById(id: number) {
-        const barcoSeminovoDatabase = await barcoSeminovoModel.getBarcoSeminovo(id, new BarcoSeminovoRepository)
-        const imagemSeminovoDtoCollection = await imagemModel.getImagesByIdSeminovo(id, new ImagemRepository)
-        const itemSeminovoDtoCollection = await itemSeminovoModel.getItensByIdSeminovo(id, new ItemSeminovoRepository)
+    async getBarcoSeminovoById(codigo: string) {
+        const barcoSeminovoDatabase = await barcoSeminovoModel.getBarcoSeminovo(codigo, new BarcoSeminovoRepository)
+        console.log(barcoSeminovoDatabase)
+        const imagemSeminovoDtoCollection = await imagemModel.getImagesByIdSeminovo(barcoSeminovoDatabase.barco_id, new ImagemRepository)
+        const itemSeminovoDtoCollection = await itemSeminovoModel.getItensByIdSeminovo(barcoSeminovoDatabase.barco_id, new ItemSeminovoRepository)
         const barcoSeminovoResult = barcoSeminovoModel.buildBarcoSeminovoOutputObject(barcoSeminovoDatabase, new BarcoSeminovoOutputVO(), imagemSeminovoDtoCollection, itemSeminovoDtoCollection, new ModeloOutputVO(), new MotorizacaoOutputVO(), new CombustivelOutputVO(), new PropulsaoOutputVO(), new CabinesOutputVO(), new PrecoOutputVO())
         return barcoSeminovoResult
     }
 
-    async getBarcoSeminovoDashboardById(id: number) {
-        const barcoSeminovoDatabase = await barcoSeminovoModel.getBarcoSeminovoDashboard(id, new BarcoSeminovoRepository)
-        const imagemSeminovoDtoCollection = await imagemModel.getImagesByIdSeminovo(id, new ImagemRepository)
-        const itemSeminovoDtoCollection = await itemSeminovoModel.getItensByIdSeminovo(id, new ItemSeminovoRepository)
+    async getBarcoSeminovoDashboardById(codigo: string) {
+        const barcoSeminovoDatabase = await barcoSeminovoModel.getBarcoSeminovoDashboard(codigo, new BarcoSeminovoRepository)
+        const imagemSeminovoDtoCollection = await imagemModel.getImagesByIdSeminovo(barcoSeminovoDatabase.barco_id, new ImagemRepository)
+        const itemSeminovoDtoCollection = await itemSeminovoModel.getItensByIdSeminovo(barcoSeminovoDatabase.barco_id, new ItemSeminovoRepository)
         const barcoSeminovoResult = barcoSeminovoModel.buildBarcoSeminovoDashboardOutputObject(barcoSeminovoDatabase, new BarcoSeminovoDashboardOutputVO(), imagemSeminovoDtoCollection, itemSeminovoDtoCollection, new ModeloOutputVO(), new MotorizacaoOutputVO(), new CombustivelOutputVO(), new PropulsaoOutputVO(), new ProprietarioOutputVO(), new CabinesOutputVO(), new PrecoOutputVO())
         return barcoSeminovoResult
     }
@@ -78,7 +79,7 @@ class BarcoSeminovoService {
         const result = await barcoSeminovoModel.listBarcoSeminovoFrontEnd(filters,new BarcoSeminovoRepository())
         return result
     }
-    async getRelatedSeminovos(idSeminovo:number){
+    async getRelatedSeminovos(idSeminovo:string){
         const result = await barcoSeminovoModel.getRelatedSeminovos(idSeminovo, new BarcoSeminovoRepository())
         return result
     }
@@ -135,12 +136,12 @@ class BarcoSeminovoService {
         imagemModel.deleteImagesFromFirebase(barcoSeminovoClient.imagens, new FirebaseModel, "seminovos")
     }
 
-    async deleteBarcoSeminovo(idBarcoSeminovo: number, firebaseModel: FirebaseModel) {
-        const barcoSeminovoData = await barcoSeminovoModel.getBarcoSeminovoDashboard(idBarcoSeminovo, new BarcoSeminovoRepository())
-        const imagensFromSeminovo = await imagemModel.getImagesByIdSeminovo(idBarcoSeminovo, new ImagemRepository())
-        await imagemModel.deleteAllImagesFromSeminovo(idBarcoSeminovo, new ImagemRepository())
-        await itemSeminovoModel.deleteAllAssotiationsItemSeminovo(idBarcoSeminovo, new ItemSeminovoRepository())
-        await barcoSeminovoModel.deleteBarcoSeminovo(idBarcoSeminovo, new BarcoSeminovoRepository())
+    async deleteBarcoSeminovo(codigoBarcoSeminovo: string, firebaseModel: FirebaseModel) {
+        const barcoSeminovoData = await barcoSeminovoModel.getBarcoSeminovoDashboard(codigoBarcoSeminovo, new BarcoSeminovoRepository())
+        const imagensFromSeminovo = await imagemModel.getImagesByIdSeminovo(barcoSeminovoData.barco_id, new ImagemRepository())
+        await imagemModel.deleteAllImagesFromSeminovo(barcoSeminovoData.barco_id, new ImagemRepository())
+        await itemSeminovoModel.deleteAllAssotiationsItemSeminovo(barcoSeminovoData.barco_id, new ItemSeminovoRepository())
+        await barcoSeminovoModel.deleteBarcoSeminovo(barcoSeminovoData.barco_id, new BarcoSeminovoRepository())
         await cabineModel.deleteCabineByIdCabine(barcoSeminovoData.capacidade_id, new CabineRepository())
         await precoModel.deletePrecoByidPreco(barcoSeminovoData.preco_id, new PrecoRepository())
         await motorizacaoModel.deleteMotorizacaoByIdMotorizacao(barcoSeminovoData.motorizacao_id, new MotorizacaoRepository())

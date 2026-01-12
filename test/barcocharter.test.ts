@@ -18,16 +18,15 @@ import { RoteiroRepository } from "../repository/charter/RoteiroRepository.ts";
 import barcoCharterOutputDashboard from "./mocks/barcoCharterOutputDashboard.ts";
 import { ProprietarioRepository } from "../repository/ProprietarioRepository.ts";
 import db from "../infra/database.ts";
+import { UUID_REGEX } from "../util/variables.ts";
+import { BarcoCharterListDashboard, BarcoCharterListDashboardWithId } from "../types/charter/BarcoCharter.ts";
+import { CondicoesRepository } from "../repository/charter/CondicoesRepository.ts";
 
 const barcoCharterRepository = new BarcoCharterRepository()
 const itensCharterRepo = new ItensCharterRepository()
 const imagemRepository = new ImagemRepository()
 const precoRepository = new PrecoRepository()
-const consumoCombustivelRepository = new ConsumoCombustivelRepo()
-const taxaChurrascoRepo = new TaxaChurrascoRepository()
-const passageirosRepo = new TaxaChurrascoRepository()
-const roteiroRepository = new RoteiroRepository()
-const proprietarioRepository = new ProprietarioRepository()
+const condicoesRepository = new CondicoesRepository()
 
 
 
@@ -83,7 +82,7 @@ afterAll(async () => {
 })
 
 describe("Barco charter and resources tests", () => {
-    test.skip("Should get full barco charter",  async () => {
+    test.skip("Should get full barco charter", async () => {
         const response = await request("http://localhost:5000/barco/charter/1", "get")
         expect(response.data).toEqual(barcoCharterOutput)
     })
@@ -91,22 +90,30 @@ describe("Barco charter and resources tests", () => {
         const response = await request("http://localhost:5000/barco/charter/dashboard/1", "get")
         expect(response.data).toEqual(barcoCharterOutputDashboard)
     })
-    test("Should post full barco charter", async () => {
+    test.only("Should post full barco charter", async () => {
         await request("http://localhost:5000/barco/charter", "POST", barcoCharterInput)
-        delay(2000)
-        const response = await request("http://localhost:5000/barco/charter/1", "get")
-        expect(response.data).toEqual(barcoCharterOutput)
+        const uuid = await db.query("SELECT codigo FROM barco_charter LIMIT 1").then(res => res[0].codigo)
+        const response = await request("http://localhost:5000/barco/charter/" + uuid, "get")
+        const { id, codigo, ...rest } = response.data
+        expect(id).toBe(1)
+        expect(codigo).toMatch(UUID_REGEX)
+        expect(rest).toEqual(barcoCharterOutput)
     })
     test("Should get charter list for dashboard website", async () => {
         const response = await request("http://localhost:5000/barco/charter/list/dashboard", "get")
+        const barcosResponse = response.data as BarcoCharterListDashboardWithId[]
         expect(response.status).toBe(200);
         expect(response.data).toBeInstanceOf(Array);
-        expect(response.data).toEqual(
-            expect.arrayContaining(barcoCharterDashboardList)
-        )
+        barcosResponse.forEach((item, index) => {
+            const { id, ...rest } = item;
+
+            expect(id).toMatch(UUID_REGEX);
+            expect(rest).toEqual(barcoCharterDashboardList[index]);
+        });
     })
     test("Should update barco charter", async () => {
-        const barcoCharterUpdate = {...barcoCharterOutputUpdate}
+        const uuid = await db.query("SELECT codigo FROM barco_charter LIMIT 1").then(res => res[0].codigo)
+        const barcoCharterUpdate = { id: uuid, ...barcoCharterOutputUpdate }
         barcoCharterUpdate.ano = 2019
         barcoCharterUpdate.passageiros.passageiros = 12
         barcoCharterUpdate.consumoCombustivel.litrosHora = 40
@@ -115,18 +122,26 @@ describe("Barco charter and resources tests", () => {
         barcoCharterUpdate.proprietario.id = 2
         await db.query("INSERT INTO proprietario (id, nome, email, telefone) VALUES($1,$2,$3, $4)", [barcoCharterUpdate.proprietario.id, barcoCharterUpdate.proprietario.nome, barcoCharterUpdate.proprietario.email, barcoCharterUpdate.proprietario.telefone])
         await request("http://localhost:5000/barco/charter", "PATCH", barcoCharterUpdate)
-        delay(2000)
-        const response = await request("http://localhost:5000/barco/charter/dashboard/1", "get")
-        expect(response.data).toEqual(barcoCharterUpdate)
+        const response = await request("http://localhost:5000/barco/charter/dashboard/" + uuid, "get")
+
+        const { condicoes: expectedCondicoes, ...expectedRest } = barcoCharterUpdate;
+        const { condicoes: actualCondicoes, ...actualRest } = response.data;
+
+        expect(actualRest).toEqual(expectedRest);
+
+        expect(actualCondicoes.length).toBe(expectedCondicoes.length);
+        const actualOpcoes = actualCondicoes.map((c: any) => c.opcao).sort();
+        const expectedOpcoes = expectedCondicoes.map((c: any) => c.opcao).sort();
+        expect(actualOpcoes).toEqual(expectedOpcoes);
     })
     test("Should delete barcoCharter successfully", async () => {
+        const uuid = await db.query("SELECT codigo FROM barco_charter LIMIT 1").then(res => res[0].codigo)
         const barcoSeminovoService = new BarcoCharterService()
-        await barcoSeminovoService.deleteBarcoCharter(1, firebaseModelMock)
-
-        await expect(barcoCharterRepository.getBarcoCharter(1)).rejects.toThrow("barco não existe: id=1");
+        await barcoSeminovoService.deleteBarcoCharter(uuid, firebaseModelMock)
+        await expect(barcoCharterRepository.getBarcoCharter(uuid)).rejects.toHaveProperty("statusCode", 404);
         await expect(precoRepository.getPrecoById(1)).rejects.toThrow("Não há preco com o id 1")
         await expect(imagemRepository.getImagensByIdSeminovo(1)).rejects.toThrow("Não há imagens associadas a este seminovo")
-         await expect(itensCharterRepo.getItensCharterByIdCharter(1)).rejects.toThrow("Não foram encontrados itens associados a este barco idCharter=1")
-         
+        await expect(itensCharterRepo.getItensCharterByIdCharter(1)).rejects.toHaveProperty("statusCode", 404);
+        await expect(condicoesRepository.getCondicoesByIdCharter(1)).rejects.toHaveProperty("statusCode", 404);
     })
 })

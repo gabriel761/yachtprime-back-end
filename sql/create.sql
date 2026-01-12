@@ -42,7 +42,7 @@ CREATE TABLE user_type(
 CREATE TABLE app_user(
     id SERIAL PRIMARY KEY NOT NULL,
     nome VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL,
+    email VARCHAR(100),
     user_firebase_id VARCHAR(100),
     id_user_type INTEGER NOT NULL,
 
@@ -94,7 +94,8 @@ CREATE TABLE propulsao(
 );
 
 CREATE TABLE barco_seminovo(
-     id SERIAL PRIMARY KEY NOT NULL,
+     id SERIAL PRIMARY KEY,
+     codigo UUID DEFAULT gen_random_uuid(),
      ativo BOOLEAN DEFAULT true,
      id_modelo INTEGER NOT NULL,
      nome VARCHAR (150) NOT NULL,
@@ -130,7 +131,7 @@ CREATE TABLE imagem(
 CREATE TABLE imagem_barco_seminovo(
      id SERIAL PRIMARY KEY NOT NULL,
      id_barco_seminovo INTEGER  NOT NULL,
-     id_imagem INTEGER  NOT NULL,
+     id_imagem INTEGER NOT NULL,
 
      CONSTRAINT fk_barco_seminovo FOREIGN KEY (id_barco_seminovo) REFERENCES barco_seminovo(id),
      CONSTRAINT fk_imagem FOREIGN KEY (id_imagem) REFERENCES imagem(id)
@@ -158,7 +159,12 @@ CREATE TABLE item_charter(
      item_lazer BOOLEAN DEFAULT true NOT NULL
 );
 
-CREATE TABLE condicao (
+CREATE TABLE condicoes_padrao (
+    id SERIAL PRIMARY KEY,
+    opcao VARCHAR (150)
+);
+
+CREATE TABLE condicoes_charter (
     id SERIAL PRIMARY KEY,
     opcao VARCHAR (150)
 );
@@ -206,6 +212,7 @@ CREATE TABLE cidade (
 
 CREATE TABLE barco_charter (
     id SERIAL PRIMARY KEY,
+    codigo UUID DEFAULT gen_random_uuid(),
     ativo BOOLEAN NOT NULL DEFAULT true,
     modelo INTEGER NOT NULL,
     nome VARCHAR(100),
@@ -269,11 +276,11 @@ CREATE TABLE item_charter_barco_charter (
     CONSTRAINT fk_barco_charter FOREIGN KEY (id_barco_charter) REFERENCES barco_charter(id)
 );
 
-CREATE TABLE barco_charter_condicoes (
+CREATE TABLE barco_charter_condicoes_charter (
     id SERIAL PRIMARY KEY,
     id_barco_charter INTEGER NOT NULL,
-    id_condicao INTEGER NOT NULL,
+    id_condicoes_charter INTEGER NOT NULL,
 
     CONSTRAINT fk_barco_charter FOREIGN KEY (id_barco_charter) REFERENCES barco_charter(id),
-    CONSTRAINT fk_condicao FOREIGN KEY (id_condicao) REFERENCES condicao(id)
+    CONSTRAINT fk_condicoes_charter FOREIGN KEY (id_condicoes_charter) REFERENCES condicoes_charter(id)
 );

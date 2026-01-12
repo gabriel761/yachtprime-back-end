@@ -1,4 +1,5 @@
 import { CustomError } from "../infra/CustoError.js"
+import { UUID_REGEX } from "./variables.js"
 
 export const characterLimit = (proprety: string, propretyName:string, limit: number, className: string) =>{
     const firstLeter = proprety.charAt(0).toUpperCase()
@@ -12,10 +13,10 @@ export const validateString = (string:string, stringName:string, className:strin
 }
 
 export const validateIntegerPositiveNumber = (id:number, numberName: string, className:string)=> {
-    if (!(id > 0 && Number.isInteger(id))) throw new CustomError(`${numberName} de ${className} inválido`, 400)
+    if (!(id >= 0 && Number.isInteger(id))) throw new CustomError(`${numberName} de ${className} inválido`, 400)
 }
-export const validateFloatPositiveNumber = (id: number, numberName: string, className: string) => {
-    if (!(id > 0 )) throw new CustomError(`${numberName} de ${className} inválido`, 400)
+export const validateFloatPositiveNumber = (number: number, numberName: string, className: string) => {
+    if (!(number >= 0 )) throw new CustomError(`${numberName} de ${className} inválido`, 400)
 }
 
 export const validateYear = (ano: number, className:string)=> {
@@ -23,3 +24,6 @@ export const validateYear = (ano: number, className:string)=> {
     if (!ano || typeof ano != "number" || ano < 1950 || ano > date.getFullYear()) throw new CustomError(`Ano ${className} é inválido`, 400)
 }
 
+export const validateUUID = (id: string, numberName: string, className: string) => {
+    if (!(id && id.match(UUID_REGEX))) throw new CustomError(`${numberName} de ${className} inválido`, 400)
+}

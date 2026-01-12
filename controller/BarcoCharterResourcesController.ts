@@ -1,8 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { BarcoSeminovoResourcesService } from '../service/BarcoSeminovoResourcesService.js';
-import { BarcoCharterService } from '../service/BarcoCharterService.js';
 import { BarcoCharterResourcesService } from '../service/BarcoCharterResourcesService.js';
-import { convertStringToBoolean } from '../util/transformationUtil.js';
 
 const barcoCharterResourcesService = new BarcoCharterResourcesService()
 
@@ -45,7 +42,7 @@ export class BarcoCharterResourcesController {
 
     async listImagensByIdCharter(req: Request, res: Response, next: NextFunction) {
         try {
-            const idCharter: number = parseInt(req.params.id)
+            const idCharter: string = req.params.id
             const result = await barcoCharterResourcesService.listImagesByIdCharter(idCharter)
             res.json(result)
         } catch (error) {
@@ -62,9 +59,29 @@ export class BarcoCharterResourcesController {
         }
     }
 
-    async listCondicoes(req: Request, res: Response, next: NextFunction) {
+    async listCondicoesPadrao(req: Request, res: Response, next: NextFunction) {
         try {
-            const result = await barcoCharterResourcesService.listCondicoes()
+            const result = await barcoCharterResourcesService.listCondicoesPadrao()
+            res.json(result)
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async postCondicaoPadrao(req: Request, res: Response, next: NextFunction) {
+        try {
+            const condicao = req.body
+            const result = await barcoCharterResourcesService.postCondicaoPadrao(condicao)
+            res.json(result)
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async updateAllCondicoesPadrao(req: Request, res: Response, next: NextFunction) {
+        try {
+            const condicoes = req.body
+            const result = await barcoCharterResourcesService.updateAllCondicoesPadrao(condicoes)
             res.json(result)
         } catch (error) {
             next(error)

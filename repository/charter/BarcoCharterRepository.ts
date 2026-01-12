@@ -6,10 +6,11 @@ import { BarcoCharterFilters, BarcoCharterInput, BarcoCharterInputWithId, BarcoC
 const limit = config.limitQuery || 1
 
 export class BarcoCharterRepository {
-    async getBarcoCharter(id: number) {
+    async getBarcoCharter(codigo: string) {
         const result = await db.oneOrNone(`
 SELECT
 bc.id,
+bc.codigo,
 bc.nome,
 modelo.id AS modelo_id,
 modelo.modelo AS modelo_modelo,
@@ -69,20 +70,21 @@ JOIN moeda moeda_aluguel_lancha ON preco_aluguel_lancha.id_moeda = moeda_aluguel
 JOIN taxa_churrasco ON bc.id_taxa_churrasco = taxa_churrasco.id
 JOIN preco preco_churrasco ON taxa_churrasco.id_preco = preco_churrasco.id
 JOIN moeda moeda_churrasco ON preco_churrasco.id_moeda = moeda_churrasco.id
-WHERE bc.id = $1 AND ativo = true;
-        `, [id]).catch((error) => {
+WHERE bc.codigo = $1 AND ativo = true;
+        `, [codigo]).catch((error) => {
             throw new CustomError(`Repository level error: BarcoCharterRepository:getBarcoCharter: ${error.message}`, 500)
         });
 
         if (!result) {
-            throw new CustomError("barco não existe: id=" + id, 404);
+            throw new CustomError("barco não existe: código=" + codigo, 404);
         }
         return result
     }
-    async getBarcoCharterDashboard(id: number) {
+    async getBarcoCharterDashboard(codigo: string) {
         const result = await db.oneOrNone(`
 SELECT
 bc.id,
+bc.codigo,
 bc.ativo,
 bc.nome,
 modelo.id AS modelo_id,
@@ -148,13 +150,13 @@ JOIN moeda moeda_aluguel_lancha ON preco_aluguel_lancha.id_moeda = moeda_aluguel
 JOIN taxa_churrasco ON bc.id_taxa_churrasco = taxa_churrasco.id
 JOIN preco preco_churrasco ON taxa_churrasco.id_preco = preco_churrasco.id
 JOIN moeda moeda_churrasco ON preco_churrasco.id_moeda = moeda_churrasco.id
-WHERE bc.id = $1;
-        `, [id]).catch((error) => {
+WHERE bc.codigo = $1;
+        `, [codigo]).catch((error) => {
             throw new CustomError(`Repository level error: BarcoCharterRepository:getBarcoCharter: ${error.message}`, 500)
         });
 
         if (!result) {
-            throw new CustomError("barco não existe: id=" + id, 404);
+            throw new CustomError("barco não existe: código=" + codigo, 404);
         }
         return result
     }
@@ -165,7 +167,7 @@ WHERE bc.id = $1;
                 bc.id,
                 bc.ativo,
 				im.link AS imagem,
-                bc.nome,
+                cd.opcao AS cidade,
                 mb.modelo,
                 tamanho,
                 md.simbolo AS preco_moeda,
@@ -173,7 +175,8 @@ WHERE bc.id = $1;
                 pa.passageiros
 
                 FROM barco_charter AS bc
-                JOIN modelo_barco AS mb ON bc.modelo = mb.id 
+                JOIN modelo_barco AS mb ON bc.modelo = mb.id
+                JOIN cidade AS cd ON bc.id_cidade = cd.id 
                 JOIN preco AS pr ON bc.id_preco = pr.id
                 JOIN moeda AS md ON pr.id_moeda = md.id
                 JOIN passageiros AS pa ON bc.id_passageiros = pa.id
@@ -235,7 +238,7 @@ WHERE bc.id = $1;
         // Query final
         const query = `
             SELECT
-                bc.id,
+                bc.codigo,
 				im.link AS imagem,
                 cd.opcao AS cidade,
                 mb.modelo,
@@ -257,8 +260,8 @@ WHERE bc.id = $1;
 				JOIN tipo_passeio AS tp ON bc.id_tipo_passeio = tp.id
                 LEFT JOIN imagem_barco_charter ibc ON bc.id = ibc.id_barco_charter
                 LEFT JOIN imagem im ON ibc.id_imagem = im.id
-            ${whereClause} AND bc.ativo = true
-           LIMIT $${params.length + 1} OFFSET $${params.length + 2}
+            ${whereClause} AND bc.ativo = true ORDER BY pr.valor ASC
+           LIMIT $${params.length + 1} OFFSET $${params.length + 2} 
             `;
            
         params.push(limit, offset);
@@ -346,7 +349,7 @@ WHERE bc.id = $1;
         return result
     }
 
-    async getRelatedCharters(idCharter: number): Promise<BarcoCharterRelatedDB[]> {
+    async getRelatedCharters(idCharter: string): Promise<BarcoCharterRelatedDB[]> {
         try {
             const result = await db.query(`
             SELECT 

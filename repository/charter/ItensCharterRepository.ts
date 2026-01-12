@@ -9,7 +9,7 @@ export class ItensCharterRepository {
         return result
     }
 
-    async getItensCharterByIdCharter(id: number): Promise<ItemCharterDb[]> {
+    async  getItensCharterByIdCharter(id: number): Promise<ItemCharterDb[]> {
         const result = await db.query(`
 SELECT 
     icb.id_item_charter AS item_id,

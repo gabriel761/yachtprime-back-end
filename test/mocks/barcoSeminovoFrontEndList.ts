@@ -1,6 +1,5 @@
 const barcoSeminovoFrontEndList = [
     {
-        id: 1,
         imagem: "https://mariattinavalbroker.com/wp-content/uploads/slider/cache/8caa1856fcad21de1ddd3bba95dfcb7d/4-1.jpg",
         modelo: "Altamar 50",
         ano: 2016,

@@ -1,6 +1,6 @@
 
 import BarcoSeminovoRepository from "../../repository/seminovo/BarcoSeminovoRepository.js";
-import { BarcoSeminovoDatabase, BarcoSeminovoDatabaseDashboard, BarcoSeminovoFilters, BarcoSeminovoFrontEndList, BarcoSeminovoInput, BarcoSeminovoInputWithId, BarcoSeminovoRelated } from "../../types/seminovo/BarcoSeminovo.js";
+import { BarcoSeminovoDatabase, BarcoSeminovoDatabaseDashboard, BarcoSeminovoFilters, BarcoSeminovoFrontEndList, BarcoSeminovoFrontEndListWithId, BarcoSeminovoInput, BarcoSeminovoInputWithId, BarcoSeminovoRelated } from "../../types/seminovo/BarcoSeminovo.js";
 import { BarcoSeminovoOutput } from "../../types/seminovo/BarcoSeminovo.js";
 import { Imagem } from "../../types/Imagem.js";
 import { ItemSeminovo } from "../../types/seminovo/ItemSeminovo.js";
@@ -26,16 +26,17 @@ import { ModeloRepository } from "../../repository/ModeloRepository.js";
 import { ProprietarioInputVO } from "../../value_object/input/ProprietarioInputVO.js";
 import { BarcoSeminovoDashboardOutputVO } from "../../value_object/output/seminovo/BarcoSeminovoDashboardOutputVO.js";
 import { ProprietarioOutputVO } from "../../value_object/output/ProprietarioOutputVO.js";
+import { UUID } from "crypto";
 
 export class BarcoSeminovoModel {
 
-    async getBarcoSeminovo(idBarcoSeminovo: number, barcoSeminovoRepository: BarcoSeminovoRepository): Promise<BarcoSeminovoDatabase> {
-        const barcoSeminovoDB = await barcoSeminovoRepository.getBarcoSeminovo(idBarcoSeminovo)
+    async getBarcoSeminovo(codigoBarcoSeminovo: string, barcoSeminovoRepository: BarcoSeminovoRepository): Promise<BarcoSeminovoDatabase> {
+        const barcoSeminovoDB = await barcoSeminovoRepository.getBarcoSeminovo(codigoBarcoSeminovo)
         return barcoSeminovoDB
     }
 
-    async getBarcoSeminovoDashboard(idBarcoSeminovo: number, barcoSeminovoRepository: BarcoSeminovoRepository): Promise<BarcoSeminovoDatabaseDashboard> {
-        const barcoSeminovoDB = await barcoSeminovoRepository.getBarcoSeminovoDashboard(idBarcoSeminovo)
+    async getBarcoSeminovoDashboard(codigoBarcoSeminovo: string, barcoSeminovoRepository: BarcoSeminovoRepository): Promise<BarcoSeminovoDatabaseDashboard> {
+        const barcoSeminovoDB = await barcoSeminovoRepository.getBarcoSeminovoDashboard(codigoBarcoSeminovo)
         return barcoSeminovoDB
     }
 
@@ -51,9 +52,9 @@ export class BarcoSeminovoModel {
     async listBarcoSeminovoFrontEnd(filters: BarcoSeminovoFilters, barcoSeminovoRepository: BarcoSeminovoRepository) {
         const result = await barcoSeminovoRepository.listBarcoSeminovoFrontEnd(filters)
 
-        const barcoSeminovoListFrontEnd = result.map((item: any): BarcoSeminovoFrontEndList => {
-            const barcoSeminovoForList: BarcoSeminovoFrontEndList = {
-                id: item.id,
+        const barcoSeminovoListFrontEnd = result.map((item: any): BarcoSeminovoFrontEndListWithId => {
+            const barcoSeminovoForList: BarcoSeminovoFrontEndListWithId = {
+                codigo: item.codigo,
                 imagem: item.imagem,
                 modelo: item.modelo,
                 ano: item.ano,
@@ -78,7 +79,7 @@ export class BarcoSeminovoModel {
         }
     }
 
-    async getRelatedSeminovos(idSeminovo: number, barcoSeminovoRepository: BarcoSeminovoRepository): Promise<BarcoSeminovoRelated[]> {
+    async getRelatedSeminovos(idSeminovo: string, barcoSeminovoRepository: BarcoSeminovoRepository): Promise<BarcoSeminovoRelated[]> {
         const result = await barcoSeminovoRepository.getRelatedSeminovos(idSeminovo)
         return result
     }
@@ -176,6 +177,7 @@ export class BarcoSeminovoModel {
         precoVO.setMoeda(barcoSeminovoDB.moeda_simbolo)
         precoVO.setValor(barcoSeminovoDB.preco)
         barcoseminovoOutputVO.setId(barcoSeminovoDB.barco_id);
+        barcoseminovoOutputVO.setCodigo(barcoSeminovoDB.codigo)
         barcoseminovoOutputVO.setAtivo(barcoSeminovoDB.ativo);
         barcoseminovoOutputVO.setModelo(barcoSeminovoDB.modelo_modelo);
         barcoseminovoOutputVO.setNome(barcoSeminovoDB.nome_barco);

@@ -34,8 +34,16 @@ router.get("/cidades", mainMiddleware, verifyUserRole(["Dono",  "Administrador",
     await barcoCharterResourcesController.listCidades(req, res, next)
 })
 
-router.get("/condicoes", mainMiddleware, verifyUserRole(["Dono",  "Administrador", "Editor"]), async (req: Request, res: Response, next) => {
-    await barcoCharterResourcesController.listCondicoes(req, res, next)
+router.get("/condicoes-padrao", mainMiddleware, verifyUserRole(["Dono",  "Administrador", "Editor"]), async (req: Request, res: Response, next) => {
+    await barcoCharterResourcesController.listCondicoesPadrao(req, res, next)
+})
+
+router.post("/condicao-padrao", mainMiddleware, verifyUserRole(["Dono", "Administrador"]), async (req: Request, res: Response, next) => {
+    await barcoCharterResourcesController.postCondicaoPadrao(req, res, next)
+})
+
+router.patch("/condicoes-padrao", mainMiddleware, verifyUserRole(["Dono", "Administrador"]), async (req: Request, res: Response, next) => {
+    await barcoCharterResourcesController.updateAllCondicoesPadrao(req, res, next)
 })
 
 router.post("/item-charter", mainMiddleware, verifyUserRole(["Dono", "Administrador"]), async (req: Request, res: Response, next) => {

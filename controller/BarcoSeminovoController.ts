@@ -17,7 +17,7 @@ export class BarcoSeminovoController {
 
     async getBarcoSeminovoById(req: Request, res: Response, next: NextFunction) {
         try {
-            const id = parseInt(req.params.id)
+            const id = req.params.id
             const barcoSeminovoResult = await this.barcoSeminovoService.getBarcoSeminovoById(id)
             res.json(barcoSeminovoResult)
         } catch (error) {
@@ -27,7 +27,7 @@ export class BarcoSeminovoController {
 
     async getBarcoSeminovoDashboardById(req: Request, res: Response, next: NextFunction) {
         try {
-            const id = parseInt(req.params.id)
+            const id = req.params.id
             const barcoSeminovoResult = await this.barcoSeminovoService.getBarcoSeminovoDashboardById(id)
             res.json(barcoSeminovoResult)
         } catch (error) {
@@ -60,7 +60,7 @@ export class BarcoSeminovoController {
     }
     async getRelatedSeminovos(req: Request, res: Response, next: NextFunction) {
         try {
-            const idSeminovo: number = parseInt(req.params.id) 
+            const idSeminovo: string = req.params.id 
             const result = await this.barcoSeminovoService.getRelatedSeminovos(idSeminovo)
             res.json(result)
         } catch (error) {

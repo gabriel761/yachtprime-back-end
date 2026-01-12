@@ -55,13 +55,25 @@ const barcoCharterInput: BarcoCharterInput = {
     tipoCombustivel: {id:2, opcao:"Diesel"} },
     proprietario: {
         nome: "Alice Almeida",
-        email: "alice.almeida@gmail.com",
+        email: "",
         telefone: "+55 21 98391-7378"
     },
     tipoPasseio: {id:1, opcao:"Day use"},
     tripulacaoSkipper: {id: 2, opcao:"Skipper incluso"},
     horaExtra: { moeda: "R$", valor: 600.00 },
     aluguelLancha: { moeda: "R$", valor: 3500.00 },
+    condicoes: [
+        { id: 1, opcao: 'Os passeios são privativos, não vendemos ingressos.' },
+        { id: 2, opcao: 'O tempo é medido desde a hora marcada, mesmo que o cliente atrase no embarque.' },
+        { id: 3, opcao: 'Só aceitamos pagamentos no PIX.' },
+        { id: 4, opcao: 'Reservas mediante 50% de sinal.' },
+        { id: 5, opcao: 'Os 50% restantes devem ser pagos no dia antes do embarque.' },
+        { id: 6, opcao: 'Em caso de ressaca impeditiva de navegar, aguardar no dia para remarcação de nova data (chuva, frio, tempo nublado não impedem de navegar).' },
+        { id: 7, opcao: 'Toda vida humana conta como passageiro, mesmo no colo.' },
+        { id: 8, opcao: 'Caso a Marinha cobre taxa de embarque, fica por conta do cliente.' },
+        { id: 9, opcao: 'Desistências só são aceitas com 72 horas de antecedência.' },
+        { id: 10, opcao: 'É terminantemente PROIBIDO o uso de drogas.' }
+    ],
     taxaChurrasco: { preco: { moeda: "R$", valor: 1500.00 }, mensagem: "Pagamento no dia do passeio diretamente ao capitão" },
     videoPromocional: 'https://www.youtube.com/watch?v=EZJ-S9RODF0'
 }

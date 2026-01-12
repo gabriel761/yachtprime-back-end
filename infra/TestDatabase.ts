@@ -1,14 +1,15 @@
 import db from "./database.js";
 
 export class TestDatabase {
- private db = db
- async resetDbToInitialState(){
-     await this.db.query(`TRUNCATE TABLE
+    private db = db
+    async resetDbToInitialState() {
+        await this.db.query(`TRUNCATE TABLE
     imagem_barco_seminovo,
     item_seminovo_barco_seminovo,
     imagem_barco_charter,
     item_charter_barco_charter,
-    barco_charter_condicoes,
+    barco_charter_condicoes_charter,
+    condicoes_charter,
     roteiro,
     proprietario,
     barco_seminovo,
@@ -21,13 +22,13 @@ export class TestDatabase {
     cabine,
     passageiros
 RESTART IDENTITY CASCADE;`)
-     await this.db.query(`DELETE FROM modelo_barco WHERE marca = 'teste'`)
-     await this.db.query(`DELETE FROM motor_cadastrado WHERE marca = 'teste'`)
-     await this.db.query(`DELETE FROM item_charter WHERE item = 'teste'`)
-     await this.db.query(`DELETE FROM item_seminovo WHERE item = 'teste'`)
- }
+        await this.db.query(`DELETE FROM modelo_barco WHERE marca = 'teste'`)
+        await this.db.query(`DELETE FROM motor_cadastrado WHERE marca = 'teste'`)
+        await this.db.query(`DELETE FROM item_charter WHERE item = 'teste'`)
+        await this.db.query(`DELETE FROM item_seminovo WHERE item = 'teste'`)
+    }
 
- 
+
 
 
 }

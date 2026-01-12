@@ -1,4 +1,4 @@
-import { BarcoCharterDashboardOutput, BarcoCharterOutput } from "../../../types/charter/BarcoCharter.js";
+import { BarcoCharterDashboardOutput, BarcoCharterDashboardOutputWithId, BarcoCharterOutput } from "../../../types/charter/BarcoCharter.js";
 import { PrecoOutput } from "../../../types/Preco.js";
 import { Passageiros } from "../../../types/charter/Passageiros.js";
 import { ItemCharter } from "../../../types/charter/ItemCharter.js";
@@ -133,7 +133,7 @@ export class BarcoCharterDashboardOutputVO {
         this.videoPromocional = video;
     }
 
-    extractData(): BarcoCharterDashboardOutput {
+    extractData(): BarcoCharterDashboardOutputWithId {
         return {
             id: this.id,
             ativo: this.ativo,

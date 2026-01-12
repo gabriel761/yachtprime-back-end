@@ -1,7 +1,6 @@
-import { BarcoSeminovoOutput, BarcoSeminovoOutputDashboard } from '../../types/seminovo/BarcoSeminovo.ts'
+import { BarcoSeminovoOutput, BarcoSeminovoOutputDashboard, BarcoSeminovoOutputDashboardWithId } from '../../types/seminovo/BarcoSeminovo.ts'
  
 const barcoSeminovoDashboard: BarcoSeminovoOutputDashboard = {
-    id: 1,
     ativo: true,
     modelo: "Altamar 50",
     nome: "Sea View",
@@ -27,7 +26,7 @@ const barcoSeminovoDashboard: BarcoSeminovoOutputDashboard = {
     proprietario: {
         id: 1,
         nome: "Alice Almeida",
-        email: "alice.almeida@gmail.com",
+        email: "",
         telefone: "+55 21 98391-7378"
     },
     cabines: {

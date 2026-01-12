@@ -71,7 +71,6 @@ export class ResourcesService {
     }
 
     async updateProprietario(proprietario: ProprietarioWithUsers) {
-        console.log(proprietario)
         const validatedProprietario = proprietarioModel.validateProprietarioObject(proprietario, new ProprietarioInputVO)
         await proprietarioModel.deleteAllAssotiationWithUser(new ProprietarioRepository(), proprietario.id)
         await proprietarioModel.associateProprietarioWithUsers(proprietario, new ProprietarioRepository())

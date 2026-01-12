@@ -4,11 +4,11 @@ import verifyFirebaseErrorCode from "../../util/verifyFirebaseErrorCode.js";
 
 export class FirebaseModel{
     async deleteImage(folderName:string, fileName:string){
-        // try {
-        //     await admin.storage().bucket().file(`${folderName}/${fileName}`).delete();    
-        // } catch (error:any) {
-        //   throw new CustomError("Firebase storage error: "+error.message, error.code)
-        // }
+        try {
+            await admin.storage().bucket().file(`${folderName}/${fileName}`).delete();    
+        } catch (error:any) {
+          throw new CustomError("Firebase storage error: "+error.message, error.code)
+        }
     }
 
     async createUser(email:string, password: string){

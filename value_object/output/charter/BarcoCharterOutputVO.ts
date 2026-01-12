@@ -1,4 +1,4 @@
-import { BarcoCharterDashboardOutput, BarcoCharterOutput } from "../../../types/charter/BarcoCharter.js";
+import { BarcoCharterDashboardOutput, BarcoCharterOutput, BarcoCharterOutputWithId } from "../../../types/charter/BarcoCharter.js";
 import { PrecoOutput } from "../../../types/Preco.js";
 import { Passageiros } from "../../../types/charter/Passageiros.js";
 import { ItemCharter } from "../../../types/charter/ItemCharter.js";
@@ -15,6 +15,7 @@ import { Proprietario } from "../../../types/Proprietario.js";
 
 export class BarcoCharterOutputVO {
     private id!:number;
+    private codigo!: string;
     private modelo!: string;
     private nome!: string | null;
     private ano!: number;
@@ -28,7 +29,6 @@ export class BarcoCharterOutputVO {
     private itensDisponiveis!: ItemCharter[];
     private imagens!: Imagem[];
     private consumoCombustivel!: ConsumoCombustivelOutput;
-    private proprietario!: Proprietario;
     private tipoPasseio!: TipoPasseio;
     private tripulacaoSkpper!: TripulacaoSkipper;
     private horaExtra!: PrecoOutput;
@@ -41,6 +41,10 @@ export class BarcoCharterOutputVO {
 
     setId(id:number){
         this.id = id
+    }
+
+    setCodigo(codigo: string){
+        this.codigo = codigo
     }
 
     setModelo(modelo: string) {
@@ -95,9 +99,6 @@ export class BarcoCharterOutputVO {
         this.consumoCombustivel = consumo;
     }
 
-    setProprietario(proprietario: Proprietario){
-        this.proprietario = proprietario
-    }
 
     setTripulacaoSkipper(tripulacaoSkipper: TripulacaoSkipper){
         this.tripulacaoSkpper = tripulacaoSkipper
@@ -127,9 +128,10 @@ export class BarcoCharterOutputVO {
         this.videoPromocional = video;
     }
 
-    extractData(): BarcoCharterOutput {
+    extractData(): BarcoCharterOutputWithId {
         return {
             id: this.id,
+            codigo: this.codigo,
             modelo: this.modelo,
             nome: this.nome,
             ano: this.ano,

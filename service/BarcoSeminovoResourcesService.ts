@@ -42,7 +42,7 @@ export class BarcoSeminovoResourcesService {
         const result = await itemSeminovoModel.listItemSeminovo(new ItemSeminovoRepository)
         return result
     }
-    async listImagensByIdSeminovo(idSeminovo: number) {
+    async listImagensByIdSeminovo(idSeminovo: string) {
         const result = await imagemModel.getImagesByIdSeminovo(idSeminovo, new ImagemRepository())
         return result
     }

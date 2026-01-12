@@ -4,18 +4,42 @@ import { PrecoInput, PrecoOutput } from "../Preco.js";
 import { Proprietario, ProprietarioWithUsers } from "../Proprietario.js";
 import { Condicao } from "./Condicoes.js";
 import { ConsumoCombustivelInput, ConsumoCombustivelOutput } from "./ConsumoCombustivel.js";
-import {  ItemCharter } from "./ItemCharter.js";
+import { ItemCharter } from "./ItemCharter.js";
 import { Passageiros } from "./Passageiros.js";
 import { Pernoite } from "./Pernoite.js";
 import { PetFriendly } from "./PetFriendly.js";
-import {  RoteiroOutput, RoteiroInput} from "./Roteiro.js";
+import { RoteiroOutput, RoteiroInput } from "./Roteiro.js";
 import { TaxaChurrascoInput, TaxaChurrascoOutput } from "./TaxaChurrasco.js";
 import { TipoPasseio } from "./TipoPasseio.js";
 import { TripulacaoSkipper } from "./TripulacaoSkipper.js";
 
 
 export type BarcoCharterOutput = {
-    id:number;
+    modelo: string;
+    codigo: string
+    nome: string | null;
+    ano: number;
+    tamanho: number;
+    cidade: "Angra dos Reis" | "Rio de Janeiro";
+    preco: PrecoOutput;
+    passageiros: Passageiros;
+    roteiros: RoteiroOutput[];
+    pernoite: boolean;
+    petFriendly: PetFriendly;
+    itensDisponiveis: ItemCharter[];
+    imagens: Imagem[];
+    consumoCombustivel: ConsumoCombustivelOutput;
+    tipoPasseio: TipoPasseio;
+    tripulacaoSkipper: TripulacaoSkipper;
+    horaExtra: PrecoOutput;
+    aluguelLancha: PrecoOutput;
+    condicoes: Condicao[];
+    taxaChurrasco: TaxaChurrascoOutput;
+    videoPromocional: string | null;
+}
+export type BarcoCharterOutputWithId = {
+    id: number
+    codigo: string
     modelo: string;
     nome: string | null;
     ano: number;
@@ -39,7 +63,34 @@ export type BarcoCharterOutput = {
 }
 
 export type BarcoCharterDashboardOutput = {
-    id: number;
+    ativo: boolean;
+    codigo: string
+    modelo: string;
+    nome: string | null;
+    ano: number;
+    tamanho: number;
+    cidade: "Angra dos Reis" | "Rio de Janeiro";
+    preco: PrecoOutput;
+    passageiros: Passageiros;
+    roteiros: RoteiroOutput[];
+    pernoite: boolean;
+    petFriendly: PetFriendly;
+    itensDisponiveis: ItemCharter[];
+    imagens: Imagem[];
+    consumoCombustivel: ConsumoCombustivelOutput;
+    proprietario: Proprietario;
+    tipoPasseio: TipoPasseio;
+    tripulacaoSkipper: TripulacaoSkipper;
+    horaExtra: PrecoOutput;
+    aluguelLancha: PrecoOutput;
+    condicoes: Condicao[];
+    taxaChurrasco: TaxaChurrascoOutput;
+    videoPromocional: string | null;
+}
+
+export type BarcoCharterDashboardOutputWithId = {
+    id: number
+    codigo: string
     ativo: boolean;
     modelo: string;
     nome: string | null;
@@ -85,11 +136,13 @@ export type BarcoCharterInput = {
     horaExtra: PrecoInput;
     aluguelLancha: PrecoInput;
     taxaChurrasco: TaxaChurrascoInput;
-    videoPromocional: string  | null
+    videoPromocional: string | null;
+    condicoes: Condicao[];
 }
 
 export type BarcoCharterInputWithId = {
-    id: number,
+    id: number
+    codigo: string
     ativo: boolean;
     modelo: string;
     nome: string | null;
@@ -110,7 +163,8 @@ export type BarcoCharterInputWithId = {
     horaExtra: PrecoInput;
     aluguelLancha: PrecoInput;
     taxaChurrasco: TaxaChurrascoInput;
-    videoPromocional: string | null
+    videoPromocional: string | null;
+    condicoes: Condicao[];
 }
 
 
@@ -161,7 +215,8 @@ export type BarcoCharterDatabaseDashboard = {
 };
 
 export type BarcoCharterDatabase = {
-    id: number;
+    id: number
+    codigo: string
     nome: string | null;
     modelo_id: number;
     modelo_modelo: string;
@@ -203,10 +258,11 @@ export type BarcoCharterDatabase = {
 
 
 export type BarcoCharterListDashboardDatabase = {
-    id: number,
+    id: number
+    codigo: string
     ativo: boolean,
     imagem: string,
-    nome: string,
+    cidade: string,
     modelo: string,
     tamanho: number,
     preco_moeda: string,
@@ -214,10 +270,22 @@ export type BarcoCharterListDashboardDatabase = {
     passageiros: number
 }
 export type BarcoCharterListDashboard = {
-    id: number,
+    codigo: string
     ativo: boolean,
     imagem: string,
-    nome: string,
+    cidade: string,
+    modelo: string,
+    tamanho: number,
+    preco: PrecoOutput,
+    passageiros: number
+}
+
+export type BarcoCharterListDashboardWithId = {
+    id: number
+    codigo: string
+    ativo: boolean,
+    imagem: string,
+    cidade: string,
     modelo: string,
     tamanho: number,
     preco: PrecoOutput,
@@ -225,7 +293,7 @@ export type BarcoCharterListDashboard = {
 }
 
 export type BarcoCharterListFrontEndDatabase = {
-    id: number,
+    codigo: string
     imagem: string,
     modelo: string,
     cidade: string,
@@ -239,7 +307,20 @@ export type BarcoCharterListFrontEndDatabase = {
 }
 
 export type BarcoCharterListFrontEnd = {
-    id: number,
+    codigo: string
+    imagem: string,
+    modelo: string,
+    cidade: string,
+    tamanho: number,
+    passageiros: number,
+    pernoite: boolean,
+    tripulacaoSkipper: string,
+    preco: PrecoOutput
+}
+
+export type BarcoCharterListFrontEndWithId = {
+    id: number
+    codigo: string
     imagem: string,
     modelo: string,
     cidade: string,
@@ -259,7 +340,8 @@ export type BarcoCharterFilters = {
 }
 
 export type BarcoCharterRelatedDB = {
-    id: number,
+    id: number
+    codigo: string
     modelo: string,
     imagem: string,
     preco_valor: string,
@@ -267,7 +349,13 @@ export type BarcoCharterRelatedDB = {
 }
 
 export type BarcoCharterRelated = {
-    id: number,
+    modelo: string,
+    imagem: string,
+    preco: PrecoOutput,
+}
+
+export type BarcoCharterRelatedWithId = {
+    id: number
     modelo: string,
     imagem: string,
     preco: PrecoOutput,

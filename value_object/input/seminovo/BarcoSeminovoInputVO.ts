@@ -8,11 +8,13 @@ import { Modelo } from "../../../types/Modelo.js";
 import { Motorizacao } from "../../../types/seminovo/Motorizacao.js";
 import { PrecoInput } from "../../../types/Preco.js";
 import { Propulsao } from "../../../types/seminovo/Propulsao.js";
-import { characterLimit, validateIntegerPositiveNumber, validateString, validateYear } from "../../../util/validationUtil.js";
+import { characterLimit, validateIntegerPositiveNumber, validateString, validateUUID, validateYear } from "../../../util/validationUtil.js";
 import { Proprietario } from "../../../types/Proprietario.js";
+import { UUID } from "crypto";
 
 export class BarcoSeminovoInputVO {
-    private id!: number
+    private id!: number;
+    private codigo!: UUID;
     private ativo!: boolean
     private modelo!: string;
     private nome!: string;
@@ -35,8 +37,13 @@ export class BarcoSeminovoInputVO {
     constructor(
     ) { }
     setId(id: number) {
-        validateIntegerPositiveNumber(id, "id", "BarcoSeminovo")
+        console.log("id seminovo:", id)
+        validateIntegerPositiveNumber(id, "id", "Barco Seminovo VO")
         this.id = id
+    }
+    setCodigo(codigo: UUID){
+        validateUUID(codigo, "código", "BarcoSeminovo")
+        this.codigo = codigo
     }
     setAtivo(ativo: boolean) {
         if (typeof ativo != "boolean") new CustomError("Ativo em BarcoCharterDashboard é inválido", 403)
@@ -142,6 +149,7 @@ export class BarcoSeminovoInputVO {
     extractDataWithId(): BarcoSeminovoInputWithId {
         return {
             id: this.id,
+            codigo: this.codigo,
             ativo: this.ativo,
             modelo: this.modelo,
             nome: this.nome,

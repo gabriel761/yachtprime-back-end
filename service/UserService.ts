@@ -34,7 +34,6 @@ export class UserService {
     }
 
     async updateUser(user: UserInputUpdate, firebaseModel: FirebaseModel) {
-        console.log(user)
         const userTypeId = await userModel.getUserTypeIdByName(user.userType, new UserRepository())
         const validatedUserType = userModel.validateUserType(userTypeId, user.userType, new UserTypeVO())
         const validatedProprietarios = userModel.validateProprietariosFromUser(user.proprietarios, new ProprietarioInputVO())

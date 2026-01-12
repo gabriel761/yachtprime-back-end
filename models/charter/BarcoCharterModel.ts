@@ -1,7 +1,7 @@
 import { BarcoCharterRepository } from "../../repository/charter/BarcoCharterRepository.js";
 import { CidadeRepository } from "../../repository/charter/CidadeRepository.js";
 import { ModeloRepository } from "../../repository/ModeloRepository.js";
-import { BarcoCharterDatabase, BarcoCharterDatabaseDashboard, BarcoCharterFilters, BarcoCharterInput, BarcoCharterInputWithId, BarcoCharterListDashboard, BarcoCharterListDashboardDatabase, BarcoCharterListFrontEnd, BarcoCharterOutput, BarcoCharterRelated } from "../../types/charter/BarcoCharter.js";
+import { BarcoCharterDatabase, BarcoCharterDatabaseDashboard, BarcoCharterFilters, BarcoCharterInput, BarcoCharterInputWithId, BarcoCharterListDashboard, BarcoCharterListDashboardDatabase, BarcoCharterListDashboardWithId, BarcoCharterListFrontEnd, BarcoCharterOutput, BarcoCharterRelated, BarcoCharterRelatedWithId } from "../../types/charter/BarcoCharter.js";
 import { Condicao } from "../../types/charter/Condicoes.js";
 import { ItemCharter } from "../../types/charter/ItemCharter.js";
 import { RoteiroOutput } from "../../types/charter/Roteiro.js";
@@ -26,11 +26,11 @@ import { ProprietarioOutputVO } from "../../value_object/output/ProprietarioOutp
 import { BarcoCharterDashboardOutputVO } from "../../value_object/output/charter/BarcoCharterDashboardOutputVO.js";
 
 export class BarcoCharterModel {
-    getBarcoCharter(id: number, barcoCharterRepository: BarcoCharterRepository): Promise<BarcoCharterDatabase> {
-        return barcoCharterRepository.getBarcoCharter(id)
+    getBarcoCharter(codigo: string, barcoCharterRepository: BarcoCharterRepository): Promise<BarcoCharterDatabase> {
+        return barcoCharterRepository.getBarcoCharter(codigo)
     }
-    getBarcoCharterDashboard(id: number, barcoCharterRepository: BarcoCharterRepository): Promise<BarcoCharterDatabaseDashboard> {
-        return barcoCharterRepository.getBarcoCharterDashboard(id)
+    getBarcoCharterDashboard(codigo: string, barcoCharterRepository: BarcoCharterRepository): Promise<BarcoCharterDatabaseDashboard> {
+        return barcoCharterRepository.getBarcoCharterDashboard(codigo)
     }
 
     async getIdsByIdCharter(idChater: number, barcoCharterRepository: BarcoCharterRepository) {
@@ -54,10 +54,10 @@ export class BarcoCharterModel {
         const barcoCharterListDatabase = await barcoCharterRepository.listBarcoCharterDashboard()
         const barcoCharterList = barcoCharterListDatabase.map((item) => {
             const barcoCharter: BarcoCharterListDashboard = {
-                id: item.id,
+                codigo: item.codigo,
                 ativo: item.ativo,
                 imagem: item.imagem,
-                nome: item.nome,
+                cidade: item.cidade,
                 modelo: item.modelo,
                 tamanho: item.tamanho,
                 preco: {
@@ -75,7 +75,7 @@ export class BarcoCharterModel {
         const barcoCharterListDatabase = await barcoCharterRepository.listBarcoCharterFrontEnd(filters)
         const barcoCharterList = barcoCharterListDatabase.map((item) => {
             const barcoCharter: BarcoCharterListFrontEnd = {
-                id: item.id,
+                codigo: item.codigo,
                 imagem: item.imagem,
                 modelo: item.modelo,
                 tamanho: item.tamanho,
@@ -101,9 +101,9 @@ export class BarcoCharterModel {
         }
     }
 
-    async getRelatedCharters(idCharter: number, barcoCharterRepository: BarcoCharterRepository){
+    async getRelatedCharters(idCharter: string, barcoCharterRepository: BarcoCharterRepository){
         const result =  await barcoCharterRepository.getRelatedCharters(idCharter)
-        const charterRelated = result.map((charter): BarcoCharterRelated => {
+        const charterRelated = result.map((charter): BarcoCharterRelatedWithId => {
             return {
                 id: charter.id,
                 preco: {
@@ -301,6 +301,7 @@ export class BarcoCharterModel {
         const precoAluguelLancha = precoVO.extractData()
 
         barcoCharterVO.setId(barcoCharterDatabase.id)
+        barcoCharterVO.setCodigo(barcoCharterDatabase.codigo)
         barcoCharterVO.setModelo(barcoCharterDatabase.modelo_modelo)
         barcoCharterVO.setNome(barcoCharterDatabase.nome)
         barcoCharterVO.setAno(barcoCharterDatabase.ano)

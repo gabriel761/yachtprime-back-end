@@ -1,5 +1,5 @@
 import { CustomError } from "../../../infra/CustoError.js";
-import { BarcoSeminovoOutput } from "../../../types/seminovo/BarcoSeminovo.js";
+import { BarcoSeminovoOutput, BarcoSeminovoOutputWithId } from "../../../types/seminovo/BarcoSeminovo.js";
 import { Cabine } from "../../../types/seminovo/Cabine.js";
 import { Combustivel } from "../../../types/Combustivel.js";
 import { Imagem } from "../../../types/Imagem.js";
@@ -9,7 +9,7 @@ import { PrecoOutput } from "../../../types/Preco.js";
 import { Propulsao } from "../../../types/seminovo/Propulsao.js";
 
 export class BarcoSeminovoOutputVO {
-    private id?: number
+    private id!: number
     private modelo!: string;
     private nome!: string;
     private ano!: number;
@@ -29,7 +29,7 @@ export class BarcoSeminovoOutputVO {
 
     constructor(
     ) { }
-    setId(id?: number) {
+    setId(id: number) {
         this.id = id
     }
     setModelo(modelo: string) {
@@ -84,7 +84,7 @@ export class BarcoSeminovoOutputVO {
         this.oportunidade = oportunidade
     }
 
-    extractData():BarcoSeminovoOutput{
+    extractData():BarcoSeminovoOutputWithId{
         return {
             id: this.id,
             modelo: this.modelo,

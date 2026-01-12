@@ -1,7 +1,6 @@
 import { BarcoCharterOutput } from '../../types/charter/BarcoCharter.js'
 
 const barcoCharterOutput: BarcoCharterOutput = {
-    id: 1,
     modelo: "Azimut 70",
     nome: "Lancha Luxo",
     ano: 2022,

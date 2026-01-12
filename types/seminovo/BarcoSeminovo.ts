@@ -1,4 +1,5 @@
 
+import { UUID } from "crypto";
 import { Combustivel } from "../Combustivel.js";
 import { Imagem } from "../Imagem.js";
 import { Modelo } from "../Modelo.js";
@@ -13,7 +14,26 @@ import { Motorizacao } from "./Motorizacao.js";
 import { Propulsao } from "./Propulsao.js";
 
 export type BarcoSeminovoOutput = {
-    id?: number
+    modelo: string;
+    nome: string;
+    ano: number;
+    tamanho: number;
+    motorizacao: Motorizacao;
+    potenciaTotal: number;
+    combustivel: Combustivel;
+    propulsao: Propulsao;
+    cabines: Cabine;
+    procedencia: string;
+    destaque?: string | null;
+    preco: PrecoOutput;
+    imagens: Imagem[];
+    equipadoCom: ItemSeminovo[];
+    videoPromocional?: string | null;
+    oportunidade: boolean;
+};
+
+export type BarcoSeminovoOutputWithId = {
+    id: number
     modelo: string;
     nome: string;
     ano: number;
@@ -33,7 +53,29 @@ export type BarcoSeminovoOutput = {
 };
 
 export type BarcoSeminovoOutputDashboard = {
-    id?: number
+    ativo: boolean;
+    modelo: string;
+    nome: string;
+    ano: number;
+    tamanho: number;
+    motorizacao: Motorizacao;
+    potenciaTotal: number;
+    combustivel: Combustivel;
+    propulsao: Propulsao;
+    proprietario: Proprietario;
+    cabines: Cabine;
+    procedencia: string;
+    destaque?: string | null;
+    preco: PrecoOutput;
+    imagens: Imagem[];
+    equipadoCom: ItemSeminovo[];
+    videoPromocional?: string | null;
+    oportunidade: boolean;
+};
+
+export type BarcoSeminovoOutputDashboardWithId = {
+    id: number;
+    codigo: string;
     ativo: boolean;
     modelo: string;
     nome: string;
@@ -78,6 +120,7 @@ export type BarcoSeminovoInput = {
 
 export type BarcoSeminovoInputWithId = {
     id: number;
+    codigo: UUID;
     ativo: boolean;
     modelo: string;
     nome: string;
@@ -101,7 +144,7 @@ export type BarcoSeminovoInputWithId = {
 
 export type BarcoSeminovoDatabase ={
     oportunidade: boolean;
-    barco_id?: number;
+    barco_id: number;
     nome_barco: string;
     ano_barco: number;
     tamanho_barco: number;
@@ -136,7 +179,8 @@ export type BarcoSeminovoDatabase ={
 export type BarcoSeminovoDatabaseDashboard = {
     oportunidade: boolean;
     ativo: boolean;
-    barco_id?: number;
+    barco_id: number;
+    codigo: string;
     nome_barco: string;
     ano_barco: number;
     tamanho_barco: number;
@@ -174,7 +218,18 @@ export type BarcoSeminovoDatabaseDashboard = {
 
 
 export type BarcoSeminovoDashboardList = {
-    id: number,
+    ativo: boolean,
+    modelo: string,
+    nome: string,
+    tamanho: number,
+    imagem: string,
+    ano: number,
+    moeda: string,
+    valor: string
+}
+
+export type BarcoSeminovoDashboardListWithId = {
+    codigo: string,
     ativo: boolean,
     modelo: string,
     nome: string,
@@ -186,7 +241,6 @@ export type BarcoSeminovoDashboardList = {
 }
 
 export type BarcoSeminovoFrontEndList = {
-    id: number,
     modelo: string,
     imagem: string,
     tamanho: number,
@@ -194,6 +248,17 @@ export type BarcoSeminovoFrontEndList = {
     potencia: number,
     combustivel: string,
     motorizacao: {quantidade:number, modelo:string}
+}
+
+export type BarcoSeminovoFrontEndListWithId = {
+    codigo: string,
+    modelo: string,
+    imagem: string,
+    tamanho: number,
+    ano: number,
+    potencia: number,
+    combustivel: string,
+    motorizacao: { quantidade: number, modelo: string }
 }
 
 export type BarcoSeminovoFilters = {
@@ -204,7 +269,13 @@ export type BarcoSeminovoFilters = {
 }
 
 export type BarcoSeminovoRelated = {
-    id:number,
+    modelo: string,
+    imagem: string,
+    preco: string,
+}
+
+export type BarcoSeminovoRelatedWithId = {
+    id: number,
     modelo: string,
     imagem: string,
     preco: string,

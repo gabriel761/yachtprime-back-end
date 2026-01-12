@@ -3,25 +3,28 @@ import db from "../../infra/database.js";
 import { Condicao } from "../../types/charter/Condicoes.js";
 
 export class CondicoesRepository {
-    async getCondicoesByIdPasseio(idPasseio: number):Promise<Condicao[]> {
+    async getCondicoesByIdCharter(idCharter: number): Promise<Condicao[]> {
         const result = await db.query(`
-        SELECT c.id, c.opcao
-        FROM passeio_condicoes pc
-        JOIN condicao c ON pc.id_condicao = c.id
-        WHERE pc.id_passeio = $1;
-        `,[idPasseio]).catch((error) => {
-            throw new CustomError(`Repository level Error: CondicoesRepository getCondicoesCharterByIdPasseio: ${error}`, 500)
+                SELECT 
+                    cc.id,
+                    cc.opcao
+                FROM barco_charter c
+                JOIN barco_charter_condicoes_charter bccc ON bccc.id_barco_charter = c.id
+                JOIN condicoes_charter cc ON bccc.id_condicoes_charter = cc.id
+                WHERE c.id = $1  
+        `, [idCharter]).catch((error) => {
+            throw new CustomError(`Repository level Error: CondicoesRepository getCondicoesByIdCharter: ${error}`, 500)
         });
         if (result.length == 0) {
-            throw new CustomError("Não foram encontrados condicoes associados a este barco idPasseio=" + idPasseio, 404)
+            throw new CustomError("Não foram encontrados condicoes associados a este barco idCharter=" + idCharter, 404)
         }
-        
+
         return result
     }
 
-    async getAllCondicoes(){
-        const result = await db.query(`SELECT * FROM condicao`).catch((error) => {
-            throw new CustomError(`Repository level Error: CondicoesRepository getAllCondicoes: ${error}`, 500)
+    async getCondicoesPadrao() {
+        const result = await db.query(`SELECT * FROM condicoes_padrao`).catch((error) => {
+            throw new CustomError(`Repository level Error: CondicoesRepository getCondicoesPadrao: ${error}`, 500)
         });
         if (result.length == 0) {
             throw new CustomError("Não foram encontradas condicoes na tabela", 404)
@@ -30,15 +33,33 @@ export class CondicoesRepository {
         return result
     }
 
-    async associateCondicaoPasseio (idPasseio: number, idCondicao: number){
-        db.query('INSERT INTO passeio_condicoes (id_passeio, id_condicao) VALUES ($1,$2)', [idPasseio, idCondicao]).catch((error) => {
-            throw new CustomError(`Repository level Error: CondicoesRepository insertCondicao: ${error}`, 500)
+    async insertCondicaoPadrao(condicao: Condicao) {
+        await db.query(`INSERT INTO condicoes_padrao (opcao) VALUES ($1)`, [condicao.opcao]).catch((error) => {
+            throw new CustomError(`Repository level Error: CondicoesRepository insertCondicaoPadrao: ${error}`, 500)
         });
     }
 
-    async deleteAllAssociationCondicaoPasseio(idPasseio: number){
-        db.query('DELETE FROM passeio_condicoes WHERE id_passeio = $1', [idPasseio]).catch((error) => {
-            throw new CustomError(`Repository level Error: CondicoesRepository deleteAllAssociationCondicaoPasseio: ${error}`, 500)
+    async postCondicaoCharter(condicao: Condicao): Promise<number> {
+        const result = await db.query('INSERT INTO condicoes_charter (opcao) VALUES ($1) RETURNING id', [condicao.opcao]).catch((error) => {
+            throw new CustomError(`Repository level Error: CondicoesRepository insertCondicaoCharter: ${error}`, 500)
+        });
+        return result[0].id
+    }
+
+    async associateCondicaoCharter(idBarcoCharter: string, idCondicao: number) {
+        db.query('INSERT INTO barco_charter_condicoes_charter (id_barco_charter, id_condicoes_charter) VALUES ($1,$2)', [idBarcoCharter, idCondicao]).catch((error) => {
+            throw new CustomError(`Repository level Error: CondicoesRepository insertCondicao: ${error}`, 500);
+        });
+    }
+
+    async deleteCondicoesByCharterId(idCharter: number) {
+        await db.query('DELETE FROM barco_charter_condicoes_charter WHERE id_barco_charter = $1', [idCharter]).catch((error) => {
+            throw new CustomError(`Repository level Error: CondicoesRepository deleteCondicoesByCharterId: ${error}`, 500)
+        });
+    }
+    async deleteAllCondicoesPadrao() {
+        await db.query('DELETE FROM condicoes_padrao').catch((error) => {
+            throw new CustomError(`Repository level Error: CondicoesRepository deleteCondicoesByCharterId: ${error}`, 500)
         });
     }
 }

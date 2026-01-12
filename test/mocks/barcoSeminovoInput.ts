@@ -25,7 +25,7 @@ const barcoSeminovoInput: BarcoSeminovoInput= {
     },
     proprietario: {
         nome: "Alice Almeida",
-        email: "alice.almeida@gmail.com",
+        email: "",
         telefone: "+55 21 98391-7378"
     },
     cabines: {

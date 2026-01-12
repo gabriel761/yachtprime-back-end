@@ -14,7 +14,7 @@ export class BarcoCharterController {
     }
     async getBarcoCharterById(req: Request, res: Response, next: NextFunction) {
         try {
-            const id = parseInt(req.params.id)
+            const id = req.params.id
             const barcoCharterResult = await this.barcoCharterService.getBarcoCharterById(id)
             res.json(barcoCharterResult);
         } catch (error) {
@@ -24,7 +24,7 @@ export class BarcoCharterController {
 
     async getBarcoCharterDashboardById(req: Request, res: Response, next: NextFunction){
         try {
-            const id = parseInt(req.params.id)
+            const id = req.params.id
             const barcoCharterResult = await this.barcoCharterService.getBarcoCharterDashboardById(id)
             res.json(barcoCharterResult);
         } catch (error) {
@@ -34,7 +34,7 @@ export class BarcoCharterController {
 
     async getRelatedCharters(req: Request, res: Response, next: NextFunction){
         try {
-            const id = parseInt(req.params.id)
+            const id = req.params.id
             const relatedCharters = await this.barcoCharterService.getRelatedCharters(id)
             res.json(relatedCharters)
         } catch (error) {
@@ -81,10 +81,8 @@ export class BarcoCharterController {
 
     async updateBarcoCharterById(req: Request, res: Response, next: NextFunction) {
         try {
-            const firebaseId = req.firebaseUser?.uid
-            if (!firebaseId) throw new CustomError("Firebase id indefinido", 403)
             const barcoCharterInput: BarcoCharterInputWithId = req.body
-            await this.barcoCharterService.updateBarcoCharter(barcoCharterInput, firebaseId)
+            await this.barcoCharterService.updateBarcoCharter(barcoCharterInput)
             res.sendStatus(200)
         } catch (error) {
             next(error)
