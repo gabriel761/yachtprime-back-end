@@ -19,8 +19,12 @@ export class UserController {
 
     async getUserById(req: Request, res: Response, next: NextFunction) {
         try {
-            const id = parseInt(req.params.id)
-            const userTypes = await userService.getUserById(id)
+            const { id } = req.params;
+            if (Array.isArray(id)) {
+                return res.status(400).json({ error: 'Invalid id' });
+            }
+            const idUser = parseInt(id)
+            const userTypes = await userService.getUserById(idUser)
             res.json(userTypes)
         } catch (error) {
             next(error)
@@ -29,8 +33,12 @@ export class UserController {
 
     async getUserDashboardById(req: Request, res: Response, next: NextFunction) {
         try {
-            const id = parseInt(req.params.id)
-            const userTypes = await userService.getUserDashboardById(id)
+            const { id } = req.params;
+            if (Array.isArray(id)) {
+                return res.status(400).json({ error: 'Invalid id' });
+            }
+            const idUser = parseInt(id)
+            const userTypes = await userService.getUserDashboardById(idUser)
             res.json(userTypes)
         } catch (error) {
             next(error)

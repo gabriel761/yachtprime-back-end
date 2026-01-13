@@ -269,7 +269,7 @@ WHERE
         try {
             const result = await db.query(`
             SELECT 
-                bs.id,
+                bs.codigo,
                 p.valor AS preco,
                 m.modelo AS modelo,
                 im.link AS imagem
@@ -289,14 +289,14 @@ WHERE
                 FROM imagem_barco_seminovo ibs2 
                 WHERE ibs2.id_barco_seminovo = bs.id
             )
-			AND bs.id <> $1 -- exclui o barco base
+			AND bs.codigo <> $1 -- exclui o barco base
             AND bs.ativo = true
             ORDER BY 
                 ABS(p.valor - (
                     SELECT p2.valor
                     FROM barco_seminovo bs2
                     JOIN preco p2 ON bs2.id_preco = p2.id
-                    WHERE bs2.id = $1
+                    WHERE bs2.codigo = $1
                 )) ASC
             LIMIT 3;
             `, [idSeminovo])
@@ -395,6 +395,25 @@ WHERE
         } catch (error: any) {
             throw new CustomError(`Repository level error: BarcoSeminovoRepository:updateBarcoSeminovo: ${error.message}`, 500)
         }
+    }
+
+    async getIdSeminovoByCodigo(codigoSeminovo: string): Promise<number> {
+        
+            const result = await db.oneOrNone(`
+            SELECT
+                id AS id_seminovo
+            FROM 
+                barco_seminovo 
+            WHERE 
+                codigo = $1
+            `, [codigoSeminovo]).catch((error) => {
+                throw new CustomError(`Repository level error: BarcoSeminovoRepository:getIdSeminovoByCodigo: ${error.message}`, 500)
+            });
+            if (!result) {
+                throw new CustomError("Erro ao pegar id de seminovo. Barco não encontrado: codigo=" + codigoSeminovo, 404);
+            }
+            return result.id_seminovo
+        
     }
 
     async getIdsByIdSeminovo(idSeminovo: number) {

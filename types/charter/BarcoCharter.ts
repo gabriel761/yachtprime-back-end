@@ -37,8 +37,30 @@ export type BarcoCharterOutput = {
     taxaChurrasco: TaxaChurrascoOutput;
     videoPromocional: string | null;
 }
+
+export type BarcoCharterOutputForTests = { // no uuid code
+    modelo: string;
+    nome: string | null;
+    ano: number;
+    tamanho: number;
+    cidade: "Angra dos Reis" | "Rio de Janeiro";
+    preco: PrecoOutput;
+    passageiros: Passageiros;
+    roteiros: RoteiroOutput[];
+    pernoite: boolean;
+    petFriendly: PetFriendly;
+    itensDisponiveis: ItemCharter[];
+    imagens: Imagem[];
+    consumoCombustivel: ConsumoCombustivelOutput;
+    tipoPasseio: TipoPasseio;
+    tripulacaoSkipper: TripulacaoSkipper;
+    horaExtra: PrecoOutput;
+    aluguelLancha: PrecoOutput;
+    condicoes: Condicao[];
+    taxaChurrasco: TaxaChurrascoOutput;
+    videoPromocional: string | null;
+}
 export type BarcoCharterOutputWithId = {
-    id: number
     codigo: string
     modelo: string;
     nome: string | null;
@@ -62,9 +84,36 @@ export type BarcoCharterOutputWithId = {
     videoPromocional: string | null;
 }
 
+
+
 export type BarcoCharterDashboardOutput = {
     ativo: boolean;
-    codigo: string
+    codigo: string;
+    modelo: string;
+    nome: string | null;
+    ano: number;
+    tamanho: number;
+    cidade: "Angra dos Reis" | "Rio de Janeiro";
+    preco: PrecoOutput;
+    passageiros: Passageiros;
+    roteiros: RoteiroOutput[];
+    pernoite: boolean;
+    petFriendly: PetFriendly;
+    itensDisponiveis: ItemCharter[];
+    imagens: Imagem[];
+    consumoCombustivel: ConsumoCombustivelOutput;
+    proprietario: Proprietario;
+    tipoPasseio: TipoPasseio;
+    tripulacaoSkipper: TripulacaoSkipper;
+    horaExtra: PrecoOutput;
+    aluguelLancha: PrecoOutput;
+    condicoes: Condicao[];
+    taxaChurrasco: TaxaChurrascoOutput;
+    videoPromocional: string | null;
+}
+
+export type BarcoCharterDashboardOutputForTests = { // no uuid code
+    ativo: boolean;
     modelo: string;
     nome: string | null;
     ano: number;
@@ -170,6 +219,7 @@ export type BarcoCharterInputWithId = {
 
 export type BarcoCharterDatabaseDashboard = {
     id: number;
+    codigo: string;
     ativo: boolean;
     nome: string | null;
     modelo_id: number;
@@ -355,7 +405,7 @@ export type BarcoCharterRelated = {
 }
 
 export type BarcoCharterRelatedWithId = {
-    id: number
+    codigo: string,
     modelo: string,
     imagem: string,
     preco: PrecoOutput,

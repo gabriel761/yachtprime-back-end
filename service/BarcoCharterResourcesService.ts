@@ -1,4 +1,5 @@
 import { CustomError } from "../infra/CustoError.js";
+import { BarcoCharterModel } from "../models/charter/BarcoCharterModel.js";
 import { CidadeModel } from "../models/charter/CidadeModel.js";
 import { CondicoesModel } from "../models/charter/CondicoesModel.js";
 import { ItensCharterModel } from "../models/charter/ItensCharterModel.js";
@@ -7,6 +8,7 @@ import { TipoPasseioModel } from "../models/charter/TipoPasseioModel.js";
 import { TripulacaoSkipperModel } from "../models/charter/TripulacaoSkipperModel.js";
 import { FirebaseModel } from "../models/external/FirebaseModel.js";
 import { ImagemModel } from "../models/ImagemModel.js";
+import { BarcoCharterRepository } from "../repository/charter/BarcoCharterRepository.js";
 import { CidadeRepository } from "../repository/charter/CidadeRepository.js";
 import { CondicoesRepository } from "../repository/charter/CondicoesRepository.js";
 import { ItensCharterRepository } from "../repository/charter/ItensCharterRepository.js";
@@ -17,6 +19,7 @@ import { ImagemRepository } from "../repository/ImagemRepository.js";
 import { Condicao } from "../types/charter/Condicoes.js";
 import { ItemCharter, ItemCharterInput } from "../types/charter/ItemCharter.js";
 
+const charterModel = new BarcoCharterModel()
 const petFriendlyModel = new PetFriendlyModel()
 const tipoPasseioModel = new TipoPasseioModel()
 const tripulacaoSkipperModel = new TripulacaoSkipperModel()
@@ -45,7 +48,8 @@ export class BarcoCharterResourcesService {
         return itensCharter
     }
 
-    async listImagesByIdCharter(idCharter:number){
+    async listImagesByIdCharter(codigoCharter:string){
+        const idCharter = await charterModel.getIdCharterByCodigo(codigoCharter, new BarcoCharterRepository())
         const imagesCharter = await imagemModel.getImagesByIdCharter(idCharter, new ImagemRepository())
         return imagesCharter
     }

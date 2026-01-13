@@ -84,6 +84,10 @@ export class BarcoSeminovoModel {
         return result
     }
 
+    async getIdSeminovoByCodigo(codigoSeminovo: string, barcoSeminovoRepository: BarcoSeminovoRepository): Promise<number> {
+        const idSeminovo = await barcoSeminovoRepository.getIdSeminovoByCodigo(codigoSeminovo)
+        return idSeminovo
+    }
     async getIdsByIdSeminovo(idSeminovo: number | undefined, barcoSeminovoRepository: BarcoSeminovoRepository) {
         if (!idSeminovo) {
             throw new CustomError("Erro: idSeminovo não encontrado na requisição ", 400);
@@ -257,8 +261,9 @@ export class BarcoSeminovoModel {
         cabinesVO.setTripulacao(barcoSeminovoInput.cabines.tripulacao)
         precoVO.setMoeda(barcoSeminovoInput.preco.moeda)
         precoVO.setValor(barcoSeminovoInput.preco.valor)
-        
-        barcoseminovoInputVO.setId(idSeminovo)
+       
+        barcoseminovoInputVO.setId(idSeminovo);
+        barcoseminovoInputVO.setCodigo(barcoSeminovoInput.codigo);
         barcoseminovoInputVO.setAtivo(barcoSeminovoInput.ativo);
         barcoseminovoInputVO.setModelo(barcoSeminovoInput.modelo);
         barcoseminovoInputVO.setNome(barcoSeminovoInput.nome);

@@ -42,7 +42,11 @@ export class BarcoCharterResourcesController {
 
     async listImagensByIdCharter(req: Request, res: Response, next: NextFunction) {
         try {
-            const idCharter: string = req.params.id
+            const { id } = req.params;
+            if (Array.isArray(id)) {
+                return res.status(400).json({ error: 'Invalid id' });
+            }
+            const idCharter: string = id
             const result = await barcoCharterResourcesService.listImagesByIdCharter(idCharter)
             res.json(result)
         } catch (error) {

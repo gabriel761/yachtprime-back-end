@@ -13,7 +13,10 @@ import { ModeloMotorRepository } from "../repository/ModeloMotorRepository.js"
 import { ModeloRepository } from "../repository/ModeloRepository.js"
 import { PropulsaoRepository } from "../repository/seminovo/PropulsaoRepository.js"
 import { ItemSeminovo, ItemSeminovoInput } from "../types/seminovo/ItemSeminovo.js"
+import { BarcoSeminovoModel } from "../models/seminovo/BarcoSeminovoModel.js"
+import BarcoSeminovoRepository from "../repository/seminovo/BarcoSeminovoRepository.js"
 
+const barcoSeminovoModel = new BarcoSeminovoModel()
 const combustivelModel = new CombustivelModel()
 const modeloModel = new ModeloModel()
 const motorModel = new MotorModel()
@@ -43,7 +46,8 @@ export class BarcoSeminovoResourcesService {
         return result
     }
     async listImagensByIdSeminovo(idSeminovo: string) {
-        const result = await imagemModel.getImagesByIdSeminovo(idSeminovo, new ImagemRepository())
+        const idCharter = await barcoSeminovoModel.getIdSeminovoByCodigo(idSeminovo, new BarcoSeminovoRepository())
+        const result = await imagemModel.getImagesByIdSeminovo(idCharter, new ImagemRepository())
         return result
     }
     async deleteImagesFromFirebase(images: []) {

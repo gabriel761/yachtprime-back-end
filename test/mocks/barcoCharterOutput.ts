@@ -1,6 +1,6 @@
-import { BarcoCharterOutput } from '../../types/charter/BarcoCharter.js'
+import { BarcoCharterOutputForTests } from '../../types/charter/BarcoCharter.js'
 
-const barcoCharterOutput: BarcoCharterOutput = {
+const barcoCharterOutput: BarcoCharterOutputForTests = {
     modelo: "Azimut 70",
     nome: "Lancha Luxo",
     ano: 2022,

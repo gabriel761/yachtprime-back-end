@@ -52,7 +52,11 @@ export class BarcoSeminovoResourcesController {
 
     async listImagensByIdSeminovo(req: Request, res: Response, next: NextFunction) {
         try {
-            const idSeminovo = req.params.id 
+            const { id } = req.params;
+            if (Array.isArray(id)) {
+                return res.status(400).json({ error: 'Invalid id' });
+            }
+            const idSeminovo = id 
             const itemSeminovoResult = await barcoSeminovoResourcesService.listImagensByIdSeminovo(idSeminovo)
             res.json(itemSeminovoResult)
         } catch (error) {

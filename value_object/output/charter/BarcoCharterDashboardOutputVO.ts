@@ -1,4 +1,4 @@
-import { BarcoCharterDashboardOutput, BarcoCharterDashboardOutputWithId, BarcoCharterOutput } from "../../../types/charter/BarcoCharter.js";
+import { BarcoCharterDashboardOutput, BarcoCharterDashboardOutputWithId } from "../../../types/charter/BarcoCharter.js";
 import { PrecoOutput } from "../../../types/Preco.js";
 import { Passageiros } from "../../../types/charter/Passageiros.js";
 import { ItemCharter } from "../../../types/charter/ItemCharter.js";
@@ -16,6 +16,7 @@ import { CustomError } from "../../../infra/CustoError.js";
 
 export class BarcoCharterDashboardOutputVO {
     private id!:number;
+    private codigo!: string;
     private ativo!: boolean;
     private modelo!: string;
     private nome!: string | null;
@@ -45,6 +46,9 @@ export class BarcoCharterDashboardOutputVO {
         this.id = id
     }
 
+    setCodigo(codigo: string){
+        this.codigo = codigo
+    }
     setAtivo(ativo: boolean){
         this.ativo = ativo
     }
@@ -133,9 +137,38 @@ export class BarcoCharterDashboardOutputVO {
         this.videoPromocional = video;
     }
 
-    extractData(): BarcoCharterDashboardOutputWithId {
+    extractData(): BarcoCharterDashboardOutput {
+        return {
+            codigo: this.codigo,
+            ativo: this.ativo,
+            modelo: this.modelo,
+            nome: this.nome,
+            ano: this.ano,
+            cidade: this.cidade,
+            tamanho: this.tamanho,
+            preco: this.preco,
+            passageiros: this.passageiros,
+            roteiros: this.roteiros,
+            pernoite: this.pernoite,
+            petFriendly: this.petFriendly,
+            itensDisponiveis: this.itensDisponiveis,
+            imagens: this.imagens,
+            consumoCombustivel: this.consumoCombustivel,
+            proprietario: this.proprietario,
+            tipoPasseio: this.tipoPasseio,
+            tripulacaoSkipper: this.tripulacaoSkpper,
+            horaExtra: this.horaExtra,
+            aluguelLancha: this.aluguelLancha,
+            condicoes: this.condicoes,
+            taxaChurrasco: this.taxaChurrasco,
+            videoPromocional: this.videoPromocional
+        };
+    }
+
+    extractDataWithId(): BarcoCharterDashboardOutputWithId {
         return {
             id: this.id,
+            codigo: this.codigo,
             ativo: this.ativo,
             modelo: this.modelo,
             nome: this.nome,

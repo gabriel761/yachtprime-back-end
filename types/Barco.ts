@@ -1,5 +1,5 @@
 export type Barco = {
-    id: string,
+    codigo: string,
     tipo: string,
     modelo: string,
     imagem: string

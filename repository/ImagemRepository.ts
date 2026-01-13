@@ -46,6 +46,9 @@ export class ImagemRepository {
         }
         return result
     }
+
+   
+
     async getImagemById(idImagem: number,) {
         const imagem = await db.oneOrNone("SELECT * FROM imagem_barco_seminovo WHERE id_barco_seminovo = $1", [idImagem])
             .catch((error) => {

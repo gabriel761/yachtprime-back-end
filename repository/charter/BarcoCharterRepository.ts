@@ -165,6 +165,7 @@ WHERE bc.codigo = $1;
         const result = await db.query(`
             SELECT
                 bc.id,
+                bc.codigo,
                 bc.ativo,
 				im.link AS imagem,
                 cd.opcao AS cidade,
@@ -318,12 +319,25 @@ WHERE bc.codigo = $1;
         return Math.ceil(totalItems / limit);
     }
 
+    async getIdCharterByCodigo(codigo: string) {
+        const result = await db.oneOrNone(`
+             SELECT id FROM barco_charter WHERE codigo = $1
+            `, [codigo])
+            .catch((error) => {
+                throw new CustomError(`Repository level error: BarcoChaterRepository:getIdCharterByCodigo: ${error.message}`, 500)
+            })
+        if (!result) {
+            throw new CustomError("Erro ao pegar id de barco charter. Barco não encontrado: código=" + codigo, 404);
+        }
+        return result.id
+    }
 
-    async getIdsByIdCharter(idChater: number) {
+    async getIdsByIdCharter(codigoCharter: string) {
 
         const result = await db.oneOrNone(`
              SELECT
-               bc.id_preco,
+                bc.id,
+                bc.id_preco,
                 id_passageiros,
                 id_cidade,
                 id_preco_hora_extra,
@@ -338,13 +352,13 @@ WHERE bc.codigo = $1;
                 barco_charter bc
 				JOIN taxa_churrasco ON id_taxa_churrasco = taxa_churrasco.id
             WHERE 
-                bc.id = $1
-            `, [idChater])
+                bc.codigo = $1
+            `, [codigoCharter])
             .catch((error) => {
                 throw new CustomError(`Repository level error: BarcoChaterRepository:getIdsByIdChater: ${error.message}`, 500)
             })
         if (!result) {
-            throw new CustomError("Erro ao pegar ids de barco charter. Barco não encontrado: id=" + result, 404);
+            throw new CustomError("Erro ao pegar ids de barco charter. Barco não encontrado: código=" + result, 404);
         }
         return result
     }
@@ -353,7 +367,7 @@ WHERE bc.codigo = $1;
         try {
             const result = await db.query(`
             SELECT 
-                bc.id,
+                bc.codigo,
                 p.valor AS preco_valor,
 				mo.simbolo AS preco_moeda,
                 m.modelo AS modelo,
@@ -377,14 +391,14 @@ WHERE bc.codigo = $1;
                 FROM imagem_barco_charter ibc2 
                 WHERE ibc2.id_barco_charter = bc.id
             )
-			AND bc.id <> $1 -- exclui o barco base
+			AND bc.codigo <> $1 -- exclui o barco base
             AND bc.ativo = true
             ORDER BY 
                 ABS(p.valor - (
                     SELECT p2.valor
                     FROM barco_seminovo bc2
                     JOIN preco p2 ON bc2.id_preco = p2.id
-                    WHERE bc2.id = $1
+                    WHERE bc2.codigo = $1
                 )) ASC
             LIMIT 3;
             `, [idCharter])

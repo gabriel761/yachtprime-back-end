@@ -33,9 +33,15 @@ export class BarcoCharterModel {
         return barcoCharterRepository.getBarcoCharterDashboard(codigo)
     }
 
-    async getIdsByIdCharter(idChater: number, barcoCharterRepository: BarcoCharterRepository) {
-        const result = await barcoCharterRepository.getIdsByIdCharter(idChater)
+    async getIdCharterByCodigo(codigo: string, barcoCharterRepository: BarcoCharterRepository) {
+        const result = await barcoCharterRepository.getIdCharterByCodigo(codigo)
+        return result
+    }
+
+    async getIdsByIdCharter(codigoCharter: string, barcoCharterRepository: BarcoCharterRepository) {
+        const result = await barcoCharterRepository.getIdsByIdCharter(codigoCharter)
         const structuredResult = {
+            idCharter: result.id,
             idPrecoTaxaChurrasco: result.taxa_churrasco_id_preco,
             idPrecoBarco: result.id_preco,
             idPrecoHoraExtra: result.id_preco_hora_extra,
@@ -105,7 +111,7 @@ export class BarcoCharterModel {
         const result =  await barcoCharterRepository.getRelatedCharters(idCharter)
         const charterRelated = result.map((charter): BarcoCharterRelatedWithId => {
             return {
-                id: charter.id,
+                codigo: charter.codigo,
                 preco: {
                     valor: charter.preco_valor,
                     moeda: charter.preco_moeda
@@ -197,7 +203,7 @@ export class BarcoCharterModel {
 
 
         
-        const { idPrecoTaxaChurrasco, idPrecoBarco, idPassageiros, idPrecoHoraExtra, idPrecoAluguelLancha, idTaxaChurrasco, idConsumo} = await this.getIdsByIdCharter(barcoCharter.id, new BarcoCharterRepository())
+        const {idCharter, idPrecoTaxaChurrasco, idPrecoBarco, idPassageiros, idPrecoHoraExtra, idPrecoAluguelLancha, idTaxaChurrasco, idConsumo} = await this.getIdsByIdCharter(barcoCharter.codigo, new BarcoCharterRepository())
 
         
 
@@ -235,7 +241,8 @@ export class BarcoCharterModel {
         const precoAluguelLancha = precoVO.extractData()
 
         
-        barcoCharterVO.setId(barcoCharter.id)
+        barcoCharterVO.setId(idCharter)
+        barcoCharterVO.setCodigo(barcoCharter.codigo)
         barcoCharterVO.setAtivo(barcoCharter.ativo)
         barcoCharterVO.setModelo(barcoCharter.modelo)
         barcoCharterVO.setNome(barcoCharter.nome)
@@ -374,6 +381,7 @@ export class BarcoCharterModel {
         const proprietario = proprietarioOutputVO.extractDataWithId()
 
         barcoCharterVO.setId(barcoCharterDatabase.id)
+        barcoCharterVO.setCodigo(barcoCharterDatabase.codigo)
         barcoCharterVO.setAtivo(barcoCharterDatabase.ativo)
         barcoCharterVO.setModelo(barcoCharterDatabase.modelo_modelo)
         barcoCharterVO.setNome(barcoCharterDatabase.nome)

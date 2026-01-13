@@ -107,6 +107,7 @@ class BarcoSeminovoService {
     
     }
     async updateBarcoSeminovo(barcoSeminovoClient: BarcoSeminovoInputWithId, firebaseId: string) {
+        const idSeminovo = await barcoSeminovoModel.getIdSeminovoByCodigo(barcoSeminovoClient.codigo, new BarcoSeminovoRepository())
         let idProprietario
         if (!barcoSeminovoClient.proprietario.id) {
             const idUser = await userModel.getUserIdByIdFirebase(firebaseId, new UserRepository())
@@ -117,9 +118,9 @@ class BarcoSeminovoService {
 
         const validatedImages = imagemModel.validateImages(barcoSeminovoClient.imagens, new ImagemInputVO())
         const validatedItems = itensSeminovoModel.validateItensSeminovo(barcoSeminovoClient.equipadoCom, new ItemSeminovoInputVO())
-        const barcoSeminovoValidated = barcoSeminovoModel.buildBarcoSeminovoInputObjectWithId(barcoSeminovoClient, new BarcoSeminovoInputVO, validatedImages, validatedItems, new ModeloInputVO(), new MotorizacaoInputVO(), new CombustivelInputVO(), new PropulsaoInputVO(), new CabinesInputVO(), new ProprietarioInputVO(), new PrecoInputVO(), barcoSeminovoClient.id)
+        const barcoSeminovoValidated = barcoSeminovoModel.buildBarcoSeminovoInputObjectWithId(barcoSeminovoClient, new BarcoSeminovoInputVO, validatedImages, validatedItems, new ModeloInputVO(), new MotorizacaoInputVO(), new CombustivelInputVO(), new PropulsaoInputVO(), new CabinesInputVO(), new ProprietarioInputVO(), new PrecoInputVO(),idSeminovo)
 
-        const {idPreco, idMotorizacao, idCabine} = await barcoSeminovoModel.getIdsByIdSeminovo(barcoSeminovoValidated.id, new BarcoSeminovoRepository())
+        const {idPreco, idMotorizacao, idCabine} = await barcoSeminovoModel.getIdsByIdSeminovo(idSeminovo, new BarcoSeminovoRepository())
         await precoModel.updatePreco(barcoSeminovoValidated.preco, idPreco, new PrecoRepository(), new MoedaRepository())
         await motorizacaoModel.updateMotorizacao(barcoSeminovoValidated.motorizacao, idMotorizacao, new MotorizacaoRepository())
         await cabineModel.updateCabine(barcoSeminovoValidated.cabines, idCabine, new CabineRepository())

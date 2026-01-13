@@ -17,6 +17,7 @@ import { Condicao } from "../../../types/charter/Condicoes.js";
 
 export class BarcoCharterInputVO {
     private id!: number;
+    private codigo!: string;
     private ativo!: boolean;
     private modelo!: string;
     private nome!: string;
@@ -45,6 +46,11 @@ export class BarcoCharterInputVO {
     setId(id: number){
         validateIntegerPositiveNumber(id, "id", "BarcoCharterVO")
         this.id = id
+    }
+
+    setCodigo(codigo: string){
+        validateUUID(codigo, "codigo", "BarcoCharterVO")
+        this.codigo = codigo
     }
 
     setAtivo(ativo: boolean){
@@ -185,6 +191,7 @@ export class BarcoCharterInputVO {
     extractDataWhithId(): BarcoCharterInputWithId {
         return {
             id: this.id,
+            codigo: this.codigo,
             ativo: this.ativo,
             modelo: this.modelo,
             nome: this.nome,

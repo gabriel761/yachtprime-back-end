@@ -81,10 +81,10 @@ export class ResourcesService {
         const associatedBoatsList = await proprietarioModel.listAllBoatsFromProprietario(idProprietario, new ProprietarioRepository())
         const deletePromises = associatedBoatsList.map(async (barco)=> {
             if(barco.tipo == "charter"){
-                await charterService.deleteBarcoCharter(barco.id, firebaseModel)
+                await charterService.deleteBarcoCharter(barco.codigo, firebaseModel)
             }
             if(barco.tipo == "seminovo"){
-              await  seminovoService.deleteBarcoSeminovo(barco.id, firebaseModel)
+              await  seminovoService.deleteBarcoSeminovo(barco.codigo, firebaseModel)
             }
         })
         await Promise.all(deletePromises)

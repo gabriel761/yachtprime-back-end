@@ -71,7 +71,7 @@ export class ProprietarioRepository {
             (
                     -- barcos seminovos
                     SELECT
-                        bs.id AS id,
+                        bs.codigo AS codigo,
                         'seminovo' AS tipo,
                         mb.modelo AS modelo,
                         img.link AS imagem
@@ -91,7 +91,7 @@ export class ProprietarioRepository {
                 (
                     -- barcos charter
                     SELECT
-                        bc.id AS id,
+                        bc.codigo AS codigo,
                         'charter' AS tipo,
                         mb.modelo AS modelo,
                         img.link AS imagem

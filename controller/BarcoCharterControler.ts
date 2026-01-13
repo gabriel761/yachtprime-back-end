@@ -14,7 +14,11 @@ export class BarcoCharterController {
     }
     async getBarcoCharterById(req: Request, res: Response, next: NextFunction) {
         try {
-            const id = req.params.id
+            const { id } = req.params;
+            console.log("ID recebido no controller:", id);
+            if (Array.isArray(id)) {
+                return res.status(400).json({ error: 'Invalid id' });
+            }
             const barcoCharterResult = await this.barcoCharterService.getBarcoCharterById(id)
             res.json(barcoCharterResult);
         } catch (error) {
@@ -24,7 +28,11 @@ export class BarcoCharterController {
 
     async getBarcoCharterDashboardById(req: Request, res: Response, next: NextFunction){
         try {
-            const id = req.params.id
+            const { id } = req.params;
+            console.log("ID recebido no controller:", id);
+            if (Array.isArray(id)) {
+                return res.status(400).json({ error: 'Invalid id' });
+            }
             const barcoCharterResult = await this.barcoCharterService.getBarcoCharterDashboardById(id)
             res.json(barcoCharterResult);
         } catch (error) {
@@ -34,7 +42,10 @@ export class BarcoCharterController {
 
     async getRelatedCharters(req: Request, res: Response, next: NextFunction){
         try {
-            const id = req.params.id
+            const { id } = req.params;
+            if (Array.isArray(id)) {
+                return res.status(400).json({ error: 'Invalid id' });
+            }
             const relatedCharters = await this.barcoCharterService.getRelatedCharters(id)
             res.json(relatedCharters)
         } catch (error) {

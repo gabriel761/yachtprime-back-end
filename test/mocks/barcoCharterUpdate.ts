@@ -1,6 +1,7 @@
-import { BarcoCharterDashboardOutput } from '../../types/charter/BarcoCharter.js'
+import {  BarcoCharterDashboardOutput, BarcoCharterDashboardOutputForTests } from '../../types/charter/BarcoCharter.js'
 
-const barcoCharterOutputUpdate: BarcoCharterDashboardOutput = {
+const barcoCharterOutputUpdate: BarcoCharterDashboardOutputForTests = {
+    
     ativo: true,
     modelo: "Ferretti 760",
     nome: "Barco Premium",

@@ -90,12 +90,11 @@ describe("Barco charter and resources tests", () => {
         const response = await request("http://localhost:5000/barco/charter/dashboard/1", "get")
         expect(response.data).toEqual(barcoCharterOutputDashboard)
     })
-    test.only("Should post full barco charter", async () => {
+    test("Should post full barco charter", async () => {
         await request("http://localhost:5000/barco/charter", "POST", barcoCharterInput)
         const uuid = await db.query("SELECT codigo FROM barco_charter LIMIT 1").then(res => res[0].codigo)
         const response = await request("http://localhost:5000/barco/charter/" + uuid, "get")
-        const { id, codigo, ...rest } = response.data
-        expect(id).toBe(1)
+        const { codigo, ...rest } = response.data
         expect(codigo).toMatch(UUID_REGEX)
         expect(rest).toEqual(barcoCharterOutput)
     })
@@ -105,15 +104,15 @@ describe("Barco charter and resources tests", () => {
         expect(response.status).toBe(200);
         expect(response.data).toBeInstanceOf(Array);
         barcosResponse.forEach((item, index) => {
-            const { id, ...rest } = item;
+            const {codigo, ...rest } = item;
 
-            expect(id).toMatch(UUID_REGEX);
+            expect(codigo).toMatch(UUID_REGEX);
             expect(rest).toEqual(barcoCharterDashboardList[index]);
         });
     })
     test("Should update barco charter", async () => {
         const uuid = await db.query("SELECT codigo FROM barco_charter LIMIT 1").then(res => res[0].codigo)
-        const barcoCharterUpdate = { id: uuid, ...barcoCharterOutputUpdate }
+        const barcoCharterUpdate = { codigo: uuid, ...barcoCharterOutputUpdate }
         barcoCharterUpdate.ano = 2019
         barcoCharterUpdate.passageiros.passageiros = 12
         barcoCharterUpdate.consumoCombustivel.litrosHora = 40
@@ -128,7 +127,6 @@ describe("Barco charter and resources tests", () => {
         const { condicoes: actualCondicoes, ...actualRest } = response.data;
 
         expect(actualRest).toEqual(expectedRest);
-
         expect(actualCondicoes.length).toBe(expectedCondicoes.length);
         const actualOpcoes = actualCondicoes.map((c: any) => c.opcao).sort();
         const expectedOpcoes = expectedCondicoes.map((c: any) => c.opcao).sort();

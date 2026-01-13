@@ -17,7 +17,10 @@ export class BarcoSeminovoController {
 
     async getBarcoSeminovoById(req: Request, res: Response, next: NextFunction) {
         try {
-            const id = req.params.id
+            const { id } = req.params;
+            if (Array.isArray(id)) {
+                return res.status(400).json({ error: 'Invalid id' });
+            }
             const barcoSeminovoResult = await this.barcoSeminovoService.getBarcoSeminovoById(id)
             res.json(barcoSeminovoResult)
         } catch (error) {
@@ -27,7 +30,10 @@ export class BarcoSeminovoController {
 
     async getBarcoSeminovoDashboardById(req: Request, res: Response, next: NextFunction) {
         try {
-            const id = req.params.id
+            const { id } = req.params;
+            if (Array.isArray(id)) {
+                return res.status(400).json({ error: 'Invalid id' });
+            }
             const barcoSeminovoResult = await this.barcoSeminovoService.getBarcoSeminovoDashboardById(id)
             res.json(barcoSeminovoResult)
         } catch (error) {
@@ -60,8 +66,11 @@ export class BarcoSeminovoController {
     }
     async getRelatedSeminovos(req: Request, res: Response, next: NextFunction) {
         try {
-            const idSeminovo: string = req.params.id 
-            const result = await this.barcoSeminovoService.getRelatedSeminovos(idSeminovo)
+            const { id } = req.params;
+            if (Array.isArray(id)) {
+                return res.status(400).json({ error: 'Invalid id' });
+            }
+            const result = await this.barcoSeminovoService.getRelatedSeminovos(id)
             res.json(result)
         } catch (error) {
             next(error)

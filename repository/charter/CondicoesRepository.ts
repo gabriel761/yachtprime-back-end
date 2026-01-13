@@ -4,20 +4,19 @@ import { Condicao } from "../../types/charter/Condicoes.js";
 
 export class CondicoesRepository {
     async getCondicoesByIdCharter(idCharter: number): Promise<Condicao[]> {
+        console.log("idCharter na repo:", idCharter);
         const result = await db.query(`
                 SELECT 
                     cc.id,
                     cc.opcao
-                FROM barco_charter c
-                JOIN barco_charter_condicoes_charter bccc ON bccc.id_barco_charter = c.id
+                FROM barco_charter bc
+                JOIN barco_charter_condicoes_charter bccc ON bccc.id_barco_charter = bc.id
                 JOIN condicoes_charter cc ON bccc.id_condicoes_charter = cc.id
-                WHERE c.id = $1  
+                WHERE bc.id = $1  
         `, [idCharter]).catch((error) => {
             throw new CustomError(`Repository level Error: CondicoesRepository getCondicoesByIdCharter: ${error}`, 500)
         });
-        if (result.length == 0) {
-            throw new CustomError("Não foram encontrados condicoes associados a este barco idCharter=" + idCharter, 404)
-        }
+       
 
         return result
     }
@@ -27,7 +26,7 @@ export class CondicoesRepository {
             throw new CustomError(`Repository level Error: CondicoesRepository getCondicoesPadrao: ${error}`, 500)
         });
         if (result.length == 0) {
-            throw new CustomError("Não foram encontradas condicoes na tabela", 404)
+            throw new CustomError("Não foram encontradas condicoes na tabela", 404);
         }
 
         return result

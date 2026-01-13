@@ -1,4 +1,4 @@
-import { BarcoCharterDashboardOutput, BarcoCharterOutput, BarcoCharterOutputWithId } from "../../../types/charter/BarcoCharter.js";
+import { BarcoCharterOutputWithId } from "../../../types/charter/BarcoCharter.js";
 import { PrecoOutput } from "../../../types/Preco.js";
 import { Passageiros } from "../../../types/charter/Passageiros.js";
 import { ItemCharter } from "../../../types/charter/ItemCharter.js";
@@ -130,7 +130,7 @@ export class BarcoCharterOutputVO {
 
     extractData(): BarcoCharterOutputWithId {
         return {
-            id: this.id,
+
             codigo: this.codigo,
             modelo: this.modelo,
             nome: this.nome,

@@ -53,7 +53,11 @@ export class ResourcesController {
 
     async searchProprietario(req: Request, res: Response, next: NextFunction) {
         try {
-           const nome = req.params.nome
+            const { nome } = req.params;
+            if (Array.isArray(nome)) {
+                return res.status(400).json({ error: 'Invalid nome' });
+            }
+    
            const firebaseId = req.firebaseUser?.uid
            if(!firebaseId) throw new CustomError("Firebase id indefinido", 403)
             const proprietarioResult = await resourcesService.searchProprietario(nome, firebaseId)
@@ -72,7 +76,11 @@ export class ResourcesController {
     }
     async listAllBoatsFromProprietario(req: Request, res: Response, next: NextFunction) {
         try {
-            const idProprietario = parseInt(req.params.id) 
+            const { id } = req.params;
+            if (Array.isArray(id)) {
+                return res.status(400).json({ error: 'Invalid id' });
+            }
+            const idProprietario = parseInt(id) 
             const proprietariosResult = await resourcesService.listAllBoatsFromProprietario(idProprietario)
             res.json(proprietariosResult)
         } catch (error) {
@@ -90,8 +98,12 @@ export class ResourcesController {
     }
     async getProprietario(req: Request, res: Response, next: NextFunction) {
         try {
-            const id: number = parseInt(req.params.id)
-            const proprietarioResult = await resourcesService.getProprietario(id)
+            const { id } = req.params;
+            if (Array.isArray(id)) {
+                return res.status(400).json({ error: 'Invalid id' });
+            }
+            const idProprietario: number = parseInt(id)
+            const proprietarioResult = await resourcesService.getProprietario(idProprietario)
             res.json(proprietarioResult)
         } catch (error) {
             next(error)
@@ -99,8 +111,12 @@ export class ResourcesController {
     }
     async getProprietarioDashboard(req: Request, res: Response, next: NextFunction) {
         try {
-            const id: number = parseInt(req.params.id)
-            const proprietarioResult = await resourcesService.getProprietarioDashboard(id)
+            const { id } = req.params;
+            if (Array.isArray(id)) {
+                return res.status(400).json({ error: 'Invalid id' });
+            }
+            const idProprietario: number = parseInt(id)
+            const proprietarioResult = await resourcesService.getProprietarioDashboard(idProprietario)
             res.json(proprietarioResult)
         } catch (error) {
             next(error)
