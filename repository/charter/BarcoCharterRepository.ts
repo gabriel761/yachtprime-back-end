@@ -267,8 +267,6 @@ WHERE bc.codigo = $1;
            
         params.push(limit, offset);
 
-        console.log('Final Query:', query);
-        console.log('Query Parameters:', params);
         const result = await db.query(query, params).catch((error) => {
             throw new CustomError(`Repository level error: BarcoChaterRepository:listBarcoCharterFrontEnd: ${error.message}`, 500)
         })
@@ -431,7 +429,6 @@ WHERE bc.codigo = $1;
     }
 
     async updateBarcoCharter(barcoCharter: BarcoCharterInputWithId, idModel?: number, idCidade?:number, idProprietario?: number) {
-        console.log("barco charter repository:", barcoCharter)
         await db.query(`
     UPDATE barco_charter SET
     ativo=$1,
