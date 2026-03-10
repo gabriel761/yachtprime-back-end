@@ -203,6 +203,7 @@ WHERE bc.codigo = $1;
 
     async listBarcoCharterFrontEnd(filters: BarcoCharterFilters): Promise<BarcoCharterListFrontEndDatabase[]> {
         const { cidade, tipoPasseio, capacidade, page = 1 } = filters;
+        console.log(filters)
      
         // Array para armazenar as condições
         const whereConditions: string[] = [];
@@ -266,7 +267,8 @@ WHERE bc.codigo = $1;
             `;
            
         params.push(limit, offset);
-
+            console.log(query)
+            console.log(params)
         const result = await db.query(query, params).catch((error) => {
             throw new CustomError(`Repository level error: BarcoChaterRepository:listBarcoCharterFrontEnd: ${error.message}`, 500)
         })

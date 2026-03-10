@@ -296,14 +296,14 @@ seminovo_5 AS (
     id_motorizacao, potencia_total,
     id_combustivel, id_propulsao,
     id_cabine, procedencia, destaque,
-    id_preco, id_proprietario
+    id_preco, oportunidade, id_proprietario
   )
   SELECT
     6,'Dream Catcher',2021,70,
     motor_5.id,4000,
     2,3,
     cabine_5.id,'Estados Unidos','Barco com design único',
-    preco_5.id,proprietario_5.id
+    preco_5.id, true, proprietario_5.id
   FROM preco_5, cabine_5, motor_5, proprietario_5
   RETURNING id
 ),
